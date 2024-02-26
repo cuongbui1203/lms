@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -17,9 +19,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    // ];
+    
+    protected $guard = [
+        'role_id',
         'password',
     ];
 
@@ -42,4 +49,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function role():BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function img():BelongsTo
+    {
+        return $this->belongsTo(Image::class, 'img_id');
+    }
+
+    public function work_plate(): BelongsTo
+    {
+        return $this->belongsTo(WorkPlate::class, 'wp_id');
+    }
 }
