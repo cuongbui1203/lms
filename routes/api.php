@@ -23,6 +23,9 @@ Route::middleware('auth:sanctum')->get(
 Route::get('users/', [UserController::class,'index'])
     ->name('api.users.index');
 
+Route::post('/users/login', [UserController::class,'login'])
+    ->name('api.users.login');
+
 Route::post('users', [UserController::class,'store'])
     ->name('api.users.register');
 

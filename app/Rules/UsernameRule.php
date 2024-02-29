@@ -15,12 +15,12 @@ class UsernameRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $patten = '^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+        $patten = "/^[w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/";
         if(!User::where('username', '=', $value)->exists()) {
-            if(!preg_match($patten, $value)) {
+            if(preg_match($patten, $value)) {
                 $fail('The :attribute must be email or username');
-            }else if(!User::whereEmail($value)->exists()) {
-                $fail('The :attribute doesn\'t exists');
+            }else if(!User::where('email', '=', $value)->exists()) {
+                $fail('The email or username doesn\'t exists');
             }
         }
     }

@@ -27,6 +27,7 @@ class LoginUserRequest extends FormRequest
                 'required',
                 new UsernameRule(),
             ],
+            'password'=>'required',
         ];
     }
 }
