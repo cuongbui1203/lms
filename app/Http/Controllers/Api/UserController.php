@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,21 +24,11 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RegisterUserRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(), [
-            'name'=>'required',
-            'username'=>'required|unique:users,username',
-            'dob'=>'required|date',
-            'password'=>'confirmed|required',
-            'email'=>'required|email|unique:users,email',
-            ]
-        );
 
-        if($validator->fails()) {
-            $this->sendError('Validator Error', $validator->errors());
-        }
+        $validate = $request->validate();
+        return response()->json([$validate]);
 
         $user = new User();
         $user->name = $request->name;
@@ -44,9 +37,22 @@ class UserController extends Controller
         $user->dob = $request->dob;
         $user->password = Hash::make($request->password);
         $user->role_id = config('roles.user');
+        $user->wp_id = $request->wp_id;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        if(isset($request->image)) {
+        }
 
-        $this->sendSuccess($user, 'create User success');
+        $user->img_id = 1;
 
+        $user->save();
+
+        return $this->sendSuccess($user, 'create User success');
+    }
+
+    public function login(LoginUserRequest $request)
+    {
+        $user = Auth::attempt([$request->email,$request->password]);
     }
 
     /**
@@ -54,7 +60,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->sendSuccess($user, 'Send user');
+        return $this->sendSuccess($user, 'Send user');
     }
 
     /**

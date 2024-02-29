@@ -20,5 +20,14 @@ Route::middleware('auth:sanctum')->get(
         return $request->user();
     }
 );
+Route::get('users/', [UserController::class,'index'])
+    ->name('api.users.index');
 
-Route::post('/users', [UserController::class,'store']);
+Route::post('users', [UserController::class,'store'])
+    ->name('api.users.register');
+
+Route::get('users/{user}', [UserController::class,'show'])
+    ->name('api.users.show');
+
+Route::put('users/{users}', [UserController::class,'update'])
+    ->name('api.users.update');
