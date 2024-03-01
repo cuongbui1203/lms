@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\UsernameRule;
-use Illuminate\Validation\Rule;
 
 class LoginUserRequest extends FormRequest
 {
