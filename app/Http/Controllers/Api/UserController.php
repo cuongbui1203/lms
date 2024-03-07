@@ -7,6 +7,7 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,7 @@ class UserController extends Controller
  * @var \App\Models\User
 */
         $user = Auth::user();
-
+        // $user->load(['img','work_plate']);
         return $this->sendSuccess($user);
     }
 
@@ -43,7 +44,7 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->address = $request->address;
         if(isset($request->image)) {
-            $user->img_id = $user->storeImage('users', $request->file('image'));
+            $user->img_id = storeImage('users', $request->file('image'));
         }else{
             $user->img_id = 1;
         }
@@ -55,15 +56,11 @@ class UserController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            $user->load(['roles', 'work_plate', 'img']);
-            $success['token'] = $user->createToken("loginToken");
-            $success['user'] = $user;
-            return $this->sendResponse($success, 'User login successfully.');
-        }else{
-            return $this->sendError('Unauthorize.', ['error' => 'Unauthorize']);
-        }
+        $user = User::where('email', '=', $request->username)
+            ->orWhere('username', '=', $request->username)->first();
+        Auth::loginUsingId($user->id);
+        $success['token'] = $user->createToken("loginToken")->plainTextToken;
+        return $this->sendSuccess($success, 'User login successfully.');
     }
 
     public function logout(Request $request)
