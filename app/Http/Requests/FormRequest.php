@@ -18,8 +18,9 @@ abstract class FormRequest extends BaseFormRequest
         throw new HttpResponseException(
             response()->json(
                 [
+                'success'=>false,
                 'error' => $errors,
-                'status_code' => 422,
+                'status_code' => JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
                 ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY
             )
         );

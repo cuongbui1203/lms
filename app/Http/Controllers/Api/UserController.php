@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Storage;
 
 class UserController extends Controller
 {
@@ -18,7 +19,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        /**
+ * @var \App\Models\User
+*/
+        $user = Auth::user();
+
+        return $this->sendSuccess($user);
     }
 
     /**
@@ -26,10 +32,6 @@ class UserController extends Controller
      */
     public function store(RegisterUserRequest $request)
     {
-
-        $validate = $request->validate();
-        return response()->json([$validate]);
-
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
@@ -41,9 +43,10 @@ class UserController extends Controller
         $user->phone = $request->phone;
         $user->address = $request->address;
         if(isset($request->image)) {
+            $user->img_id = $user->storeImage('users', $request->file('image'));
+        }else{
+            $user->img_id = 1;
         }
-
-        $user->img_id = 1;
 
         $user->save();
 
@@ -52,7 +55,22 @@ class UserController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        $user = Auth::attempt([$request->email,$request->password]);
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            $user->load(['roles', 'work_plate', 'img']);
+            $success['token'] = $user->createToken("loginToken");
+            $success['user'] = $user;
+            return $this->sendResponse($success, 'User login successfully.');
+        }else{
+            return $this->sendError('Unauthorize.', ['error' => 'Unauthorize']);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return $this->sendSuccess([], "logout success");
     }
 
     /**
@@ -66,9 +84,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+
     }
 
     /**
