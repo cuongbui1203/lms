@@ -20,17 +20,23 @@ Route::middleware('auth:sanctum')->get(
         return $request->user();
     }
 );
-Route::get('users/', [UserController::class,'index'])
-    ->name('api.users.index');
+Route::name('.users')
+    ->prefix('users')
+    ->group(
+        function () {
+            Route::get('/', [UserController::class,'index'])
+            ->name('.index');
 
-Route::post('/users/login', [UserController::class,'login'])
-    ->name('api.users.login');
+            Route::post('/login', [UserController::class,'login'])
+            ->name('.login');
 
-Route::post('users', [UserController::class,'store'])
-    ->name('api.users.register');
+            Route::post('', [UserController::class,'store'])
+            ->name('.register');
 
-Route::get('users/{user}', [UserController::class,'show'])
-    ->name('api.users.show');
+            Route::get('/{user}', [UserController::class,'show'])
+            ->name('.show');
 
-Route::put('users/{users}', [UserController::class,'update'])
-    ->name('api.users.update');
+            Route::put('/{users}', [UserController::class,'update'])
+            ->name('.update');
+        }
+    );

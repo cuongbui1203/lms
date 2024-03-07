@@ -2,7 +2,12 @@
 
 namespace App\Providers;
 
+use App\Http\Mixins\ImageMixin;
+use App\Models\Image;
+use App\Models\User;
+use Exception;
 use Illuminate\Support\ServiceProvider;
+use Storage;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        User::mixin(new ImageMixin());
     }
 }

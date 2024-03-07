@@ -32,7 +32,7 @@ class RegisterUserRequest extends FormRequest
                 Password::min(8)->letters(),
             ],
             'email'=>'required|email|unique:users,email',
-            'image'=>'',
+            'image'=>'image',
         ];
     }
 }

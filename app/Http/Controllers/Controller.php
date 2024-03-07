@@ -21,7 +21,7 @@ class Controller extends BaseController
         return response()->json($data, $code);
     }
 
-    public function sendSuccess($data,$message,$code = Response::HTTP_OK)
+    public function sendSuccess($data,$message='',$code = Response::HTTP_OK)
     {
         $data = [
             'success'=>true,

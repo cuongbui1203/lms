@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UploadImageRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -20,14 +22,9 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Storage::put()
     }
 
-    public function storeImage($image)
-    {
-
-        return "store";
-    }
 
     /**
      * Display the specified resource.
