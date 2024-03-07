@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,19 +25,31 @@ Route::name('.users')
     ->prefix('users')
     ->group(
         function () {
-            Route::get('/', [UserController::class,'index'])
-            ->name('.index');
 
             Route::post('/login', [UserController::class,'login'])
             ->name('.login');
-
             Route::post('', [UserController::class,'store'])
             ->name('.register');
 
-            Route::get('/{user}', [UserController::class,'show'])
-            ->name('.show');
+            Route::middleware('auth:sanctum')->group(
+                function () {
+                    Route::get('/me', [UserController::class,'index'])
+                    ->name('.index');
+                    Route::get('/{user}', [UserController::class,'show'])
+                    ->name('.show');
 
-            Route::put('/{users}', [UserController::class,'update'])
-            ->name('.update');
+                    Route::put('/{users}', [UserController::class,'update'])
+                    ->name('.update');
+                }
+            );
+
+        }
+    );
+
+Route::name('.image')
+    ->prefix('images')
+    ->group(
+        function () {
+            Route::get('/', [ImageController::class,'show']);
         }
     );

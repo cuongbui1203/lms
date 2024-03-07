@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Mixins;
+namespace App\Mixins;
 
 use App\Models\Image;
 use Storage;

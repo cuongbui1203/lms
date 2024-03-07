@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Traits\Macroable;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends SanctumPersonalAccessToken
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,Macroable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

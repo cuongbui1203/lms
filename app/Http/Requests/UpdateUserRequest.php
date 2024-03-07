@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -21,7 +22,16 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>'required',
+            'username'=>'required|unique:users,username',
+            'dob'=>'required|date',
+            'password'=>[
+                'required',
+                'confirmed',
+                Password::min(8)->letters(),
+            ],
+            'email'=>'required|email|unique:users,email',
+            'image'=>'image',
         ];
     }
 }
