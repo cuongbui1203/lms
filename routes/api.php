@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\WorkPlateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,17 @@ Route::name('.image')
     ->prefix('images')
     ->group(
         function () {
-            Route::get('/{image}', [ImageController::class,'show']);
+            Route::get('/{image}', [ImageController::class,'show'])->name('show');
+        }
+    );
+
+Route::name('.work-plate')
+    ->prefix('work-plates')
+    ->middleware('auth:sanctum')
+    ->group(
+        function () {
+            Route::post('/', [WorkPlateController::class,'store'])->name('store');
+            Route::put('/{workPlate}', [WorkPlateController::class,'update'])->name('update');
+            Route::delete('/{workPlate}', [WorkPlateController::class,'destroy'])->name('destroy');
         }
     );

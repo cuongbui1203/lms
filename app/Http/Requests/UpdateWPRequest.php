@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-class CreateWPRequest extends FormRequest
+class UpdateWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,11 +20,9 @@ class CreateWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('s');
         return [
             'name'=>'required',
             'address'=>'required',
-            'typeId'=>'required|exists:types,id',
         ];
     }
 }

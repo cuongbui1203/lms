@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateWPRequest;
+use App\Http\Requests\UpdateWPRequest;
 use App\Models\WorkPlate;
 use Illuminate\Http\Request;
 
@@ -38,7 +39,7 @@ class WorkPlateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WorkPlate $workPlate)
+    public function update(UpdateWPRequest $request, WorkPlate $workPlate)
     {
         //
     }
