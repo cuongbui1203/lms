@@ -16,7 +16,6 @@ class WorkPlateController extends Controller
      */
     public function store(CreateWPRequest $request)
     {
-        // dd('d');
         $workPlate = new WorkPlate();
         $workPlate->name = $request->name;
         $workPlate->address = $request->address;
