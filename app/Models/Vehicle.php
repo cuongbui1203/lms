@@ -13,5 +13,10 @@ class Vehicle extends Model
     public function type():BelongsTo
     {
         return $this->belongsTo(Type::class);
-    }   
+    }
+
+    protected $cast = [
+        'created_at'=>'timestamp',
+        'updated_at'=>'timestamp'
+    ];
 }

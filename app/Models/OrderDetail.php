@@ -23,4 +23,9 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Image::class);
     }
+
+    protected $cast = [
+        'created_at'=>'timestamp',
+        'updated_at'=>'timestamp'
+    ];
 }
