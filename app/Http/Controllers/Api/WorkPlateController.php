@@ -3,25 +3,26 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateWPRequest;
+use App\Http\Requests\UpdateWPRequest;
 use App\Models\WorkPlate;
 use Illuminate\Http\Request;
 
 class WorkPlateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateWPRequest $request)
     {
-        //
+        // dd('d');
+        $workPlate = new WorkPlate();
+        $workPlate->name = $request->name;
+        $workPlate->address = $request->address;
+        $workPlate->type_id = $request->typeId;
+        $workPlate->save();
+        return $this->sendSuccess($workPlate, 'WorkPlate create success');
     }
 
     /**
@@ -29,13 +30,17 @@ class WorkPlateController extends Controller
      */
     public function show(WorkPlate $workPlate)
     {
-        //
+        if($workPlate->type_id === config('type.workPlate.warehouse')) {
+            $workPlate->load('detail');
+        }
+
+        return $this->sendSuccess($workPlate, 'Get success');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WorkPlate $workPlate)
+    public function update(UpdateWPRequest $request, WorkPlate $workPlate)
     {
         //
     }
@@ -45,6 +50,11 @@ class WorkPlateController extends Controller
      */
     public function destroy(WorkPlate $workPlate)
     {
-        //
+        if($workPlate->type_id === config('type.workPlate.warehouse')) {
+            $workPlate->detail->delete();
+        }
+        $workPlate->delete();
+
+        return response()->noContent();
     }
 }

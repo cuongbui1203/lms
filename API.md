@@ -16,7 +16,7 @@
 > `username`: required  
 > `dob`: required | date  
 > `address`: string  
-> `phone`: required
+> `phone`: required  
 > `wp_id`: required | can co workPlate ton tai  
 > `image`: image | file  
 > `password`: required | min:8 | chua chu va so  
@@ -114,8 +114,8 @@
 ## Get user info
 `GET`: `users/me`  
 `AUTH`  
-## response
-### success
+### Response
+### Success
 ```
 {
     "success": true,
@@ -137,3 +137,14 @@
     "message": ""
 }
 ```
+### Fail
+![image](./image/image.png)
+
+## Image
+### GetImage
+`post`: `images/{id}`  
+### Response
+#### Success
+> file Image
+#### Fail
+> http code `404`

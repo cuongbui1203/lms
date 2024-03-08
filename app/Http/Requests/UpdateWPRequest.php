@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Password;
 
-class UpdateUserRequest extends FormRequest
+class UpdateWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +22,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'dob'=>'required|date',
-            'image'=>'image'
+            'address'=>'required',
         ];
     }
 }

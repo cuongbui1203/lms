@@ -2,16 +2,15 @@
 
 namespace App\Http\Requests;
 
-use Password;
 
-class UpdateUserRequest extends FormRequest
+class CreateWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,10 +20,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd('s');
         return [
             'name'=>'required',
-            'dob'=>'required|date',
-            'image'=>'image'
+            'address'=>'required',
+            'typeId'=>'required|exists:types,id',
         ];
     }
 }
