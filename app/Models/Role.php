@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+
+    protected $cast = [
+        'created_at'=>'timestamp',
+        'updated_at'=>'timestamp'
+    ];
 }

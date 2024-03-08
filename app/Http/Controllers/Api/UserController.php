@@ -7,11 +7,9 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Storage;
 
 class UserController extends Controller
 {
@@ -83,7 +81,16 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $user->name = $request->name;
+        $user->address = $request->address;
+        $user->dob = $request->dob;
+        if(isset($request->image)) {
+            deleteImage($user->img_id);
+            $user->img_id = storeImage('users', $request->file('image'));
+        }
+        $user->save();
 
+        return $this->sendSuccess($user, 'update user success');
     }
 
     /**

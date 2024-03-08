@@ -9,9 +9,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Order extends Model
 {
     use HasFactory;
-    
+
     public function details():HasMany
     {
         return $this->hasMany(OrderDetail::class);
     }
+
+    protected $cast = [
+        'created_at'=>'timestamp',
+        'updated_at'=>'timestamp'
+    ];
 }

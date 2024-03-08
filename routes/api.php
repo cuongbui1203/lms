@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get(
         return $request->user();
     }
 );
+
 Route::name('.users')
     ->prefix('users')
     ->group(
@@ -50,6 +51,6 @@ Route::name('.image')
     ->prefix('images')
     ->group(
         function () {
-            Route::get('/', [ImageController::class,'show']);
+            Route::get('/{image}', [ImageController::class,'show']);
         }
     );
