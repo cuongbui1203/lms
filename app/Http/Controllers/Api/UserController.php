@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,8 +20,8 @@ class UserController extends Controller
     public function index()
     {
         /**
- * @var \App\Models\User
-*/
+         * @var \App\Models\User
+         */
         $user = Auth::user();
         // $user->load(['img','work_plate']);
         return $this->sendSuccess($user);
@@ -34,17 +35,10 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->username = $request->username;
-        $user->email = $request->email;
-        $user->dob = $request->dob;
         $user->password = Hash::make($request->password);
         $user->role_id = config('roles.user');
-        $user->wp_id = $request->wp_id;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        if(isset($request->image)) {
+        if (isset($request->image)) {
             $user->img_id = storeImage('users', $request->file('image'));
-        }else{
-            $user->img_id = 1;
         }
 
         $user->save();
@@ -84,7 +78,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->address = $request->address;
         $user->dob = $request->dob;
-        if(isset($request->image)) {
+        if (isset($request->image)) {
             deleteImage($user->img_id);
             $user->img_id = storeImage('users', $request->file('image'));
         }
@@ -93,11 +87,20 @@ class UserController extends Controller
         return $this->sendSuccess($user, 'update user success');
     }
 
+    public function updateRole(UpdateRoleRequest $request, User $user)
+    {
+        $user->role_id = $request->roleIdNew;
+        $user->save();
+        return $this->sendSuccess('', 'Success');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
     {
-        //
+        $user->img()->delete();
+        $user->delete();
+        return $this->sendSuccess('', 'delete success');
     }
 }

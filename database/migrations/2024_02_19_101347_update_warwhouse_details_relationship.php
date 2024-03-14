@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table(
-            'warehouse_details', function (Blueprint $table) {
+            'warehouse_details',
+            function (Blueprint $table) {
                 $table->foreign('wp_id')->references('id')->on('work_plates');
             }
         );
@@ -23,6 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table(
+            'warehouse_details',
+            function (Blueprint $table) {
+                $table->dropConstrainedForeignId('wp_id');
+            }
+        );
     }
 };

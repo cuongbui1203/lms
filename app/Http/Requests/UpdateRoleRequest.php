@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests;
 
-// use App\Http\Requests\
-use Illuminate\Validation\Rules\Password;
+use Auth;
+use Illuminate\Validation\Rule;
 
-class RegisterUserRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        $user = Auth::user();
+        return $user ? $user->role_id === config('roles.admin'):false;
     }
 
     /**
@@ -23,15 +24,10 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'username' => 'required|unique:users,username',
-            'password' => [
+            'roleIdNew'=>[
                 'required',
-                'confirmed',
-                Password::min(8)->letters(),
-            ],
-            'email' => 'required|email|unique:users,email',
-            'image' => 'image',
+                Rule::in(config('roles'))
+            ]
         ];
     }
 }
