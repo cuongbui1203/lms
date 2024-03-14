@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table(
-            'users', function (Blueprint $table) {
+            'users',
+            function (Blueprint $table) {
                 $table->string('phone', 11);
                 $table->date('dob');
                 $table->string('username')->unique();
@@ -29,6 +30,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('phone');
+            $table->dropColumn('dob');
+            $table->dropColumn('username');
+            $table->dropColumn('address');
+        });
     }
 };
