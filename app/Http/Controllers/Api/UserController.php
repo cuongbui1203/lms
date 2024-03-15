@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangeWPRequest;
+use App\Http\Requests\GetListRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -14,17 +16,27 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         /**
          * @var \App\Models\User
          */
         $user = Auth::user();
-        // $user->load(['img','work_plate']);
+        $user->load(['img', 'work_plate', 'role']);
+
         return $this->sendSuccess($user);
+    }
+
+    public function getListAccount(GetListRequest $request)
+    {
+        $pageSize = config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $columns = ['id', 'name', 'email', 'role_id', 'wp_id'];
+        $relations = ['role', 'work_plate'];
+
+        $users = User::get($columns)->paginate($pageSize, $page, $relations);
+
+        return $this->sendSuccess($users, 'success');
     }
 
     /**
@@ -58,6 +70,7 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
+        Auth::logout();
 
         return $this->sendSuccess([], "logout success");
     }
@@ -67,6 +80,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user->load('role', 'work-plate');
+
         return $this->sendSuccess($user, 'Send user');
     }
 
@@ -75,9 +90,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->name = $request->name;
-        $user->address = $request->address;
-        $user->dob = $request->dob;
+        $user->name = isset($request->name) ? $request->name : $user->name;
+        $user->address = isset($request->address) ? $request->address : $user->address;
+        $user->dob = isset($request->dob) ? $request->dob : $user->dob;
+        $user->phone = isset($request->phone) ? $request->phone : $user->phone;
         if (isset($request->image)) {
             deleteImage($user->img_id);
             $user->img_id = storeImage('users', $request->file('image'));
@@ -102,5 +118,13 @@ class UserController extends Controller
         $user->img()->delete();
         $user->delete();
         return $this->sendSuccess('', 'delete success');
+    }
+
+    public function ChangeWP(ChangeWPRequest $request, User $user)
+    {
+        $user->wp_id = $request->wp_id;
+        $user->save();
+
+        return $this->sendSuccess($user, 'change WP success');
     }
 }

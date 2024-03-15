@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests;
 
-// use App\Http\Requests\
-use Illuminate\Validation\Rules\Password;
+use Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterUserRequest extends FormRequest
+class ChangeWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        $user = Auth::user();
+        return $user->role_id === config('roles.admin');
     }
 
     /**
@@ -23,14 +24,7 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'username' => 'required|unique:users,username',
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)->letters(),
-            ],
-            'image' => 'image',
+            'wp_id' => 'required|exists:work_palates,id',
         ];
     }
 }

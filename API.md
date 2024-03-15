@@ -4,32 +4,20 @@
 `http://localhost:8000/api`
 
 ## Tag 
-> `AUTH`: can co 1 truong trong header: `Authorization: Bearer {token}`
-
+> - `AUTH`: can co 1 truong trong header: `Authorization: Bearer {token}`  
+> - `Admin`: Account Admin
 
 ## Register ###
 > `POST` : `/users`  
 
 ### Cac truong yeu cau:  
 > `name`: required  
-> `email`: required | email  
-> `username`: required  
-> `dob`: required | date  
-> `address`: string  
-> `phone`: required  
-> `wp_id`: required | can co workPlate ton tai  
-> `image`: image | file  
+> `username`: required    
 > `password`: required | min:8 | chua chu va so  
 > `password_confirmation`: required | giong password  
 #### VD:  
 > `name`: test  
-> `email`: a@a.a  
 > `username`: username  
-> `dob`: 14/3/2020  
-> `address`: hn  
-> `phone`: 0123456789
-> `wp_id`: 1  
-> `image`:   
 > `password`: password1  
 > `password_confirmation`: password1
 
@@ -40,17 +28,11 @@
     "success": true,
     "data": {
         "name": "test",
-        "username": "username",
-        "email": "a@a.a",
-        "dob": "14/3/2020",
+        "username": "username26",
         "role_id": 3,
-        "wp_id": "1",
-        "phone": "0123456789",
-        "address": "hn",
-        "img_id": 1,
-        "updated_at": "2024-03-07T17:26:52.000000Z",
-        "created_at": "2024-03-07T17:26:52.000000Z",
-        "id": 3
+        "updated_at": 1710439777,
+        "created_at": 1710439777,
+        "id": 1
     },
     "message": "create User success"
 }
@@ -111,34 +93,80 @@
     "status_code": 422
 }
 ```
-## Get user info
+## Get user info `AUTH` 
 `GET`: `users/me`  
-`AUTH`  
+ 
 ### Response
 ### Success
 ```
 {
     "success": true,
     "data": {
-        "id": 2,
+        "id": 1,
         "name": "test",
-        "email": "a2@a.a",
+        "email": null,
         "email_verified_at": null,
-        "created_at": "2024-03-07T07:53:26.000000Z",
-        "updated_at": "2024-03-07T07:53:26.000000Z",
-        "phone": "1231231",
-        "dob": "0001-01-01",
-        "username": "username2",
-        "address": "address",
+        "created_at": "2024-03-14 11:09:37",
+        "updated_at": "2024-03-14 11:09:37",
+        "phone": null,
+        "dob": null,
+        "username": "username26",
+        "address": null,
         "role_id": 3,
-        "wp_id": 1,
-        "img_id": 3
+        "wp_id": null,
+        "img_id": null,
+        "img": null,
+        "work_plate": null,
+        "role": {
+            "id": 3,
+            "name": "User",
+            "desc": "User",
+            "created_at": "2024-03-14T10:51:05.000000Z",
+            "updated_at": "2024-03-14T10:51:05.000000Z"
+        }
     },
     "message": ""
 }
 ```
 ### Fail
 ![image](./image/image.png)
+
+## Get list Account `AUTH` `Admin`
+`GET` `users\`  
+  
+
+Param
+>page: number|min:1  
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 1,
+        "currentPage": 1,
+        "pageSize": 12,
+        "data": [
+            {
+                "id": 1,
+                "name": "test",
+                "email": null,
+                "role_id": 3,
+                "wp_id": null,
+                "role": {
+                    "id": 3,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-03-14T10:51:05.000000Z",
+                    "updated_at": "2024-03-14T10:51:05.000000Z"
+                },
+                "work_plate": null
+            }
+        ]
+    },
+    "message": "success"
+}
+```
 
 ## Image
 ### GetImage
@@ -148,3 +176,101 @@
 > file Image
 #### Fail
 > http code `404`
+
+## Work Plate
+### Create `AUTH` `ADMIN`
+`POST` `\work-plates`
+
+#### Cac truong yeu cau:
+> - name: required
+> - address: required
+> - type_id: required
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "name": "test",
+        "address": "ew",
+        "type_id": "1",
+        "updated_at": "2024-03-15T03:48:29.000000Z",
+        "created_at": "2024-03-15T03:48:29.000000Z",
+        "id": 2
+    },
+    "message": "WorkPlate create success"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "address": [
+            "The address field is required."
+        ]
+    },
+    "status_code": 422
+}
+```
+
+### Get info `AUTH`
+`GET` `\work-plates\{id}`
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "test",
+        "address": "ew",
+        "type_id": 1,
+        "created_at": "2024-03-14T18:27:39.000000Z",
+        "updated_at": "2024-03-14T18:27:39.000000Z",
+        "detail": {
+            "id": 1,
+            "wp_id": 1,
+            "max_payload": 1000,
+            "payload": 0,
+            "created_at": "2024-03-14T18:47:00.000000Z",
+            "updated_at": "2024-03-14T18:47:00.000000Z"
+        },
+        "type": {
+            "id": 1,
+            "name": "warehouse"
+        }
+    },
+    "message": "Get success"
+}
+```
+```
+HTTP code 404
+```
+
+## Type `AUTH`
+`GET` `types\{work-plates|vehicles}`
+
+### Response
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "warehouse",
+            "for": 1
+        },
+        {
+            "id": 2,
+            "name": "transactionPoint",
+            "for": 1
+        },
+        {
+            "id": 3,
+            "name": "transshipmentPoint",
+            "for": 1
+        }
+    ],
+    "message": "Get all Type success"
+}
+```
