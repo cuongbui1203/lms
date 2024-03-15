@@ -22,9 +22,11 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required',
-            'dob'=>'required|date',
-            'image'=>'image'
+            'name' => 'string',
+            'dob' => 'date',
+            'image' => 'image',
+            'wp_id' => 'exists:work_plates,id',
+            'email' => 'email',
         ];
     }
 }

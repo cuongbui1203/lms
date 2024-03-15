@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
@@ -46,16 +48,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'updated_at'=>'timestamp',
-        'created_at'=>'timestamp'
+        'updated_at' => 'timestamp',
+        'created_at' => 'timestamp'
     ];
 
-    public function role():BelongsTo
+    protected function createdAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
+        );
+    }
+
+    protected function updatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
+        );
+    }
+
+    public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
-    public function img():BelongsTo
+    public function img(): BelongsTo
     {
         return $this->belongsTo(Image::class, 'img_id');
     }

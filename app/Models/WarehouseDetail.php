@@ -10,13 +10,18 @@ class WarehouseDetail extends Model
 {
     use HasFactory;
 
-    public function work_plate():BelongsTo
+    public function work_plate(): BelongsTo
     {
         return $this->belongsTo(WorkPlate::class, 'wp_id');
     }
 
+    protected $fillable = [
+        'max_payload',
+        'payload',
+    ];
+
     protected $cast = [
-        'created_at'=>'timestamp',
-        'updated_at'=>'timestamp'
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp'
     ];
 }
