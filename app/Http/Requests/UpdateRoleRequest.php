@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RoleEnum;
 use Auth;
 use Illuminate\Validation\Rule;
 
@@ -13,7 +14,7 @@ class UpdateRoleRequest extends FormRequest
     public function authorize(): bool
     {
         $user = Auth::user();
-        return $user ? $user->role_id === config('roles.admin'):false;
+        return $user ? $user->role_id === RoleEnum::Admin : false;
     }
 
     /**
@@ -24,9 +25,9 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roleIdNew'=>[
+            'roleIdNew' => [
                 'required',
-                Rule::in(config('roles'))
+                Rule::in(RoleEnum::getValues())
             ]
         ];
     }

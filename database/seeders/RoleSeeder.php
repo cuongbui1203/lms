@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,29 +15,38 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert(
             [
-            'id'=>config('roles.admin'),
-            'name'=>'Admin',
-            'desc'=>"Admin",
-            'created_at'=>now(),
-            'updated_at'=>now(),
+                'id' => RoleEnum::Admin,
+                'name' => 'Admin',
+                'desc' => "Admin",
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-            'id'=>config('roles.employee'),
-            'name'=>'Employee',
-            'desc'=>"Employee",
-            'created_at'=>now(),
-            'updated_at'=>now(),
+                'id' => RoleEnum::Employee,
+                'name' => 'Employee',
+                'desc' => "Employee",
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-            'id'=>config('roles.user'),
-            'name'=>'User',
-            'desc'=>"User",
-            'created_at'=>now(),
-            'updated_at'=>now(),
+                'id' => RoleEnum::User,
+                'name' => 'User',
+                'desc' => "User",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
+        DB::table('roles')->insert(
+            [
+                'id' => RoleEnum::Driver,
+                'name' => 'Driver',
+                'desc' => "Driver",
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         );
     }

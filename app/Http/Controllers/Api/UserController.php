@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangeWPRequest;
 use App\Http\Requests\GetListRequest;
@@ -48,7 +49,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->role_id = config('roles.user');
+        $user->role_id = RoleEnum::User;
         if (isset($request->image)) {
             $user->img_id = storeImage('users', $request->file('image'));
         }
@@ -61,9 +62,11 @@ class UserController extends Controller
     public function login(LoginUserRequest $request)
     {
         $user = User::where('email', '=', $request->username)
-            ->orWhere('username', '=', $request->username)->first();
+            ->orWhere('username', '=', $request->username)->first(['id']);
         Auth::loginUsingId($user->id);
+        $user->tokens()->delete();
         $success['token'] = $user->createToken("loginToken")->plainTextToken;
+
         return $this->sendSuccess($success, 'User login successfully.');
     }
 

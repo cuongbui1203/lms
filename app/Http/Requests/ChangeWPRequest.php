@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RoleEnum;
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +14,7 @@ class ChangeWPRequest extends FormRequest
     public function authorize(): bool
     {
         $user = Auth::user();
-        return $user->role_id === config('roles.admin');
+        return $user->role_id === RoleEnum::Admin;
     }
 
     /**

@@ -14,7 +14,9 @@ class WorkPlateController extends Controller
     public function index()
     {
         $wp = WorkPlate::paginate(config('paginate.wp-list'));
-
+        foreach ($wp as $e) {
+            $e->{'address'} = $e->address;
+        }
         return $this->sendSuccess($wp, 'Get list work plate success');
     }
     /**
@@ -24,9 +26,11 @@ class WorkPlateController extends Controller
     {
         $workPlate = new WorkPlate();
         $workPlate->name = $request->name;
-        $workPlate->address = $request->address;
+        $workPlate->address_id = $request->address_id;
         $workPlate->type_id = $request->typeId;
+        $workPlate->vung = $request->vung;
         $workPlate->save();
+
         return $this->sendSuccess($workPlate, 'WorkPlate create success');
     }
 
@@ -42,12 +46,13 @@ class WorkPlateController extends Controller
      */
     public function show(WorkPlate $workPlate)
     {
-        dd($workPlate);
+        // dd($workPlate->getAddressName(30598, 3));
         if ($workPlate->type_id === config('type.workPlate.warehouse')) {
             $workPlate->load('detail');
         }
         $workPlate->load('type');
-
+        $workPlate->{'address'} = $workPlate->address;
+        // dd($workPlate);
         return $this->sendSuccess($workPlate, 'Get success');
     }
 

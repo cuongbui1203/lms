@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RoleEnum;
 use Auth;
 
 class UpdateWarehouseDetailRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateWarehouseDetailRequest extends FormRequest
     {
         $user = Auth::user();
 
-        return $user->role_id === config('roles.admin');
+        return $user->role_id === RoleEnum::Admin;
     }
 
     /**

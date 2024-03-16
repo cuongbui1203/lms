@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\AddressTypeEnum;
+use Illuminate\Validation\Rule;
 
 class CreateWPRequest extends FormRequest
 {
@@ -22,9 +24,10 @@ class CreateWPRequest extends FormRequest
     {
         // dd('s');
         return [
-            'name'=>'required',
-            'address'=>'required',
-            'typeId'=>'required|exists:types,id',
+            'name' => 'required',
+            'address_id' => ['required', Rule::exists("sqlite_vn_map.wards", "code")],
+            'typeId' => 'required|exists:types,id',
+            'vung' => ['required', Rule::in(AddressTypeEnum::getValues())]
         ];
     }
 }

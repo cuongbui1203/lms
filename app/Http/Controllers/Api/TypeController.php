@@ -18,7 +18,7 @@ class TypeController extends Controller
         else {
             $fo = 2;
         }
-        $types = Type::where('for', '=', $fo)->get();
+        $types = Type::where('for', '=', $fo)->get(['id', 'name']);
 
         return $this->sendSuccess($types, 'Get all Type success');
     }
