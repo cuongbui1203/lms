@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
                 RoleSeeder::class,
                 ImageSeeder::class,
                 TypeSeeder::class,
+                StatusSeeder::class,
                 AddressSeeder::class,
             ]
         );
