@@ -7,6 +7,9 @@
 > - `AUTH`: can co 1 truong trong header: `Authorization: Bearer {token}`  
 > - `Admin`: Account Admin
 
+## Type
+![image](./image/type.png)
+
 ## Register ###
 > `POST` : `/users`  
 
@@ -371,4 +374,90 @@ HTTP code 404
      "message": "get all wards"
 }
 ```
+## Vehicle `AUTH` `ADMIN`
+### Create 
+`POST` `vehicles/`  
+> Tạo xe mới  
 
+> `name`: required  
+> `payload`: required|numeric|min:0  
+> `typeId`: required|in(type.vehicle)
+
+#### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "create vehicle success"
+}
+```
+```
+http status code 402
+```
+
+### Show
+`GET` `vehicles/{id}`
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "created_at": "2024-03-18T20:42:23.000000Z",
+        "updated_at": "2024-03-18T20:42:23.000000Z",
+        "name": "tét",
+        "payload": 10000,
+        "type_id": 4,
+        "driver_id": 1,
+        "type": {
+            "id": 4,
+            "name": "freezingCar",
+            "for": 2
+        },
+        "driver": {
+            "id": 1,
+            "name": "test",
+            "email": null,
+            "email_verified_at": null,
+            "created_at": "2024-03-18 20:42:14",
+            "updated_at": "2024-03-18 20:42:14",
+            "phone": null,
+            "dob": null,
+            "username": "username",
+            "address": null,
+            "role_id": 4,
+            "wp_id": null,
+            "img_id": null
+        }
+    },
+    "message": ""
+}
+```
+
+### Delete
+`DELETE` `vehicles/{id}`
+
+#### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "delete success"
+}
+```
+
+### Edit
+`PUT` `vehicles/{id}`
+> `name`  
+> `payload`: numeric|min:0  
+> `driverId`: exists:users,id
+
+#### Response
+```
+{
+    success:true,
+    data:[],
+    message:success
+}
+```

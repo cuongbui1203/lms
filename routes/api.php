@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\VehicleController;
 use App\Http\Controllers\Api\WorkPlateController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +19,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get(
-    '/user',
-    function (Request $request) {
-        return $request->user();
-    }
-);
 
 Route::name('.users')
     ->prefix('users')
@@ -81,3 +75,13 @@ Route::prefix('/address')->group(function () {
     Route::get('/districts', [AddressController::class, 'getAllDistricts']);
     Route::get('/provinces', [AddressController::class, 'getAllProvinces']);
 });
+
+Route::prefix('vehicles')
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::post('/', [VehicleController::class, 'store']);
+        Route::get('/', [VehicleController::class, 'index']);
+        Route::post('/{vehicle}', [VehicleController::class, 'update']);
+        Route::get('/{vehicle}', [VehicleController::class, 'show']);
+        Route::delete('/{vehicle}', [VehicleController::class, 'destroy']);
+    });
