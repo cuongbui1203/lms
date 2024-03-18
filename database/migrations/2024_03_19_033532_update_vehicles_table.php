@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
-            $table->id();
-            $table->integer('');
-            $table->timestamps();
+        Schema::table('vehicles', function (Blueprint $table) {
+            $table->foreignId('driver_id')->nullable()->change();
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address');
+        Schema::table('vehicles', function (Blueprint $table) {
+            $table->foreignId('driver_id')->nullable(false)->change();
+        });
     }
 };
