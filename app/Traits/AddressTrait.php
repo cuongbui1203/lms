@@ -6,6 +6,11 @@ use App\Enums\AddressTypeEnum;
 use DB;
 use Exception;
 
+/**
+ * Address Trait
+ * 
+ * @method string getAddressName(int $id,int $type)
+ */
 trait AddressTrait
 {
     public function getAddressName(int $id, int $type)

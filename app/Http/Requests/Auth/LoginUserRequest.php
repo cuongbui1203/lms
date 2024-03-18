@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-use App\Enums\AddressTypeEnum;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\FormRequest;
+use App\Rules\UsernameRule;
 
-class CreateWPRequest extends FormRequest
+class LoginUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,12 @@ class CreateWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('s');
         return [
-            'name' => 'required',
-            'address_id' => ['required', Rule::exists("sqlite_vn_map.wards", "code")],
-            'typeId' => 'required|exists:types,id',
-            'vung' => ['required', Rule::in(AddressTypeEnum::getValues())]
+            'username' => [
+                'required',
+                new UsernameRule(),
+            ],
+            'password' => 'required',
         ];
     }
 }

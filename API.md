@@ -274,3 +274,101 @@ HTTP code 404
     "message": "Get all Type success"
 }
 ```
+## Address
+> Đây là các Api để lấy thông tin về địa chỉ theo địa chỉ của Việt Nam  
+
+### Provinces
+`\address\provinces`  
+```
+{
+    "success": true,
+    "data": [
+        {
+            "code": "01",
+            "name": "Hà Nội",
+            "name_en": "Ha Noi",
+            "full_name": "Thành phố Hà Nội",
+            "full_name_en": "Ha Noi City",
+            "code_name": "ha_noi",
+            "administrative_unit_id": 1,
+            "administrative_region_id": 3
+        },
+        {
+            "code": "26",
+            "name": "Vĩnh Phúc",
+            "name_en": "Vinh Phuc",
+            "full_name": "Tỉnh Vĩnh Phúc",
+            "full_name_en": "Vinh Phuc Province",
+            "code_name": "vinh_phuc",
+            "administrative_unit_id": 2,
+            "administrative_region_id": 3
+        },...
+    ],
+     "message": "get all provinces"
+}
+```
+
+### District
+`\address\districts?code={code}`  
+`code` là mã province  
+```
+{
+    "success": true,
+    "data": [
+        {
+            "code": "001",
+            "name": "Ba Đình",
+            "name_en": "Ba Dinh",
+            "full_name": "Quận Ba Đình",
+            "full_name_en": "Ba Dinh District",
+            "code_name": "ba_dinh",
+            "province_code": "01",
+            "administrative_unit_id": 5
+        },
+        {
+            "code": "002",
+            "name": "Hoàn Kiếm",
+            "name_en": "Hoan Kiem",
+            "full_name": "Quận Hoàn Kiếm",
+            "full_name_en": "Hoan Kiem District",
+            "code_name": "hoan_kiem",
+            "province_code": "01",
+            "administrative_unit_id": 5
+        },...
+    ],
+     "message": "get all districts"
+}
+```
+
+### Ward
+`\address\wards?code={code}`  
+`code` là mã District  
+```
+{
+    "success": true,
+    "data": [
+        {
+            "code": "31942",
+            "name": "1",
+            "name_en": "1",
+            "full_name": "Phường 1",
+            "full_name_en": "Ward 1",
+            "code_name": "1",
+            "district_code": "959",
+            "administrative_unit_id": 8
+        },
+        {
+            "code": "31945",
+            "name": "Hộ Phòng",
+            "name_en": "Ho Phong",
+            "full_name": "Phường Hộ Phòng",
+            "full_name_en": "Ho Phong Ward",
+            "code_name": "ho_phong",
+            "district_code": "959",
+            "administrative_unit_id": 8
+        },...
+    ],
+     "message": "get all wards"
+}
+```
+

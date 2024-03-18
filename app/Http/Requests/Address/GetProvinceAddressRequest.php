@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Address;
 
+use App\Http\Requests\FormRequest;
 
-class UpdateWPRequest extends FormRequest
+class GetProvinceAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,9 +21,6 @@ class UpdateWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name'=>'required',
-            'address'=>'required',
-        ];
+        return [];
     }
 }

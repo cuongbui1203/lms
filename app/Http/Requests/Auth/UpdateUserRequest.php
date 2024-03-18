@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-// use App\Http\Requests\
-use Illuminate\Validation\Rules\Password;
+use App\Http\Requests\FormRequest;
+use Password;
 
-class RegisterUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,11 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'username' => 'required|unique:users,username',
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)->letters(),
-            ],
+            'name' => 'string',
+            'dob' => 'date',
             'image' => 'image',
+            'wp_id' => 'exists:work_plates,id',
+            'email' => 'email',
         ];
     }
 }

@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateWPRequest;
-use App\Http\Requests\UpdateWarehouseDetailRequest;
-use App\Http\Requests\UpdateWPRequest;
+use App\Http\Requests\WorkPlate\CreateWPRequest;
+use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
+use App\Http\Requests\WorkPlate\UpdateWPRequest;
 use App\Models\WorkPlate;
-use Illuminate\Http\Request;
 
 class WorkPlateController extends Controller
 {

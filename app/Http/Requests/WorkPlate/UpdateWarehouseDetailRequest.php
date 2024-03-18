@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WorkPlate;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\FormRequest;
 use Auth;
 
 class UpdateWarehouseDetailRequest extends FormRequest

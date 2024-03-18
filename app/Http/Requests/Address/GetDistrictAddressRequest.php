@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Address;
 
-use App\Rules\UsernameRule;
+use App\Http\Requests\FormRequest;
 
-class LoginUserRequest extends FormRequest
+class GetDistrictAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,7 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username'=>[
-                'required',
-                new UsernameRule(),
-            ],
-            'password'=>'required',
+            'code' => 'required|exists:sqlite_vn_map.provinces,code',
         ];
     }
 }

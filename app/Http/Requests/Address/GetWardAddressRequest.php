@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Address;
 
-use App\Enums\RoleEnum;
-use Auth;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
 
-class ChangeWPRequest extends FormRequest
+class GetWardAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $user = Auth::user();
-        return $user->role_id === RoleEnum::Admin;
+        return true;
     }
 
     /**
@@ -25,7 +22,7 @@ class ChangeWPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wp_id' => 'required|exists:work_palates,id',
+            'code' => 'required|exists:sqlite_vn_map.districts,code',
         ];
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\TypeController;
 use App\Http\Controllers\Api\UserController;
@@ -74,3 +75,9 @@ Route::name('.work-plate')
 
 Route::middleware(['auth:sanctum'])
     ->get('types/{for}', [TypeController::class, 'index']);
+
+Route::prefix('/address')->group(function () {
+    Route::get('/wards', [AddressController::class, 'getAllWards']);
+    Route::get('/districts', [AddressController::class, 'getAllDistricts']);
+    Route::get('/provinces', [AddressController::class, 'getAllProvinces']);
+});
