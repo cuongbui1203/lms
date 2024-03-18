@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(WorkPlate::class, 'wp_id');
     }
+
+    public function vehicle(): BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class, 'id', 'driver_id');
+    }
 }

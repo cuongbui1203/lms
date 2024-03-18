@@ -3,6 +3,7 @@
 > - php: ^8
 > - composer: 2.5.5  
 > - mysql
+> - sqlite
 
 ## cac buoc chuan bi
 - tao file `.env` tu file `.env.example`
