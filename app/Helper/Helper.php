@@ -2,8 +2,8 @@
 
 use App\Models\Image;
 
-if(!function_exists('storeImage')) {
-    function storeImage($path,$file)
+if (!function_exists('storeImage')) {
+    function storeImage($path, $file)
     {
         $pathImage = Storage::put($path, $file);
         $image = new Image();
@@ -13,7 +13,7 @@ if(!function_exists('storeImage')) {
     }
 }
 
-if(!function_exists('deleteImage')) {
+if (!function_exists('deleteImage')) {
     function deleteImage($id)
     {
         $image = Image::find($id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\RoleEnum;
 use Auth;
 use Closure;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class CheckAdmin
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        if ($user->role_id === config('roles.admin'))
+        if ($user->role_id === RoleEnum::Admin)
             return $next($request);
 
         return response()->json([

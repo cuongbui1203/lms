@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WorkPlate;
 
-use Password;
+use App\Http\Requests\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'dob' => 'date',
-            'image' => 'image',
-            'wp_id' => 'exists:work_plates,id',
-            'email' => 'email',
+            'name' => 'required',
+            'address' => 'required',
         ];
     }
 }

@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Address;
 
-use Auth;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\FormRequest;
 
-class UpdateRoleRequest extends FormRequest
+class GetWardAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $user = Auth::user();
-        return $user ? $user->role_id === config('roles.admin'):false;
+        return true;
     }
 
     /**
@@ -24,10 +22,7 @@ class UpdateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'roleIdNew'=>[
-                'required',
-                Rule::in(config('roles'))
-            ]
+            'code' => 'required|exists:sqlite_vn_map.districts,code',
         ];
     }
 }

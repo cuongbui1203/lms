@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChangeWPRequest;
+use App\Http\Requests\Auth\LoginUserRequest;
+use App\Http\Requests\Auth\RegisterUserRequest;
+use App\Http\Requests\Auth\UpdateRoleRequest;
+use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\RegisterUserRequest;
-use App\Http\Requests\UpdateRoleRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\WorkPlate\ChangeWPRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,7 +49,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->role_id = config('roles.user');
+        $user->role_id = RoleEnum::User;
         if (isset($request->image)) {
             $user->img_id = storeImage('users', $request->file('image'));
         }
@@ -61,9 +62,11 @@ class UserController extends Controller
     public function login(LoginUserRequest $request)
     {
         $user = User::where('email', '=', $request->username)
-            ->orWhere('username', '=', $request->username)->first();
+            ->orWhere('username', '=', $request->username)->first(['id']);
         Auth::loginUsingId($user->id);
+        $user->tokens()->delete();
         $success['token'] = $user->createToken("loginToken")->plainTextToken;
+
         return $this->sendSuccess($success, 'User login successfully.');
     }
 
@@ -90,10 +93,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->name = isset($request->name) ? $request->name : $user->name;
-        $user->address = isset($request->address) ? $request->address : $user->address;
-        $user->dob = isset($request->dob) ? $request->dob : $user->dob;
-        $user->phone = isset($request->phone) ? $request->phone : $user->phone;
+        $user->name =  $request->name ?? $user->name;
+        $user->address =  $request->address ?? $user->address;
+        $user->dob = $request->dob ?? $user->dob;
+        $user->phone =  $request->phone ?? $user->phone;
         if (isset($request->image)) {
             deleteImage($user->img_id);
             $user->img_id = storeImage('users', $request->file('image'));

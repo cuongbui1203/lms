@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
+use App\Http\Requests\FormRequest;
+use Password;
 
-class CreateWPRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,11 +22,12 @@ class CreateWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('s');
         return [
-            'name'=>'required',
-            'address'=>'required',
-            'typeId'=>'required|exists:types,id',
+            'name' => 'string',
+            'dob' => 'date',
+            'image' => 'image',
+            'wp_id' => 'exists:work_plates,id',
+            'email' => 'email',
         ];
     }
 }

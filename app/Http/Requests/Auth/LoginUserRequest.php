@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-use Auth;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
+use App\Rules\UsernameRule;
 
-class ChangeWPRequest extends FormRequest
+class LoginUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $user = Auth::user();
-        return $user->role_id === config('roles.admin');
+        return true;
     }
 
     /**
@@ -24,7 +23,11 @@ class ChangeWPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wp_id' => 'required|exists:work_palates,id',
+            'username' => [
+                'required',
+                new UsernameRule(),
+            ],
+            'password' => 'required',
         ];
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
-// use App\Http\Requests\
+use App\Http\Requests\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterUserRequest extends FormRequest

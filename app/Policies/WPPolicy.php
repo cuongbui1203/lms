@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 
 class WPPolicy
@@ -16,6 +17,6 @@ class WPPolicy
 
     public function create(User $user)
     {
-        return $user->role_id === config('roles.admin');
+        return $user->role_id === RoleEnum::Admin;
     }
 }
