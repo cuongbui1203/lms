@@ -19,7 +19,7 @@ DB_PASSWORD=
 ## cac lenh chay khoi tao ban dau
 > `composer install`  
 > `php artisan key:generate`  
-> `php artisan migrate --seed`  
+> `php artisan migrate:refresh --seed`  
   
 ## lenh chay server
 > `php artisan serve`

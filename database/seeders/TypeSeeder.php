@@ -68,5 +68,33 @@ class TypeSeeder extends Seeder
                 'name' => 'container'
             ]
         );
+        DB::table('types')->insert(
+            [
+                'id' => config('type.goods.fragile'),
+                'for' => config('type.for.goods'),
+                'name' => 'fragile'
+            ]
+        );
+        DB::table('types')->insert(
+            [
+                'id' => config('type.goods.hazardous'),
+                'for' => config('type.for.goods'),
+                'name' => 'hazardous'
+            ]
+        );
+        DB::table('types')->insert(
+            [
+                'id' => config('type.goods.normal'),
+                'for' => config('type.for.goods'),
+                'name' => 'normal'
+            ]
+        );
+        DB::table('types')->insert(
+            [
+                'id' => config('type.goods.oversized'),
+                'for' => config('type.for.goods'),
+                'name' => 'oversized'
+            ]
+        );
     }
 }

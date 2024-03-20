@@ -10,6 +10,18 @@
 ## Type
 ![image](./image/type.png)
 
+## CSRF Token `AUTH`
+`GET`: `/token`
+>- Lấy csrf token của phiên hiện tại.  
+>- Cần thêm trường `_token` vào mỗi requset gửi lên.
+
+### Response
+```
+{
+    "token": "Cl6MrILAOrVW0gvhrd68k8Uv1pYKzkzjAHUDtdWj"
+}
+```
+
 ## Register ###
 > `POST` : `/users`  
 
