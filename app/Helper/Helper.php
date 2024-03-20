@@ -22,3 +22,16 @@ if (!function_exists('deleteImage')) {
         $image->delete();
     }
 }
+
+if (!function_exists('api_path')) {
+    /**
+     * get path of api directory
+     *
+     * @param string $path
+     * @return string
+     */
+    function api_path($path = '')
+    {
+        return base_path('/routes/api/' . $path);
+    }
+}
