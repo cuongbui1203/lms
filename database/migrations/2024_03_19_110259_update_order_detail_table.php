@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vehicles', function (Blueprint $table) {
-            $table->foreignId('driver_id')->nullable()->change();
+        Schema::table('order_details', function (Blueprint $table) {
+            $table->foreignId('image_id')->nullable()->change();
         });
     }
 
@@ -21,5 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
+        //
     }
 };

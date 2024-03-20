@@ -26,12 +26,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('img_id')->nullable(false)->change();
-            $table->foreignId('wp_id')->nullable(false)->change();
-            $table->foreignId('phone')->nullable(false)->change();
-            $table->foreignId('address')->nullable(false)->change();
-            $table->date('dob')->nullable(false)->change();
-        });
     }
 };

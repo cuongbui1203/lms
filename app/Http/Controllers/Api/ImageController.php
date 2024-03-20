@@ -13,13 +13,11 @@ class ImageController extends Controller
      */
     public function show(Image $image)
     {
-        // dd($image);
-        try{
+        try {
             return response()->download($image->url, 'image');
-        }catch(Exception $e){
+        } catch (Exception $e) {
             dd($e);
             return response()->noContent(404);
         }
     }
-
 }

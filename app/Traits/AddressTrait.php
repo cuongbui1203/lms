@@ -42,6 +42,14 @@ trait AddressTrait
         }
     }
 
+    /**
+     * lay code cua 1 dia chi tu id cua wards
+     *
+     * @param string $id
+     * @param integer $type
+     * @return string|null
+     * @throws Exception
+     */
     public function getAddressCode(string $id, int $type)
     {
         $res = '';
@@ -67,7 +75,6 @@ trait AddressTrait
                 break;
             case AddressTypeEnum::Ward:
                 return $id;
-                // break;
             default:
                 throw new Exception("unknown type");
         }
@@ -76,11 +83,6 @@ trait AddressTrait
 
     public function getAddress($addressId)
     {
-        // $add = Address::where("id", $id)->first();
-        // // return $add;
-        // if (!$add) {
-        //     throw new Exception("Khong tim thay Address record co id: " . $id, 1);
-        // }
         $res =  DB::connection('sqlite_vn_map')
             ->table(DB::raw("wards w"))
             ->join(DB::raw("districts d"), "d.code", "=", "w.district_code")
@@ -99,57 +101,13 @@ trait AddressTrait
             throw new Exception("loi truy van cho address co id: " . $addressId, 1);
         }
         $res = (object)array(
-            'province' => $res->provinceName,
             'provinceCode' => $res->provinceCode,
             'districtCode' => $res->districtCode,
             'wardCode' => $res->wardCode,
+            'province' => $res->provinceName,
             'district' => $res->districtName,
             'ward' => $res->wardName,
         );
         return $res;
-    }
-
-    public function getAllProvinces()
-    {
-        try {
-            $res =  DB::connection('sqlite_vn_map')->table(DB::raw("provinces p"))
-                ->select(DB::raw("code as id"), DB::raw('full_name as name'))
-                ->get();
-            return $this->sendResponse($res, 'get all provinces success');
-        } catch (Exception $e) {
-            return $this->sendError("cannot get provinces", $e->getMessage());
-        }
-    }
-    public function getAllDistricts()
-    {
-        if (!isset($_GET['id'])) {
-            return $this->sendError([], 'k cos code province');
-        }
-        $id = $_GET['id'];
-        try {
-            $res =  DB::connection('sqlite_vn_map')->table(DB::raw("districts d"))
-                ->where(DB::raw("d.province_code"), $id)
-                ->select(DB::raw("code as id"),  DB::raw('full_name as name'))
-                ->get();
-            return $this->sendResponse($res, 'get all provinces success');
-        } catch (Exception $e) {
-            return $this->sendError("cannot get provinces", $e->getMessage());
-        }
-    }
-    public function getAllWards()
-    {
-        if (!isset($_GET['id'])) {
-            return $this->sendError([], 'k cos code district');
-        }
-        $id = $_GET['id'];
-        try {
-            $res =  DB::connection('sqlite_vn_map')->table(DB::raw("wards w"))
-                ->where(DB::raw("w.district_code"), $id)
-                ->select(DB::raw("code as id"),  DB::raw('full_name as name'))
-                ->get();
-            return $this->sendResponse($res, 'get all provinces success');
-        } catch (Exception $e) {
-            return $this->sendError("cannot get provinces", $e->getMessage());
-        }
     }
 }

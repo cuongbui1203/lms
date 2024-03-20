@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\AddressTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +12,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vehicles', function (Blueprint $table) {
-            $table->foreignId('driver_id')->nullable()->change();
+        Schema::table('work_plates', function (Blueprint $table) {
+            $table->enum('cap', AddressTypeEnum::getValues());
         });
     }
 
@@ -21,5 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('work_plates', function (Blueprint $table) {
+            $table->dropColumn('cap');
+        });
     }
 };
