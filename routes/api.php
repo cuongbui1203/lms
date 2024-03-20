@@ -1,11 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ImageController;
-use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\TypeController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\VehicleController;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
