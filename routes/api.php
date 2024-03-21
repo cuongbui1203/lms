@@ -38,7 +38,7 @@ Route::prefix('orders')
     ->group(api_path('order.php'));
 
 Route::get('/test', function () {
-    $order = Order::first();
+    $order = Order::all()->last();
     dd($order->routing($order));
 });
 

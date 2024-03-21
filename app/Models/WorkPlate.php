@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WorkPlate extends Model
 {
-    use HasFactory, AddressTrait;
+    use HasFactory;
 
     public function type(): BelongsTo
     {
@@ -26,15 +26,6 @@ class WorkPlate extends Model
     public function detail(): HasOne
     {
         return $this->hasOne(WarehouseDetail::class, 'wp_id');
-    }
-
-    protected function address(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                return $this->getAddress($this->address_id);
-            },
-        );
     }
 
     protected $cast = [
