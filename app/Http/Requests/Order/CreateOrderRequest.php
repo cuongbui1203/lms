@@ -28,7 +28,6 @@ class CreateOrderRequest extends FormRequest
             'receiver_phone' => 'required',
             'sender_address_id' => 'required|exists:sqlite_vn_map.wards,code',
             'receiver_address_id' => 'required|exists:sqlite_vn_map.wards,code',
-            'work_plate_id' => 'required|exists:work_plates,id',
         ];
     }
 }

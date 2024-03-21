@@ -26,8 +26,9 @@ class UpdateUserRequest extends FormRequest
             'name' => 'string',
             'dob' => 'date',
             'image' => 'image',
-            'wp_id' => 'exists:work_plates,id',
             'email' => 'email',
+            'phone' => 'string',
+            'address' => 'string'
         ];
     }
 }

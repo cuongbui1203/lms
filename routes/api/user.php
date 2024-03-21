@@ -14,7 +14,7 @@ Route::middleware('auth:sanctum')->group(
             ->name('.index');
         Route::get('/{user}', [UserController::class, 'show'])
             ->name('.show');
-        Route::put('/{users}', [UserController::class, 'update'])
+        Route::put('/{user}', [UserController::class, 'update'])
             ->name('.update');
         Route::get('/', [UserController::class, 'getListAccount']);
         Route::put('/{user}/change-wp', [UserController::class, 'changeWP']);

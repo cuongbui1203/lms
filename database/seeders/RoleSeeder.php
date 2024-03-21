@@ -49,5 +49,14 @@ class RoleSeeder extends Seeder
                 'updated_at' => now(),
             ]
         );
+        DB::table('roles')->insert(
+            [
+                'id' => RoleEnum::Manager,
+                'name' => 'Manager',
+                'desc' => "Manager",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\WorkPlate;
+namespace App\Http\Requests\Auth;
 
 use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;

@@ -9,7 +9,7 @@ use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
-use App\Http\Requests\WorkPlate\ChangeWPRequest;
+use App\Http\Requests\Auth\ChangeWPRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,6 +50,7 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
         $user->role_id = RoleEnum::User;
+
         if (isset($request->image)) {
             $user->img_id = storeImage('users', $request->file('image'));
         }
@@ -97,10 +98,12 @@ class UserController extends Controller
         $user->address =  $request->address ?? $user->address;
         $user->dob = $request->dob ?? $user->dob;
         $user->phone =  $request->phone ?? $user->phone;
+
         if (isset($request->image)) {
             deleteImage($user->img_id);
             $user->img_id = storeImage('users', $request->file('image'));
         }
+
         $user->save();
 
         return $this->sendSuccess($user, 'update user success');

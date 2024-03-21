@@ -177,7 +177,7 @@ if (!function_exists('routing')) {
      * routing the order to the next transportPoint, Transaction or next state shipping.
      *
      * @param Order $order
-     * @return string|int
+     * @return WorkPlate|null
      */
     function routing(Order $order)
     {
@@ -185,15 +185,12 @@ if (!function_exists('routing')) {
         $vungHt = $order->notifications->last()->to->vung;
         $capHt = $order->notifications->last()->to->cap;
         $idAddressN = $order->receiver_address_id;
-        $status = $order->status_id;
-        // return [$idAddressHT, $vungHt, $capHt, $idAddressN, $status];
-        // dd(WorkPlate::where('vung', '=', $order->getAddressCode($idAddressHT, AddressTypeEnum::Province))->first());
+
         if ($idAddressHT == $idAddressN && $capHt == AddressTypeEnum::Ward) {
-            // $order->statusDetail->status_id = StatusEnum::Shipping;
-            // $order->statusDetail->transport_id = '';
-            return "ship";
+            return null;
         }
-        $resMaim = null;
+
+        $resMain = null;
         switch ($capHt) {
             case AddressTypeEnum::Ward:
                 $res = WorkPlate::where(
@@ -203,11 +200,11 @@ if (!function_exists('routing')) {
                 )
                     ->first();
                 if (!$res) {
-                    $resMaim =  'shipping';
+                    $resMain =  null;
                     break;
                 }
 
-                $resMaim = $res->id;
+                $resMain = $res;
                 break;
 
             case AddressTypeEnum::District:
@@ -218,7 +215,7 @@ if (!function_exists('routing')) {
                     $res = WorkPlate::where('vung', '=', getAddressCode($idAddressHT, AddressTypeEnum::Province))->first('id');
                 }
                 // dd($codeNn);
-                $resMaim =  $res->id;
+                $resMain =  $res;
                 break;
 
             case AddressTypeEnum::Province:
@@ -227,13 +224,13 @@ if (!function_exists('routing')) {
                 } else {
                     $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::Province))->first();
                 }
-                $resMaim =  $res->id;
+                $resMain =  $res;
                 break;
 
             default:
                 break;
         }
 
-        return $resMaim ? $resMaim : 'ship';
+        return $resMain;
     }
 }

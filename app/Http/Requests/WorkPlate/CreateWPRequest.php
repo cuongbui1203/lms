@@ -4,6 +4,7 @@ namespace App\Http\Requests\WorkPlate;
 
 use App\Enums\AddressTypeEnum;
 use App\Http\Requests\FormRequest;
+use App\Rules\VungRule;
 use Illuminate\Validation\Rule;
 
 class CreateWPRequest extends FormRequest
@@ -28,7 +29,7 @@ class CreateWPRequest extends FormRequest
             'name' => 'required',
             'address_id' => ['required', Rule::exists("sqlite_vn_map.wards", "code")],
             'typeId' => 'required|exists:types,id',
-            'vung' => ['required', Rule::in(AddressTypeEnum::getValues())]
+            'vung' => ['required', new VungRule()],
         ];
     }
 }
