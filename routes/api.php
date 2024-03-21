@@ -38,8 +38,8 @@ Route::prefix('orders')
     ->group(api_path('order.php'));
 
 Route::get('/test', function () {
-    $order = Order::first();
-    dd($order->routing($order));
+    $order = Order::all()->last();
+    dd(routing($order));
 });
 
 Route::middleware(['auth:sanctum'])
