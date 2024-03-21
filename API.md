@@ -146,6 +146,51 @@
 ### Fail
 ![image](./image/image.png)
 
+## Update info user `AUTH`
+`PUT`: `users\{id}`
+>`name`: string  
+>`dob`: date  
+>`email`: email  
+>`phone`: string
+>`address`: string
+>`image`: image
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "test",
+        "email": null,
+        "email_verified_at": null,
+        "created_at": "2024-03-21 15:32:58",
+        "updated_at": "2024-03-21 15:32:58",
+        "phone": null,
+        "dob": null,
+        "username": "username",
+        "address": null,
+        "role_id": 2,
+        "wp_id": null,
+        "img_id": null
+    },
+    "message": "update user success"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "email": [
+            "The email field must be a valid email address."
+        ]
+    },
+    "status_code": 422
+}
+```
+
+## Change WP 
+
 ## Get list Account `AUTH` `Admin`
 `GET` `users\`  
   
