@@ -8,6 +8,7 @@ use App\Models\Noti;
 use App\Models\Order;
 use App\Models\WorkPlate;
 use Illuminate\Database\Seeder;
+use Str;
 
 class OrderTestSeeder extends Seeder
 {
@@ -24,30 +25,53 @@ class OrderTestSeeder extends Seeder
         return $res->id;
     }
 
+    private function createRoute($senderAddressId, $receiverAddressId)
+    {
+        $cap = getAddressRank($senderAddressId);
+        $start = $this->createWorkPlate(
+            Str::random(10),
+            $senderAddressId,
+            config('type.workPlate.transshipmentPoint'),
+            $cap
+        );
+        $cap++;
+        while ($cap <= AddressTypeEnum::Province) {
+            $this->createWorkPlate(
+                Str::random(10),
+                $senderAddressId,
+                config('type.workPlate.transshipmentPoint'),
+                $cap
+            );
+            $cap++;
+        }
+        $cap = AddressTypeEnum::Province;
+        $vung = getAddressCode($receiverAddressId, $cap);
+        while ($receiverAddressId != $vung) {
+            $this->createWorkPlate(
+                Str::random(10),
+                $receiverAddressId,
+                config('type.workPlate.transshipmentPoint'),
+                $cap
+            );
+            $cap--;
+            $vung = getAddressCode($receiverAddressId, $cap);
+        }
+        $this->createWorkPlate(
+            Str::random(10),
+            $receiverAddressId,
+            config('type.workPlate.transshipmentPoint'),
+            $cap
+        );
+        return $start;
+    }
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $idGui = $this->createWorkPlate(
-            'gui',
-            '27280',
-            config('type.workPlate.transactionPoint'),
-            AddressTypeEnum::Ward
-        );
-        $this->createWorkPlate(
-            'tt1',
-            '27280',
-            config('type.workPlate.transactionPoint'),
-            AddressTypeEnum::District
-        );
-        $this->createWorkPlate(
-            'tt2',
-            '27280',
-            config('type.workPlate.transactionPoint'),
-            AddressTypeEnum::Province
-        );
 
+        $idGui = $this->createRoute('27280', '27283');
 
         $order = new Order();
         $order->sender_name = 'senderName';

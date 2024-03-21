@@ -142,6 +142,35 @@ if (!function_exists('getAddress')) {
     }
 }
 
+if (!function_exists('getAddressRank')) {
+    /**
+     * get rank of address over addressID
+     *
+     * @param string $addressId
+     * @return int|string
+     */
+    function getAddressRank(string $addressId)
+    {
+        $db = DB::connection('sqlite_vn_map');
+        $p = $db->table('provinces')->where('code', $addressId);
+        $d = $db->table('districts')->where('code', $addressId);
+        $w = $db->table('wards')->where('code', $addressId);
+
+        if ($p->exists()) {
+            return AddressTypeEnum::Province;
+        }
+
+        if ($d->exists()) {
+            return AddressTypeEnum::District;
+        }
+
+        if ($w->exists()) {
+            return AddressTypeEnum::Ward;
+        }
+
+        return 'unknown';
+    }
+}
 
 if (!function_exists('routing')) {
     /**
@@ -170,7 +199,7 @@ if (!function_exists('routing')) {
                 $res = WorkPlate::where(
                     'vung',
                     '=',
-                    $order->getAddressCode($idAddressHT, AddressTypeEnum::District)
+                    getAddressCode($idAddressHT, AddressTypeEnum::District)
                 )
                     ->first();
                 if (!$res) {
@@ -182,21 +211,21 @@ if (!function_exists('routing')) {
                 break;
 
             case AddressTypeEnum::District:
-                $codeNn = $order->getAddressCode($idAddressN, AddressTypeEnum::District);
+                $codeNn = getAddressCode($idAddressN, AddressTypeEnum::District);
                 if ($codeNn == $vungHt) {
                     $res = WorkPlate::where('vung', '=', $idAddressN)->first();
                 } else {
-                    $res = WorkPlate::where('vung', '=', $order->getAddressCode($idAddressHT, AddressTypeEnum::Province))->first('id');
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressHT, AddressTypeEnum::Province))->first('id');
                 }
                 // dd($codeNn);
                 $resMaim =  $res->id;
                 break;
 
             case AddressTypeEnum::Province:
-                if ($vungHt == $order->getAddressCode($idAddressN, AddressTypeEnum::Province)) {
-                    $res = WorkPlate::where('vung', '=', $order->getAddressCode($idAddressN, AddressTypeEnum::District))->first();
+                if ($vungHt == getAddressCode($idAddressN, AddressTypeEnum::Province)) {
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::District))->first();
                 } else {
-                    $res = WorkPlate::where('vung', '=', $order->getAddressCode($idAddressN, AddressTypeEnum::Province))->first();
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::Province))->first();
                 }
                 $resMaim =  $res->id;
                 break;

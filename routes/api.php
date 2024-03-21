@@ -39,7 +39,7 @@ Route::prefix('orders')
 
 Route::get('/test', function () {
     $order = Order::all()->last();
-    dd($order->routing($order));
+    dd(routing($order));
 });
 
 Route::middleware(['auth:sanctum'])
