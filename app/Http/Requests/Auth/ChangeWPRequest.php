@@ -25,7 +25,7 @@ class ChangeWPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'wp_id' => 'required|exists:work_palates,id',
+            'wp_id' => 'required|exists:work_plates,id',
         ];
     }
 }

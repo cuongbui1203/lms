@@ -189,11 +189,48 @@
 }
 ```
 
-## Change WP 
+## Change WP `AUTH` `Admin`
+`PUT` `users\{id}\change-wp`
+
+> `wp_id`: required|exists:work_palates,id
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "test",
+        "email": null,
+        "email_verified_at": null,
+        "created_at": "2024-03-22 06:21:32",
+        "updated_at": "2024-03-22 06:23:48",
+        "phone": null,
+        "dob": null,
+        "username": "username",
+        "address": null,
+        "role_id": 1,
+        "wp_id": 1,
+        "img_id": null
+    },
+    "message": "change WP success"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "wp_id": [
+            "The selected wp id is invalid."
+        ]
+    },
+    "status_code": 422
+}
+```
+
 
 ## Get list Account `AUTH` `Admin`
 `GET` `users\`  
-  
 
 Param
 >page: number|min:1  
