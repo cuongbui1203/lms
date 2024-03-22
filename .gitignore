@@ -41,3 +41,4 @@ yarn-error.log
 /.vscode
 _ide_helper*.php
 /config/ide-helper.php
+/package-lock.json
