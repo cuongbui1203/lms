@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests\Order;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\FormRequest;
+use App\Rules\VungRule;
 
 class CreateOrderRequest extends FormRequest
 {
@@ -26,8 +27,8 @@ class CreateOrderRequest extends FormRequest
             'receiver_name' => 'required',
             'sender_phone' => 'required',
             'receiver_phone' => 'required',
-            'sender_address_id' => 'required|exists:sqlite_vn_map.wards,code',
-            'receiver_address_id' => 'required|exists:sqlite_vn_map.wards,code',
+            'sender_address_id' => ['required', new VungRule()],
+            'receiver_address_id' => ['required', new VungRule()],
         ];
     }
 }

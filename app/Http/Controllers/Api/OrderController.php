@@ -21,6 +21,7 @@ class OrderController extends Controller
         $order->sender_address_id = $request->sender_address_id;
         $order->receiver_name = $request->receiver_name;
         $order->receiver_phone = $request->receiver_phone;
+        $order->receiver_address_id = $request->receiver_address_id;
 
         $order->save();
 
