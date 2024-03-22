@@ -661,3 +661,47 @@ http status code 402
 ```
 HTTP status code 404
 ```
+
+### Add detail order `AUTH`
+`POST`: `orders/{orderId}`
+
+> `type_id`: required|in(9,10,11,12)    
+> `name`: required|string  
+> `mass`: required|numeric|min:1,  
+> `desc`: required  
+> `img`: image|file
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "order_id": 15,
+        "type_id": "9",
+        "desc": "test thpo",
+        "mass": "1000",
+        "name": "test",
+        "updated_at": "2024-03-22T07:26:49.000000Z",
+        "created_at": "2024-03-22T07:26:49.000000Z",
+        "id": 113
+    },
+    "message": "add order detail success"
+}
+```
+```
+HTTP status code 404
+```
+```
+{
+    "success": false,
+    "error": {
+        "mass": [
+            "The mass field is required."
+        ],
+        "desc": [
+            "The desc field is required."
+        ]
+    },
+    "status_code": 422
+}
+```
