@@ -567,7 +567,7 @@ http status code 402
 > `receiver_phone`: required|string  
 > `receiver_address_id`: required|exists  
 
-### Response
+#### Response
 ```
 {
     "success": true,
@@ -622,4 +622,42 @@ http status code 402
     },
     "status_code": 422
 }
+```
+
+### Detail `AUTH`
+`GET`:`orders/{id}`
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 15,
+        "sender_name": "test",
+        "sender_address_id": "27280",
+        "sender_phone": "123123123",
+        "receiver_name": "tert",
+        "receiver_address_id": "27283",
+        "receiver_phone": "123",
+        "created_at": "2024-03-22T06:50:48.000000Z",
+        "updated_at": "2024-03-22T06:50:48.000000Z",
+        "notifications": [
+            {
+                "id": 4,
+                "order_id": 15,
+                "from_id": 1,
+                "to_id": 1,
+                "status_id": 10,
+                "description": null,
+                "created_at": null,
+                "updated_at": null
+            }
+        ],
+        "details": []
+    },
+    "message": "get Order Detail success"
+}
+```
+```
+HTTP status code 404
 ```
