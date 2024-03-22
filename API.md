@@ -193,7 +193,6 @@
 `PUT` `users\{id}\change-wp`
 
 > `wp_id`: required|exists:work_palates,id
-
 ### Response
 ```
 {
@@ -231,6 +230,7 @@
 
 ## Get list Account `AUTH` `Admin`
 `GET` `users\`  
+  
 
 Param
 >page: number|min:1  
@@ -553,5 +553,73 @@ http status code 402
     success:true,
     data:[],
     message:success
+}
+```
+
+## Order
+
+### Create `AUTH` 
+
+> `sender_name`: required|string  
+> `sender_phone`: required|string  
+> `sender_address_id`: required|exists  
+> `receiver_name`: required|string  
+> `receiver_phone`: required|string  
+> `receiver_address_id`: required|exists  
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "sender_name": "test",
+        "sender_phone": "123123123",
+        "sender_address_id": "27280",
+        "receiver_name": "tert",
+        "receiver_phone": "123",
+        "receiver_address_id": "27283",
+        "updated_at": "2024-03-22T06:45:17.000000Z",
+        "created_at": "2024-03-22T06:45:17.000000Z",
+        "id": 13,
+        "notifications": [
+            {
+                "id": 2,
+                "order_id": 13,
+                "from_id": 1,
+                "to_id": 1,
+                "status_id": 10,
+                "description": null,
+                "created_at": null,
+                "updated_at": null
+            }
+        ]
+    },
+    "message": ""
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "sender_name": [
+            "The sender name field is required."
+        ],
+        "receiver_name": [
+            "The receiver name field is required."
+        ],
+        "sender_phone": [
+            "The sender phone field is required."
+        ],
+        "receiver_phone": [
+            "The receiver phone field is required."
+        ],
+        "sender_address_id": [
+            "The sender address id field is required."
+        ],
+        "receiver_address_id": [
+            "The selected receiver_address_id is invalid."
+        ]
+    },
+    "status_code": 422
 }
 ```
