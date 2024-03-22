@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
 use App\Models\Noti;
 use App\Models\Order;
+use App\Models\OrderDetail;
 use Auth;
 
 class OrderController extends Controller
@@ -52,5 +54,24 @@ class OrderController extends Controller
 
         $order->delete();
         return $this->sendSuccess([], 'delete success');
+    }
+
+    public function addDetail(AddDetailOrderRequest $request, Order $order)
+    {
+        $detail = new OrderDetail([
+            'order_id' => $order->id,
+            'type_id' => $request->type_id,
+            'desc' => $request->desc,
+            'mass' => $request->mass,
+            'name' => $request->name,
+        ]);
+
+        if ($request->img) {
+            $detail->image_id =  storeImage('order_detail', $request->file('img'));
+        }
+
+        $detail->save();
+
+        return $this->sendSuccess($detail, 'add order detail success');
     }
 }
