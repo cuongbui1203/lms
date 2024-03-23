@@ -88,7 +88,31 @@
 {
     "success": true,
     "data": {
-        "token": "6|JNemJvmnEFDx3A5xY8V3UtLUIOruc1nKYDLVqGuX5cb61cca"
+        "user": {
+            "id": 1,
+            "name": "test",
+            "email": null,
+            "email_verified_at": null,
+            "created_at": "2024-03-23 06:00:33",
+            "updated_at": "2024-03-23 06:00:33",
+            "phone": null,
+            "dob": null,
+            "username": "username",
+            "address": null,
+            "role_id": 2,
+            "wp_id": null,
+            "img_id": null,
+            "role": {
+                "id": 2,
+                "name": "User",
+                "desc": "User",
+                "created_at": "2024-03-22T17:37:12.000000Z",
+                "updated_at": "2024-03-22T17:37:12.000000Z"
+            },
+            "work_plate": null,
+            "img": null
+        },
+        "token": "3|VmMe6ejKCQzNuRCflJsGqTgD0clTu38RIMYkXvQIc0f88ec0"
     },
     "message": "User login successfully."
 }

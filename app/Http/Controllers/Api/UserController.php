@@ -63,12 +63,15 @@ class UserController extends Controller
     public function login(LoginUserRequest $request)
     {
         $user = User::where('email', '=', $request->username)
-            ->orWhere('username', '=', $request->username)->first(['id']);
-        Auth::loginUsingId($user->id);
-        $user->tokens()->delete();
-        $success['token'] = $user->createToken("loginToken")->plainTextToken;
+            ->orWhere('username', '=', $request->username)->first();
 
-        return $this->sendSuccess($success, 'User login successfully.');
+        Auth::loginUsingId($user->id);
+
+        $user->load('role', 'work_plate', 'img');
+        $res['user'] = $user;
+        $res['token'] = $user->createToken("loginToken")->plainTextToken;
+
+        return $this->sendSuccess($res, 'User login successfully.');
     }
 
     public function logout(Request $request)
