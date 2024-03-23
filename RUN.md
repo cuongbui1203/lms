@@ -22,4 +22,8 @@ DB_PASSWORD=
 > `php artisan migrate:refresh --seed`  
   
 ## lenh chay server
-> `php artisan serve`
+
+### Cần chạy tất cả các lệnh trên các terminal khác nhau
+
+> `php artisan serve`  
+> `php artisan queue:listen`

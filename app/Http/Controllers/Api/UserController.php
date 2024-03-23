@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Auth\ChangeWPRequest;
+use App\Jobs\SendGreetingEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,9 @@ class UserController extends Controller
         }
 
         $user->save();
+
+        $job = new SendGreetingEmail($user);
+        dispatch($job);
 
         return $this->sendSuccess($user, 'create User success');
     }
