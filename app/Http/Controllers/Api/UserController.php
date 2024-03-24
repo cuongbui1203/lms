@@ -10,11 +10,16 @@ use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Auth\ChangeWPRequest;
+use App\Http\Requests\Auth\ResetPasswordLinkRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Str;
 
 class UserController extends Controller
 {
@@ -139,5 +144,36 @@ class UserController extends Controller
         $user->save();
 
         return $this->sendSuccess($user, 'change WP success');
+    }
+
+    public function resetPasswordLink(ResetPasswordLinkRequest $request)
+    {
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return $this->sendSuccess([], 'send reset link success');
+        } else {
+            return $this->sendError('send reset link fail', []);
+        }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return $this->sendSuccess([], 'reset password success');
+        } else {
+            return $this->sendError('cant reset password', 'email invalid');
+        }
     }
 }
