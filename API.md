@@ -78,12 +78,12 @@
 ```
 ## Login
 > `POST`: `users/login`
-## Cac truong yeu cau
+### Cac truong yeu cau
 > `username`: required  
 > `password`: required
 
-## Response
-### Success
+### Response
+#### Success
 ```
 {
     "success": true,
@@ -117,7 +117,7 @@
     "message": "User login successfully."
 }
 ```
-### Error
+#### Error
 ```
 {
     "success": false,
@@ -132,6 +132,20 @@
     "status_code": 422
 }
 ```
+## Logout `AUTH`
+`DELETE`: `users/me`
+### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "logout success"
+}
+```
+```
+HTTP status code 500
+```
+
 ## Get user info `AUTH` 
 `GET`: `users/me`  
  

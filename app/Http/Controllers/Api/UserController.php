@@ -74,6 +74,10 @@ class UserController extends Controller
         $user = User::where('email', '=', $request->username)
             ->orWhere('username', '=', $request->username)->first();
 
+        if (!Hash::check($request->password, $user->password)) {
+            return $this->sendError('auth error', []);
+        }
+
         Auth::loginUsingId($user->id);
 
         $user->load('role', 'work_plate', 'img');
@@ -86,7 +90,6 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        Auth::logout();
 
         return $this->sendSuccess([], "logout success");
     }
