@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreignId('img_id')->nullable()->change();
             $table->foreignId('wp_id')->nullable()->change();
-            $table->foreignId('email')->nullable()->change();
-            $table->foreignId('phone')->nullable()->change();
-            $table->foreignId('address')->nullable()->change();
+            $table->string('email')->nullable()->change();
+            $table->string('phone')->nullable()->change();
+            $table->string('address')->nullable()->change();
             $table->date('dob')->nullable()->change();
         });
     }

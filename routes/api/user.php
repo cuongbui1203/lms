@@ -7,6 +7,8 @@ Route::post('/login', [UserController::class, 'login'])
     ->name('.login');
 Route::post('', [UserController::class, 'store'])
     ->name('.register');
+Route::post('/forgot-password', [UserController::class, 'resetPasswordLink']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(
     function () {
