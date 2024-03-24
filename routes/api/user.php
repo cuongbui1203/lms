@@ -12,6 +12,7 @@ Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(
     function () {
+        Route::delete('/me', [UserController::class, 'logout']);
         Route::get('/me', [UserController::class, 'index'])
             ->name('.index');
         Route::get('/{user}', [UserController::class, 'show'])
