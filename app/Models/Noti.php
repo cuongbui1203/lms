@@ -10,7 +10,6 @@ class Noti extends Model
 {
     use HasFactory;
 
-    public $timestamps = false;
     protected $table = 'notifications';
 
     protected $fillable = [
@@ -20,9 +19,9 @@ class Noti extends Model
         'status_id',
         "description",
     ];
-    protected $cast = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
     public function order(): HasOne
     {

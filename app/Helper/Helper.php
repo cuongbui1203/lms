@@ -82,6 +82,7 @@ if (!function_exists('getAddressCode')) {
     function getAddressCode(string $id, int $type)
     {
         $res = '';
+        // dd($type);
         switch ($type) {
             case AddressTypeEnum::Province:
                 $res =  DB::connection('sqlite_vn_map')
@@ -168,7 +169,7 @@ if (!function_exists('getAddressRank')) {
             return AddressTypeEnum::Ward;
         }
 
-        return 'unknown';
+        return -1;
     }
 }
 
@@ -186,7 +187,7 @@ if (!function_exists('routing')) {
         $capHt = $order->notifications->last()->to->cap;
         $idAddressN = $order->receiver_address_id;
 
-        if ($idAddressHT == $idAddressN && $capHt == AddressTypeEnum::Ward) {
+        if ($idAddressHT === $idAddressN && $capHt === AddressTypeEnum::Ward) {
             return null;
         }
 
@@ -232,5 +233,42 @@ if (!function_exists('routing')) {
         }
 
         return $resMain;
+    }
+}
+
+if (!function_exists('routingAnother')) {
+    function routingAnother(Order $order)
+    {
+        $noti = $order->notifications->last();
+        $idAddressHT = $noti->to_address_id; // address id hiện tại
+        $capHt = getAddressRank($idAddressHT); // cap hien tai
+        $idAddressN = $order->receiver_address_id; // address id ng nhan
+        $res = null;
+        $count = 0;
+        // dd($idAddressHT);
+        // dd(getAddressCode($idAddressHT, $capHt));
+        while ($capHt < AddressTypeEnum::Province) {
+            $capHt++;
+            $count++;
+            $wp = WorkPlate::where('vung', getAddressCode($idAddressHT, $capHt))->first();
+            if ($wp) {
+                $res = $wp;
+                break;
+            };
+        }
+        if ($res)
+            return $res;
+        while ($capHt >= AddressTypeEnum::Ward) {
+            $wp = WorkPlate::where('vung', getAddressCode($idAddressN, $capHt))->first();
+            if ($wp) {
+                $res = $wp;
+                break;
+            };
+            $capHt--;
+        }
+        if ($res)
+            return $res;
+        else
+            return null;
     }
 }
