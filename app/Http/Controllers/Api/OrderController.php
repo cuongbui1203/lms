@@ -32,6 +32,7 @@ class OrderController extends Controller
         $notification->from_id = $user->wp_id;
         $notification->to_id = $user->wp_id;
         $notification->status_id = StatusEnum::Create;
+        $notification->description = 'create new order';
 
         $notification->save();
 
@@ -73,5 +74,12 @@ class OrderController extends Controller
         $detail->save();
 
         return $this->sendSuccess($detail, 'add order detail success');
+    }
+
+    public function getNextPos(Order $order)
+    {
+        $workPlate = routing($order);
+
+        dd($workPlate);
     }
 }

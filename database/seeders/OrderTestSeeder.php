@@ -71,7 +71,7 @@ class OrderTestSeeder extends Seeder
     public function run(): void
     {
 
-        $idGui = $this->createRoute('27280', '27283');
+        $idGui = $this->createRoute('27280', '07159');
 
         $order = new Order();
         $order->sender_name = 'senderName';
@@ -79,7 +79,7 @@ class OrderTestSeeder extends Seeder
         $order->sender_address_id = '27280';
         $order->receiver_name = 'receiver';
         $order->receiver_phone = '123123123';
-        $order->receiver_address_id = '27280';
+        $order->receiver_address_id = '07159';
 
         $order->save();
 
@@ -87,6 +87,8 @@ class OrderTestSeeder extends Seeder
         $notification->order_id = $order->id;
         $notification->from_id = $idGui;
         $notification->to_id = $idGui;
+        $notification->from_address_id = '27280';
+        $notification->to_address_id = '27280';
         $notification->description = "";
         $notification->status_id = StatusEnum::Create;
 
