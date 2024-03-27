@@ -743,3 +743,44 @@ HTTP status code 404
     "status_code": 422
 }
 ```
+### Get Suggestion next position `AUTH`
+`GET`: `/{idOrder}/next`
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "nextPos": {
+            "id": 2,
+            "name": "OuxO5EQPnm",
+            "address_id": "27280",
+            "type_id": 3,
+            "created_at": "2024-03-27T17:19:54.000000Z",
+            "updated_at": "2024-03-27T17:19:54.000000Z",
+            "cap": "2",
+            "vung": "773",
+            "detail": null
+        }
+    },
+    "message": ""
+}
+```
+
+### Create request move to next position `AUTH`
+`POST`: `/{order}/next`
+
+> `from_address_id` `nullable|string|(idAddress hop le)`  
+> `to_address_id` `nullable|string|(idAddress hop le)`  
+> `from_id`: `nullable|exists:work_plates,id`,  
+> `to_id` : `nullable|exists:work_plates,id`,  
+> `description` : `nullable|string`  
+
+#### Response
+```
+{   
+    "success": true,
+    "data": [],
+    "message": "move to next post ok"
+}
+```
