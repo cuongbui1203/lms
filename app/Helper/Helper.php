@@ -215,7 +215,6 @@ if (!function_exists('routing')) {
                 } else {
                     $res = WorkPlate::where('vung', '=', getAddressCode($idAddressHT, AddressTypeEnum::Province))->first('id');
                 }
-                // dd($codeNn);
                 $resMain =  $res;
                 break;
 
@@ -237,16 +236,21 @@ if (!function_exists('routing')) {
 }
 
 if (!function_exists('routingAnother')) {
+    /**
+     * lay vi tri goi y tiep theo
+     *
+     * @param Order $order order can xu ly
+     * @return WorkPlate|null
+     */
     function routingAnother(Order $order)
     {
         $noti = $order->notifications->last();
-        $idAddressHT = $noti->to_address_id; // address id hiện tại
+        $idAddressHT = $noti->to_address_id ?? $noti->to->address_id; // address id hiện tại
         $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address_id; // address id ng nhan
         $res = null;
         $count = 0;
-        // dd($idAddressHT);
-        // dd(getAddressCode($idAddressHT, $capHt));
+
         while ($capHt < AddressTypeEnum::Province) {
             $capHt++;
             $count++;
