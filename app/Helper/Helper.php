@@ -70,15 +70,16 @@ if (!function_exists('getAddressName')) {
     }
 }
 
-/**
- * lay code cua 1 dia chi tu id cua wards
- *
- * @param string $id
- * @param integer $type
- * @return string|null
- * @throws Exception
- */
+
 if (!function_exists('getAddressCode')) {
+    /**
+     * lay code cua 1 dia chi tu id cua wards
+     *
+     * @param string $id address wards id
+     * @param integer $type 1,2,3
+     * @return string|null
+     * @throws Exception
+     */
     function getAddressCode(string $id, int $type)
     {
         $res = '';
