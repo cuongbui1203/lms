@@ -50,7 +50,10 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        $addressIds = DB::connection('sqlite_vn_map')->table('wards')->get(['code'])->pluck('code');
+        $addressIds = DB::connection('sqlite_vn_map')
+            ->table('wards')
+            ->get(['code'])
+            ->pluck('code');
         $n = 10;
         for ($i = 0; $i < $n; $i++) {
             $this->createOrder($addressIds);
