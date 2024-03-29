@@ -83,7 +83,7 @@ class UserController extends Controller
         $user->load('role', 'work_plate', 'img');
         $res['user'] = $user;
         $res['token'] = $user->createToken("loginToken")->plainTextToken;
-
+        $res['csrf_token'] = $request->session()->token();
         return $this->sendSuccess($res, 'User login successfully.');
     }
 
