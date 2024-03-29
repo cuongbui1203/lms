@@ -104,4 +104,27 @@ class OrderController extends Controller
         $notification->save();
         return $this->sendSuccess([], 'move to next post ok');
     }
+
+    public function ArrivedPos(Order $order)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $noti = $order->notifications->last();
+        if (
+            $noti->to_id === $user->work_plate->id ||
+            $noti->to_address_id === $user->work_plate->address_id
+        ) {
+            $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
+                StatusEnum::AtTransactionPoint : StatusEnum::AtTransportPoint;
+        } else {
+            $noti->to_id = $user->work_plate->id;
+            $noti->to_address_id = $user->work_plate->vung;
+            $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
+                StatusEnum::AtTransactionPoint : StatusEnum::AtTransportPoint;
+            // $noti->desc .= ';
+        }
+        $noti->save();
+
+        return $this->sendSuccess([], 'success');
+    }
 }

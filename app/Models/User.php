@@ -52,19 +52,19 @@ class User extends Authenticatable
         'created_at' => 'timestamp'
     ];
 
-    protected function createdAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
-        );
-    }
+    // protected function createdAt(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
+    //     );
+    // }
 
-    protected function updatedAt(): Attribute
-    {
-        return Attribute::make(
-            get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
-        );
-    }
+    // protected function updatedAt(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
+    //     );
+    // }
 
     public function role(): BelongsTo
     {

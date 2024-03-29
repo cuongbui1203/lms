@@ -784,3 +784,15 @@ HTTP status code 404
     "message": "move to next post ok"
 }
 ```
+
+### Confirm order arrived `AUTH`
+`PUT`: `{order}/arrived`
+
+#### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "success"
+}
+```

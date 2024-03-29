@@ -31,7 +31,7 @@ class OrderTestSeeder extends Seeder
         $start = $this->createWorkPlate(
             Str::random(10),
             $senderAddressId,
-            config('type.workPlate.transshipmentPoint'),
+            config('type.workPlate.transactionPoint'),
             $cap
         );
         $cap++;
@@ -59,7 +59,7 @@ class OrderTestSeeder extends Seeder
         $this->createWorkPlate(
             Str::random(10),
             $receiverAddressId,
-            config('type.workPlate.transshipmentPoint'),
+            config('type.workPlate.transactionPoint'),
             $cap
         );
         return $start;
