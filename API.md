@@ -112,7 +112,8 @@
             "work_plate": null,
             "img": null
         },
-        "token": "3|VmMe6ejKCQzNuRCflJsGqTgD0clTu38RIMYkXvQIc0f88ec0"
+        "token": "3|VmMe6ejKCQzNuRCflJsGqTgD0clTu38RIMYkXvQIc0f88ec0",
+        "csrf_token": "dEhYCaPfWVl7cJFBlYdsxfAWF3UhuyDAmIZC9j2a"
     },
     "message": "User login successfully."
 }
