@@ -28,7 +28,7 @@ class RegisterUserRequest extends FormRequest
             'password' => [
                 'required',
                 'confirmed',
-                Password::min(8)->letters(),
+                Password::min(8)->letters()->numbers()->mixedCase(),
             ],
             'image' => 'image',
         ];
