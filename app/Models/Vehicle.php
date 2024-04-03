@@ -20,9 +20,4 @@ class Vehicle extends Model
     {
         return $this->hasOne(User::class, 'id', 'driver_id');
     }
-
-    protected $cast = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-    ];
 }

@@ -120,8 +120,12 @@ if (!function_exists('getAddressCode')) {
 }
 
 if (!function_exists('getAddress')) {
-    function getAddress($addressId)
+    function getAddress(string | null $addressId)
     {
+        if (is_null($addressId)) { // phpcs:ignore
+            return null;
+        }
+
         $res = DB::connection('sqlite_vn_map')
             ->table(DB::raw('wards w'))
             ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')

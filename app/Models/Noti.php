@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -18,10 +19,6 @@ class Noti extends Model
         'to_id',
         'status_id',
         'description',
-    ];
-    protected $casts = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
     ];
 
     public function order(): HasOne
@@ -42,5 +39,19 @@ class Noti extends Model
     public function status(): HasOne
     {
         return $this->hasOne(Status::class, 'id', 'status_id');
+    }
+
+    protected function fromAddressId(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string | null $value) => getAddress($value),
+        );
+    }
+
+    protected function toAddressId(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string | null $value) => getAddress($value),
+        );
     }
 }

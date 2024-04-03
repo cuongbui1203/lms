@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,8 +28,10 @@ class WorkPlate extends Model
         return $this->hasOne(WarehouseDetail::class, 'wp_id');
     }
 
-    protected $cast = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-    ];
+    protected function addressId(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => getAddress($value),
+        );
+    }
 }
