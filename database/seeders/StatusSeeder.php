@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Enums\StatusEnum;
 use DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class StatusSeeder extends Seeder
@@ -14,100 +12,100 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::WaitFDelivery,
+                'id' => RoleEnum::WAIT_F_DELIVERY,
                 'description' => 'Đang chờ lấy hàng',
                 'name' => 'WaitForDelivery',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::RDelivery,
+                'id' => RoleEnum::R_DELIVERY,
                 'description' => 'Đang vận chuyển',
-                'name' => 'AreDelivery'
+                'name' => 'AreDelivery',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Done,
+                'id' => RoleEnum::DONE,
                 'description' => 'Xác nhận hoàn thành 1 chặng hoặc 1 phần',
-                'name' => 'Done'
+                'name' => 'Done',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::AtTransportPoint,
+                'id' => RoleEnum::AT_TRANSPORT_POINT,
                 'description' => 'Đến điểm trung chuyển',
-                'name' => 'AtTransportPoint'
+                'name' => 'AtTransportPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::LeaveTransportPoint,
+                'id' => RoleEnum::LEAVE_TRANSPORT_POINT,
                 'description' => 'Rời điểm trung chuyển',
                 'name' => 'LeaveTransportPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::ToTheTransportPoint,
+                'id' => RoleEnum::TO_THE_TRANSPORT_POINT,
                 'description' => 'Chuyển cho điểm trung chuyển',
                 'name' => 'ToTheTransportPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::ToTheTransactionPoint,
+                'id' => RoleEnum::TO_THE_TRANSACTION_POINT,
                 'description' => 'Chuyển cho điểm giao dịch',
                 'name' => 'ToTheTransactionPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Return,
+                'id' => RoleEnum::RETURN ,
                 'description' => 'Chuyển về cho người gửi',
                 'name' => 'Return',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Create,
+                'id' => RoleEnum::CREATE,
                 'description' => 'Tạo biên nhận',
                 'name' => 'CreateBN',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Complete,
+                'id' => RoleEnum::COMPLETE,
                 'description' => 'Hoàn thành',
                 'name' => 'Complete',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Fail,
+                'id' => RoleEnum::FAIL,
                 'description' => 'Thất bại',
                 'name' => 'Fail',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::AtTransactionPoint,
+                'id' => RoleEnum::AT_TRANSACTION_POINT,
                 'description' => 'Ở điểm giao dịch',
                 'name' => 'AtTransactionPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::LeaveTransactionPoint,
+                'id' => RoleEnum::LEAVE_TRANSACTION_POINT,
                 'description' => 'Rời điểm giao dịch',
                 'name' => 'LeaveTransactionPoint',
             ]
         );
-        DB::table("statuses")->insert(
+        DB::table('statuses')->insert(
             [
-                'id' => StatusEnum::Shipping,
+                'id' => RoleEnum::SHIPPING,
                 'description' => 'Shipping',
                 'name' => 'SHIPPING',
             ]

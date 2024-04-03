@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'dob' => now(),
                 'username' => 'admin',
                 'address' => fake()->address(),
-                'role_id' => RoleEnum::Admin,
+                'role_id' => RoleEnum::ADMIN,
                 'wp_id' => '1',
             ],
             [
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 'dob' => now(),
                 'username' => 'driver',
                 'address' => fake()->address(),
-                'role_id' => RoleEnum::Driver,
+                'role_id' => RoleEnum::DRIVER,
                 'wp_id' => '1',
             ],
             [
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
                 'dob' => now(),
                 'username' => 'user',
                 'address' => fake()->address(),
-                'role_id' => RoleEnum::User,
+                'role_id' => RoleEnum::USER,
                 'wp_id' => '1',
             ],
             [
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
                 'dob' => now(),
                 'username' => 'employee',
                 'address' => fake()->address(),
-                'role_id' => RoleEnum::Employee,
+                'role_id' => RoleEnum::EMPLOYEE,
                 'wp_id' => '1',
             ],
             [
@@ -66,11 +66,11 @@ class UserSeeder extends Seeder
                 'dob' => now(),
                 'username' => 'manager',
                 'address' => fake()->address(),
-                'role_id' => RoleEnum::Manager,
+                'role_id' => RoleEnum::MANAGER,
                 'wp_id' => '1',
             ],
         ];
         User::insert($users);
-        User::factory(10)->create(['role_id' => RoleEnum::User]);
+        User::factory(10)->create(['role_id' => RoleEnum::USER]);
     }
 }

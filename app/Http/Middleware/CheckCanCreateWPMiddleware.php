@@ -21,10 +21,10 @@ class CheckCanCreateWPMiddleware
          * @var \App\Models\User $user
          */
         $user = Auth::user();
-        if ($user->role_id === RoleEnum::Admin) {
+        if ($user->role_id === RoleEnum::ADMIN) {
             return $next($request);
-        } else {
-            return abort(\Illuminate\Http\Response::HTTP_METHOD_NOT_ALLOWED);
         }
+
+        return abort(\Illuminate\Http\Response::HTTP_METHOD_NOT_ALLOWED);
     }
 }

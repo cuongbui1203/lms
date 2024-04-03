@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangeWPRequest;
 use App\Http\Requests\Auth\LoginUserRequest;
 use App\Http\Requests\Auth\RegisterUserRequest;
+use App\Http\Requests\Auth\ResetPasswordLinkRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
-use App\Http\Requests\Auth\ChangeWPRequest;
-use App\Http\Requests\Auth\ResetPasswordLinkRequest;
-use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -55,7 +54,7 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
         $user->password = Hash::make($request->password);
-        $user->role_id = RoleEnum::User;
+        $user->role_id = RoleEnum::USER;
 
         if (isset($request->image)) {
             $user->img_id = storeImage('users', $request->file('image'));
@@ -81,9 +80,11 @@ class UserController extends Controller
         Auth::loginUsingId($user->id);
 
         $user->load('role', 'work_plate', 'img');
+        $res = [];
         $res['user'] = $user;
-        $res['token'] = $user->createToken("loginToken")->plainTextToken;
+        $res['token'] = $user->createToken('loginToken')->plainTextToken;
         $res['csrf_token'] = $request->session()->token();
+
         return $this->sendSuccess($res, 'User login successfully.');
     }
 
@@ -91,7 +92,7 @@ class UserController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return $this->sendSuccess([], "logout success");
+        return $this->sendSuccess([], 'logout success');
     }
 
     /**
@@ -109,10 +110,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->name =  $request->name ?? $user->name;
-        $user->address =  $request->address ?? $user->address;
+        $user->name = $request->name ?? $user->name;
+        $user->address = $request->address ?? $user->address;
         $user->dob = $request->dob ?? $user->dob;
-        $user->phone =  $request->phone ?? $user->phone;
+        $user->phone = $request->phone ?? $user->phone;
 
         if (isset($request->image)) {
             deleteImage($user->img_id);
@@ -128,6 +129,7 @@ class UserController extends Controller
     {
         $user->role_id = $request->roleIdNew;
         $user->save();
+
         return $this->sendSuccess('', 'Success');
     }
 
@@ -138,6 +140,7 @@ class UserController extends Controller
     {
         $user->img()->delete();
         $user->delete();
+
         return $this->sendSuccess('', 'delete success');
     }
 
@@ -155,9 +158,9 @@ class UserController extends Controller
 
         if ($status === Password::RESET_LINK_SENT) {
             return $this->sendSuccess([], 'send reset link success');
-        } else {
-            return $this->sendError('send reset link fail', []);
         }
+
+        return $this->sendError('send reset link fail', []);
     }
 
     public function resetPassword(ResetPasswordRequest $request)
@@ -166,7 +169,7 @@ class UserController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
@@ -175,8 +178,8 @@ class UserController extends Controller
 
         if ($status === Password::PASSWORD_RESET) {
             return $this->sendSuccess([], 'reset password success');
-        } else {
-            return $this->sendError('cant reset password', 'email invalid');
         }
+
+        return $this->sendError('cant reset password', 'email invalid');
     }
 }

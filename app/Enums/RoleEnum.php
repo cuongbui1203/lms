@@ -8,9 +8,9 @@ use BenSampo\Enum\Enum;
 
 final class RoleEnum extends Enum
 {
-    const Admin = 1;
-    const User = 2;
-    const Driver = 3;
-    const Employee = 4;
-    const Manager = 5;
+    public const ADMIN = 1;
+    public const USER = 2;
+    public const DRIVER = 3;
+    public const EMPLOYEE = 4;
+    public const MANAGER = 5;
 }

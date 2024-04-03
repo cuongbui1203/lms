@@ -15,6 +15,7 @@ return new class extends Migration
         } else {
             $storage->append('database.sqlite', '');
         }
+
         DB::connection('sqlite_vn_map')
             ->unprepared($storage->get('sql/CreateTables_vn_units_SQLite.sql'));
     }

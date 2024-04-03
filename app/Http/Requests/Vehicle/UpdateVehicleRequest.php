@@ -14,7 +14,7 @@ class UpdateVehicleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->role_id === RoleEnum::Admin;
+        return Auth::user()->role_id === RoleEnum::ADMIN;
     }
 
     /**
@@ -32,7 +32,7 @@ class UpdateVehicleRequest extends FormRequest
                 config('type.vehicle.tractor'),
             ]),
             'payload' => 'numerics|min:0',
-            'driverId' => 'exists:users,id'
+            'driverId' => 'exists:users,id',
         ];
     }
 }

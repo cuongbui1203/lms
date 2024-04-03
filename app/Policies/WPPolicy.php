@@ -17,6 +17,6 @@ class WPPolicy
 
     public function create(User $user)
     {
-        return $user->role_id === RoleEnum::Admin;
+        return $user->role_id === RoleEnum::ADMIN;
     }
 }

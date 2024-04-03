@@ -16,6 +16,7 @@ class WorkPlate extends Model
     {
         return $this->belongsTo(Type::class);
     }
+
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'wp_id');
@@ -28,6 +29,6 @@ class WorkPlate extends Model
 
     protected $cast = [
         'created_at' => 'timestamp',
-        'updated_at' => 'timestamp'
+        'updated_at' => 'timestamp',
     ];
 }

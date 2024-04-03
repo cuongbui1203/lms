@@ -12,6 +12,7 @@ if (!function_exists('storeImage')) {
         $image = new Image();
         $image->url = $pathImage;
         $image->save();
+
         return $image->id;
     }
 }
@@ -42,41 +43,45 @@ if (!function_exists('api_path')) {
 if (!function_exists('getAddressName')) {
     function getAddressName(string $id, int $type)
     {
-        $table = "";
+        $table = '';
         switch ($type) {
             case 1:
-                $table = "provinces";
+                $table = 'provinces';
+
                 break;
             case 2:
-                $table = "districts";
+                $table = 'districts';
+
                 break;
             case 3:
-                $table = "wards";
+                $table = 'wards';
+
                 break;
             default:
-                throw new Exception("unknown type");
+                throw new Exception('unknown type');
         }
+
         // return $table;
         try {
             $address = DB::connection('sqlite_vn_map')
                 ->table(DB::raw("$table t"))
-                ->where("t.code", $id)
-                ->select(DB::raw("t.name"))
+                ->where('t.code', $id)
+                ->select(DB::raw('t.name'))
                 ->get();
+
             return $address[0]->name;
         } catch (Exception $e) {
-            return "unknown";
+            return 'unknown';
         }
     }
 }
-
 
 if (!function_exists('getAddressCode')) {
     /**
      * lay code cua 1 dia chi tu id cua wards
      *
      * @param string $id address wards id
-     * @param integer $type 1,2,3
+     * @param int $type 1,2,3
      * @return string|null
      * @throws Exception
      */
@@ -85,29 +90,31 @@ if (!function_exists('getAddressCode')) {
         $res = '';
         // dd($type);
         switch ($type) {
-            case AddressTypeEnum::Province:
-                $res =  DB::connection('sqlite_vn_map')
-                    ->table(DB::raw("wards w"))
-                    ->join(DB::raw("districts d"), "d.code", "=", "w.district_code")
-                    ->join(DB::raw("provinces p"), "p.code", "=", "d.province_code")
-                    ->where(DB::raw("w.code"), "=", $id)
-                    ->select(DB::raw("p.code"))
+            case AddressTypeEnum::PROVINCE:
+                $res = DB::connection('sqlite_vn_map')
+                    ->table(DB::raw('wards w'))
+                    ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+                    ->join(DB::raw('provinces p'), 'p.code', '=', 'd.province_code')
+                    ->where(DB::raw('w.code'), '=', $id)
+                    ->select(DB::raw('p.code'))
                     ->first();
 
                 break;
-            case AddressTypeEnum::District:
+            case AddressTypeEnum::DISTRICT:
                 $res = DB::connection('sqlite_vn_map')
-                    ->table(DB::raw("wards w"))
-                    ->join(DB::raw("districts d"), "d.code", "=", "w.district_code")
-                    ->where(DB::raw("w.code"), "=", $id)
-                    ->select(DB::raw("d.code"))
+                    ->table(DB::raw('wards w'))
+                    ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+                    ->where(DB::raw('w.code'), '=', $id)
+                    ->select(DB::raw('d.code'))
                     ->first();
+
                 break;
-            case AddressTypeEnum::Ward:
+            case AddressTypeEnum::WARD:
                 return $id;
             default:
-                throw new Exception("unknown type");
+                throw new Exception('unknown type');
         }
+
         return $res->code;
     }
 }
@@ -115,31 +122,33 @@ if (!function_exists('getAddressCode')) {
 if (!function_exists('getAddress')) {
     function getAddress($addressId)
     {
-        $res =  DB::connection('sqlite_vn_map')
-            ->table(DB::raw("wards w"))
-            ->join(DB::raw("districts d"), "d.code", "=", "w.district_code")
-            ->join(DB::raw("provinces p"), "d.province_code", "=", "p.code")
+        $res = DB::connection('sqlite_vn_map')
+            ->table(DB::raw('wards w'))
+            ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+            ->join(DB::raw('provinces p'), 'd.province_code', '=', 'p.code')
             ->select(
-                DB::raw("p.full_name as provinceName"),
-                DB::raw("d.full_name as districtName"),
-                DB::raw("w.full_name as wardName"),
+                DB::raw('p.full_name as provinceName'),
+                DB::raw('d.full_name as districtName'),
+                DB::raw('w.full_name as wardName'),
                 DB::raw('p.code as provinceCode'),
                 DB::raw('d.code as districtCode'),
                 DB::raw('w.code as wardCode')
             )
-            ->where(DB::raw("w.code"), $addressId)
+            ->where(DB::raw('w.code'), $addressId)
             ->first();
         if (!$res) {
-            throw new Exception("loi truy van cho address co id: " . $addressId, 1);
+            throw new Exception('loi truy van cho address co id: ' . $addressId, 1);
         }
-        $res = (object)array(
+
+        $res = (object) [
             'provinceCode' => $res->provinceCode,
             'districtCode' => $res->districtCode,
             'wardCode' => $res->wardCode,
             'province' => $res->provinceName,
             'district' => $res->districtName,
             'ward' => $res->wardName,
-        );
+        ];
+
         return $res;
     }
 }
@@ -159,15 +168,15 @@ if (!function_exists('getAddressRank')) {
         $w = $db->table('wards')->where('code', $addressId);
 
         if ($p->exists()) {
-            return AddressTypeEnum::Province;
+            return AddressTypeEnum::PROVINCE;
         }
 
         if ($d->exists()) {
-            return AddressTypeEnum::District;
+            return AddressTypeEnum::DISTRICT;
         }
 
         if ($w->exists()) {
-            return AddressTypeEnum::Ward;
+            return AddressTypeEnum::WARD;
         }
 
         return -1;
@@ -188,46 +197,52 @@ if (!function_exists('routing')) {
         $capHt = $order->notifications->last()->to->cap;
         $idAddressN = $order->receiver_address_id;
 
-        if ($idAddressHT === $idAddressN && $capHt === AddressTypeEnum::Ward) {
+        if ($idAddressHT === $idAddressN && $capHt === AddressTypeEnum::WARD) {
             return null;
         }
 
         $resMain = null;
         switch ($capHt) {
-            case AddressTypeEnum::Ward:
+            case AddressTypeEnum::WARD:
                 $res = WorkPlate::where(
                     'vung',
                     '=',
-                    getAddressCode($idAddressHT, AddressTypeEnum::District)
+                    getAddressCode($idAddressHT, AddressTypeEnum::DISTRICT)
                 )
                     ->first();
                 if (!$res) {
-                    $resMain =  null;
+                    $resMain = null;
+
                     break;
                 }
 
                 $resMain = $res;
-                break;
 
-            case AddressTypeEnum::District:
-                $codeNn = getAddressCode($idAddressN, AddressTypeEnum::District);
-                if ($codeNn == $vungHt) {
+                break;
+            case AddressTypeEnum::DISTRICT:
+                $codeNn = getAddressCode($idAddressN, AddressTypeEnum::DISTRICT);
+                if ($codeNn === $vungHt) {
                     $res = WorkPlate::where('vung', '=', $idAddressN)->first();
                 } else {
-                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressHT, AddressTypeEnum::Province))->first('id');
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressHT, AddressTypeEnum::PROVINCE))
+                        ->first('id');
                 }
-                $resMain =  $res;
-                break;
 
-            case AddressTypeEnum::Province:
-                if ($vungHt == getAddressCode($idAddressN, AddressTypeEnum::Province)) {
-                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::District))->first();
+                $resMain = $res;
+
+                break;
+            case AddressTypeEnum::PROVINCE:
+                if ($vungHt === getAddressCode($idAddressN, AddressTypeEnum::PROVINCE)) {
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::DISTRICT))
+                        ->first();
                 } else {
-                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::Province))->first();
+                    $res = WorkPlate::where('vung', '=', getAddressCode($idAddressN, AddressTypeEnum::PROVINCE))
+                        ->first();
                 }
-                $resMain =  $res;
-                break;
 
+                $resMain = $res;
+
+                break;
             default:
                 break;
         }
@@ -250,30 +265,36 @@ if (!function_exists('routingAnother')) {
         $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address_id; // address id ng nhan
         $res = null;
-        $count = 0;
 
-        while ($capHt < AddressTypeEnum::Province) {
+        while ($capHt < AddressTypeEnum::PROVINCE) {
             $capHt++;
-            $count++;
             $wp = WorkPlate::where('vung', getAddressCode($idAddressHT, $capHt))->first();
             if ($wp) {
                 $res = $wp;
+
                 break;
-            };
+            }
         }
-        if ($res)
+
+        if ($res) {
             return $res;
-        while ($capHt >= AddressTypeEnum::Ward) {
+        }
+
+        while ($capHt >= AddressTypeEnum::WARD) {
             $wp = WorkPlate::where('vung', getAddressCode($idAddressN, $capHt))->first();
             if ($wp) {
                 $res = $wp;
+
                 break;
-            };
+            }
+
             $capHt--;
         }
-        if ($res)
+
+        if ($res) {
             return $res;
-        else
-            return null;
+        }
+
+        return null;
     }
 }

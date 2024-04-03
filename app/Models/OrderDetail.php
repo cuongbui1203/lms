@@ -23,10 +23,12 @@ class OrderDetail extends Model
     {
         return $this->belongsTo(Type::class);
     }
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
+
     public function image(): BelongsTo
     {
         return $this->belongsTo(Image::class);
@@ -34,6 +36,6 @@ class OrderDetail extends Model
 
     protected $cast = [
         'created_at' => 'timestamp',
-        'updated_at' => 'timestamp'
+        'updated_at' => 'timestamp',
     ];
 }

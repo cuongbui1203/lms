@@ -19,8 +19,9 @@ class CheckAdmin
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        if ($user->role_id === RoleEnum::Admin)
+        if ($user->role_id === RoleEnum::ADMIN) {
             return $next($request);
+        }
 
         return response()->json([
             'success' => false,

@@ -6,10 +6,9 @@ namespace App\Enums;
 
 use BenSampo\Enum\Enum;
 
-
 final class AddressTypeEnum extends Enum
 {
-    const Province = 3;
-    const District = 2;
-    const Ward = 1;
+    public const PROVINCE = 3;
+    public const DISTRICT = 2;
+    public const WARD = 1;
 }

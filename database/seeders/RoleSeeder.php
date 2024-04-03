@@ -15,45 +15,45 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert(
             [
-                'id' => RoleEnum::Admin,
+                'id' => RoleEnum::ADMIN,
                 'name' => 'Admin',
-                'desc' => "Admin",
+                'desc' => 'Admin',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-                'id' => RoleEnum::Employee,
+                'id' => RoleEnum::EMPLOYEE,
                 'name' => 'Employee',
-                'desc' => "Employee",
+                'desc' => 'Employee',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-                'id' => RoleEnum::User,
+                'id' => RoleEnum::USER,
                 'name' => 'User',
-                'desc' => "User",
+                'desc' => 'User',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-                'id' => RoleEnum::Driver,
+                'id' => RoleEnum::DRIVER,
                 'name' => 'Driver',
-                'desc' => "Driver",
+                'desc' => 'Driver',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]
         );
         DB::table('roles')->insert(
             [
-                'id' => RoleEnum::Manager,
+                'id' => RoleEnum::MANAGER,
                 'name' => 'Manager',
-                'desc' => "Manager",
+                'desc' => 'Manager',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

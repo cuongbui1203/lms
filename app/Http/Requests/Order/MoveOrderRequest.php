@@ -35,7 +35,7 @@ class MoveOrderRequest extends FormRequest
             ],
             'from_id' => 'nullable|exists:work_plates:id',
             'to_id' => 'nullable|exists:work_plates:id',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ];
     }
 }

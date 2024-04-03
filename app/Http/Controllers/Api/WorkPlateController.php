@@ -16,8 +16,10 @@ class WorkPlateController extends Controller
         foreach ($wp as $e) {
             $e->{'address'} = $e->address;
         }
+
         return $this->sendSuccess($wp, 'Get list work plate success');
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -49,8 +51,10 @@ class WorkPlateController extends Controller
         if ($workPlate->type_id === config('type.workPlate.warehouse')) {
             $workPlate->load('detail');
         }
+
         $workPlate->load('type');
         $workPlate->{'address'} = $workPlate->address;
+
         // dd($workPlate);
         return $this->sendSuccess($workPlate, 'Get success');
     }
@@ -71,6 +75,7 @@ class WorkPlateController extends Controller
         if ($workPlate->type_id === config('type.workPlate.warehouse')) {
             $workPlate->detail->delete();
         }
+
         $workPlate->delete();
 
         return response()->noContent();

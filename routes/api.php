@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\TypeController;
-use App\Models\Order;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "api" middleware group. Make something great!
 |
-*/
+ */
 
 Route::name('.users')
     ->prefix('users')
@@ -37,18 +35,8 @@ Route::prefix('orders')
     ->middleware(['auth:sanctum'])
     ->group(api_path('order.php'));
 
-Route::get('/test', function () {
-    dd(routingAnother(Order::find(11)));
-});
-
-Route::middleware(['auth:sanctum'])
-    ->get('/token', function (Request $request) {
-        return response()->json(['token' => $request->session()->token()]);
-    });
-
 Route::name('.image')
     ->prefix('images')
     ->get('/{image}', [ImageController::class, 'show'])->name('show');
-
 
 Route::middleware(['auth:sanctum'])->get('types/{for}', [TypeController::class, 'index']);
