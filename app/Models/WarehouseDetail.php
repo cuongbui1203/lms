@@ -19,9 +19,4 @@ class WarehouseDetail extends Model
         'max_payload',
         'payload',
     ];
-
-    protected $cast = [
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
-    ];
 }

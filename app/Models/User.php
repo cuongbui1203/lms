@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -46,25 +47,16 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y/m/d H:i',
         'password' => 'hashed',
-        'updated_at' => 'timestamp',
-        'created_at' => 'timestamp',
     ];
 
-    // protected function createdAt(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
-    //     );
-    // }
-
-    // protected function updatedAt(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn (string $value) => (new Carbon($value))->format('Y-m-d H:i:s'),
-    //     );
-    // }
+    protected function address(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => getAddress($value),
+        );
+    }
 
     public function role(): BelongsTo
     {
