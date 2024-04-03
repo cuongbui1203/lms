@@ -15,7 +15,7 @@ class UpdateWarehouseDetailRequest extends FormRequest
     {
         $user = Auth::user();
 
-        return $user->role_id === RoleEnum::Admin;
+        return $user->role_id === RoleEnum::ADMIN;
     }
 
     /**

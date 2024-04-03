@@ -30,70 +30,70 @@ class TypeSeeder extends Seeder
             [
                 'id' => config('type.workPlate.transshipmentPoint'),
                 'for' => config('type.for.workPlate'),
-                'name' => 'transshipmentPoint'
+                'name' => 'transshipmentPoint',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.vehicle.van'),
                 'for' => config('type.for.vehicle'),
-                'name' => 'van'
+                'name' => 'van',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.vehicle.truck'),
                 'for' => config('type.for.vehicle'),
-                'name' => 'truck'
+                'name' => 'truck',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.vehicle.tractor'),
                 'for' => config('type.for.vehicle'),
-                'name' => 'tractor'
+                'name' => 'tractor',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.vehicle.freezing'),
                 'for' => config('type.for.vehicle'),
-                'name' => 'freezingCar'
+                'name' => 'freezingCar',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.vehicle.container'),
                 'for' => config('type.for.vehicle'),
-                'name' => 'container'
+                'name' => 'container',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.goods.fragile'),
                 'for' => config('type.for.goods'),
-                'name' => 'fragile'
+                'name' => 'fragile',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.goods.hazardous'),
                 'for' => config('type.for.goods'),
-                'name' => 'hazardous'
+                'name' => 'hazardous',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.goods.normal'),
                 'for' => config('type.for.goods'),
-                'name' => 'normal'
+                'name' => 'normal',
             ]
         );
         DB::table('types')->insert(
             [
                 'id' => config('type.goods.oversized'),
                 'for' => config('type.for.goods'),
-                'name' => 'oversized'
+                'name' => 'oversized',
             ]
         );
     }

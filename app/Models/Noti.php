@@ -13,16 +13,17 @@ class Noti extends Model
     protected $table = 'notifications';
 
     protected $fillable = [
-        "order_id",
-        "from_id",
-        "to_id",
+        'order_id',
+        'from_id',
+        'to_id',
         'status_id',
-        "description",
+        'description',
     ];
     protected $casts = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
     ];
+
     public function order(): HasOne
     {
         return $this->hasOne(Order::class, 'id', 'order_id');
@@ -32,10 +33,12 @@ class Noti extends Model
     {
         return $this->hasOne(WorkPlate::class, 'id', 'from_id');
     }
+
     public function to(): HasOne
     {
         return $this->hasOne(WorkPlate::class, 'id', 'to_id');
     }
+
     public function status(): HasOne
     {
         return $this->hasOne(Status::class, 'id', 'status_id');

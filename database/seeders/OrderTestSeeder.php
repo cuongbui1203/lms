@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\AddressTypeEnum;
-use App\Enums\StatusEnum;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\WorkPlate;
@@ -12,7 +11,6 @@ use Str;
 
 class OrderTestSeeder extends Seeder
 {
-
     private function createWorkPlate($name, $addressId, $type, $cap)
     {
         $res = WorkPlate::create([
@@ -22,6 +20,7 @@ class OrderTestSeeder extends Seeder
             'cap' => $cap,
             'vung' => getAddressCode($addressId, $cap),
         ]);
+
         return $res->id;
     }
 
@@ -35,7 +34,7 @@ class OrderTestSeeder extends Seeder
             $cap
         );
         $cap++;
-        while ($cap <= AddressTypeEnum::Province) {
+        while ($cap <= AddressTypeEnum::PROVINCE) {
             $this->createWorkPlate(
                 Str::random(10),
                 $senderAddressId,
@@ -44,9 +43,10 @@ class OrderTestSeeder extends Seeder
             );
             $cap++;
         }
-        $cap = AddressTypeEnum::Province;
+
+        $cap = AddressTypeEnum::PROVINCE;
         $vung = getAddressCode($receiverAddressId, $cap);
-        while ($receiverAddressId != $vung) {
+        while ($receiverAddressId !== $vung) {
             $this->createWorkPlate(
                 Str::random(10),
                 $receiverAddressId,
@@ -56,12 +56,14 @@ class OrderTestSeeder extends Seeder
             $cap--;
             $vung = getAddressCode($receiverAddressId, $cap);
         }
+
         $this->createWorkPlate(
             Str::random(10),
             $receiverAddressId,
             config('type.workPlate.transactionPoint'),
             $cap
         );
+
         return $start;
     }
 
@@ -70,7 +72,6 @@ class OrderTestSeeder extends Seeder
      */
     public function run(): void
     {
-
         $idGui = $this->createRoute('27280', '07159');
 
         $order = new Order();
@@ -89,8 +90,8 @@ class OrderTestSeeder extends Seeder
         $notification->to_id = $idGui;
         $notification->from_address_id = '27280';
         $notification->to_address_id = '27280';
-        $notification->description = "";
-        $notification->status_id = StatusEnum::Create;
+        $notification->description = '';
+        $notification->status_id = RoleEnum::CREATE;
 
         $notification->save();
     }

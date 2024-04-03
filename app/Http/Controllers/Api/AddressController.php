@@ -25,6 +25,7 @@ class AddressController extends Controller
             'get all districts'
         );
     }
+
     public function getAllWards(GetWardAddressRequest $request)
     {
         return $this->sendSuccess(

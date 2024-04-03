@@ -21,7 +21,7 @@ class OrderSeeder extends Seeder
             'order_id' => $orderId,
             'name' => fake()->name(),
             'mass' => random_int(0, 10000000),
-            'desc' => fake()->text()
+            'desc' => fake()->text(),
         ]))->save();
     }
 
@@ -43,7 +43,6 @@ class OrderSeeder extends Seeder
             $this->createDetail($order->id);
         }
     }
-
 
     /**
      * Run the database seeds.

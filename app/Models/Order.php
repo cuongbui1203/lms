@@ -26,6 +26,6 @@ class Order extends Model
 
     protected $cast = [
         'created_at' => 'timestamp',
-        'updated_at' => 'timestamp'
+        'updated_at' => 'timestamp',
     ];
 }

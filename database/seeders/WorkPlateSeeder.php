@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\WarehouseDetail;
 use App\Models\WorkPlate;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class WorkPlateSeeder extends Seeder

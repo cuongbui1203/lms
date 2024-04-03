@@ -35,7 +35,7 @@ class AddDetailOrderRequest extends FormRequest
             'name' => 'required|string',
             'mass' => 'required|numeric|min:1',
             'desc' => 'required',
-            'img' => 'image'
+            'img' => 'image',
         ];
     }
 }

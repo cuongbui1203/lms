@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::table('work_plates', function (Blueprint $table) {
             $table->renameColumn('address', 'address_id');
-            $table->enum('vung', [AddressTypeEnum::District, AddressTypeEnum::Ward, AddressTypeEnum::Province])->nullable(false);
+            $table->enum('vung', [AddressTypeEnum::DISTRICT, AddressTypeEnum::WARD, AddressTypeEnum::PROVINCE])->nullable(false);
         });
     }
 

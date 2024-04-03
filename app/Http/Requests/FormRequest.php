@@ -10,10 +10,10 @@ use Illuminate\Validation\ValidationException;
 
 abstract class FormRequest extends BaseFormRequest
 {
-
-    function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
+
         throw new HttpResponseException(
             response()->json(
                 [

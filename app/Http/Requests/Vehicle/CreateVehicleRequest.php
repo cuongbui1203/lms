@@ -14,7 +14,7 @@ class CreateVehicleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->role_id === RoleEnum::Admin;
+        return Auth::user()->role_id === RoleEnum::ADMIN;
     }
 
     /**
@@ -34,8 +34,8 @@ class CreateVehicleRequest extends FormRequest
                     config('type.vehicle.truck'),
                     config('type.vehicle.container'),
                     config('type.vehicle.tractor'),
-                ])
-            ]
+                ]),
+            ],
         ];
     }
 }

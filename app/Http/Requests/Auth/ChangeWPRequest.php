@@ -14,7 +14,8 @@ class ChangeWPRequest extends FormRequest
     public function authorize(): bool
     {
         $user = Auth::user();
-        return $user->role_id === RoleEnum::Admin;
+
+        return $user->role_id === RoleEnum::ADMIN;
     }
 
     /**

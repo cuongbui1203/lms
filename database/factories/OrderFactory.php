@@ -18,6 +18,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         $ids = DB::connection('sqlite_vn_map')->table('wards')->get(['code']);
+
         return [
             'sender_name' => fake()->name(),
             'sender_address_id' => $ids->random()->code,

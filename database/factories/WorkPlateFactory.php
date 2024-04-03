@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WorkPlateFactory extends Factory
 {
-
     /**
      * Define the model's default state.
      *
@@ -23,6 +22,7 @@ class WorkPlateFactory extends Factory
         $idAddress = $db->table('wards')->get(['code'])->random()->code;
         $vung = getAddressCode($idAddress, $cap);
         $type = rand(1, 3);
+
         // dd(config('type.workPlate'));
         return [
             'name' => fake()->name(),
@@ -34,5 +34,6 @@ class WorkPlateFactory extends Factory
             'type_id' => $type,
         ];
     }
+
     // public 
 }

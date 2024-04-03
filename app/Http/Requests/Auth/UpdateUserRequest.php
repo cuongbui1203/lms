@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\FormRequest;
-use Password;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -28,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'image' => 'image',
             'email' => 'email',
             'phone' => 'string',
-            'address' => 'string'
+            'address' => 'string',
         ];
     }
 }

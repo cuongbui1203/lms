@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
@@ -32,7 +31,7 @@ class OrderController extends Controller
         $notification->order_id = $order->id;
         $notification->from_id = $user->wp_id;
         $notification->to_id = $user->wp_id;
-        $notification->status_id = StatusEnum::Create;
+        $notification->status_id = RoleEnum::CREATE;
         $notification->description = 'create new order';
 
         $notification->save();
@@ -55,6 +54,7 @@ class OrderController extends Controller
         $order->notifications()->delete();
 
         $order->delete();
+
         return $this->sendSuccess([], 'delete success');
     }
 
@@ -69,7 +69,7 @@ class OrderController extends Controller
         ]);
 
         if ($request->img) {
-            $detail->image_id =  storeImage('order_detail', $request->file('img'));
+            $detail->image_id = storeImage('order_detail', $request->file('img'));
         }
 
         $detail->save();
@@ -85,6 +85,7 @@ class OrderController extends Controller
         } else {
             $workPlate = 'shipping';
         }
+
         return $this->sendSuccess([
             'nextPos' => $workPlate,
         ]);
@@ -100,8 +101,9 @@ class OrderController extends Controller
             'description',
         ]));
         $notification->order_id = $order->id;
-        $notification->status_id = StatusEnum::ToTheTransactionPoint;
+        $notification->status_id = RoleEnum::TO_THE_TRANSACTION_POINT;
         $notification->save();
+
         return $this->sendSuccess([], 'move to next post ok');
     }
 
@@ -115,14 +117,15 @@ class OrderController extends Controller
             $noti->to_address_id === $user->work_plate->address_id
         ) {
             $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-                StatusEnum::AtTransactionPoint : StatusEnum::AtTransportPoint;
+            RoleEnum::AT_TRANSACTION_POINT : RoleEnum::AT_TRANSPORT_POINT;
         } else {
             $noti->to_id = $user->work_plate->id;
             $noti->to_address_id = $user->work_plate->vung;
             $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-                StatusEnum::AtTransactionPoint : StatusEnum::AtTransportPoint;
+            RoleEnum::AT_TRANSACTION_POINT : RoleEnum::AT_TRANSPORT_POINT;
             // $noti->desc .= ';
         }
+
         $noti->save();
 
         return $this->sendSuccess([], 'success');

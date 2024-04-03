@@ -18,7 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        WorkPlate::class => WPPolicy::class
+        WorkPlate::class => WPPolicy::class,
     ];
 
     /**

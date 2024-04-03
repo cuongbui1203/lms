@@ -12,7 +12,8 @@ use Illuminate\Queue\SerializesModels;
 
 class GreetingMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -28,7 +29,7 @@ class GreetingMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Greeting Mail',
+            subject: 'Greeting Mail ' . $this->user->name,
         );
     }
 

@@ -15,7 +15,8 @@ class UpdateRoleRequest extends FormRequest
     public function authorize(): bool
     {
         $user = Auth::user();
-        return $user ? $user->role_id === RoleEnum::Admin : false;
+
+        return $user ? $user->role_id === RoleEnum::ADMIN : false;
     }
 
     /**
@@ -28,8 +29,8 @@ class UpdateRoleRequest extends FormRequest
         return [
             'roleIdNew' => [
                 'required',
-                Rule::in(RoleEnum::getValues())
-            ]
+                Rule::in(RoleEnum::getValues()),
+            ],
         ];
     }
 }
