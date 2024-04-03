@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,
+        'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
     ];
 }
