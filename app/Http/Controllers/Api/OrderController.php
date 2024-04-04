@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
@@ -31,7 +32,7 @@ class OrderController extends Controller
         $notification->order_id = $order->id;
         $notification->from_id = $user->wp_id;
         $notification->to_id = $user->wp_id;
-        $notification->status_id = RoleEnum::CREATE;
+        $notification->status_id = StatusEnum::CREATE;
         $notification->description = 'create new order';
 
         $notification->save();
@@ -101,7 +102,7 @@ class OrderController extends Controller
             'description',
         ]));
         $notification->order_id = $order->id;
-        $notification->status_id = RoleEnum::TO_THE_TRANSACTION_POINT;
+        $notification->status_id = StatusEnum::TO_THE_TRANSACTION_POINT;
         $notification->save();
 
         return $this->sendSuccess([], 'move to next post ok');
@@ -117,12 +118,12 @@ class OrderController extends Controller
             $noti->to_address_id === $user->work_plate->address_id
         ) {
             $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-            RoleEnum::AT_TRANSACTION_POINT : RoleEnum::AT_TRANSPORT_POINT;
+            StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
         } else {
             $noti->to_id = $user->work_plate->id;
             $noti->to_address_id = $user->work_plate->vung;
             $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-            RoleEnum::AT_TRANSACTION_POINT : RoleEnum::AT_TRANSPORT_POINT;
+            StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
             // $noti->desc .= ';
         }
 
