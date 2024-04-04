@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Order;
 
 use App\Http\Requests\FormRequest;
-use App\Rules\VungRule;
+use App\Rules\MoveOrderRule;
 
 class MoveOrderRequest extends FormRequest
 {
@@ -23,19 +23,10 @@ class MoveOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'from_address_id' => [
-                'nullable',
-                'string',
-                new VungRule(),
+            'data' => [
+                'required',
+                new MoveOrderRule(),
             ],
-            'to_address_id' => [
-                'nullable',
-                'string',
-                new VungRule(),
-            ],
-            'from_id' => 'nullable|exists:work_plates:id',
-            'to_id' => 'nullable|exists:work_plates:id',
-            'description' => 'nullable|string',
         ];
     }
 }

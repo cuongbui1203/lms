@@ -113,7 +113,6 @@
             "img": null
         },
         "token": "3|VmMe6ejKCQzNuRCflJsGqTgD0clTu38RIMYkXvQIc0f88ec0",
-        "csrf_token": "dEhYCaPfWVl7cJFBlYdsxfAWF3UhuyDAmIZC9j2a"
     },
     "message": "User login successfully."
 }
@@ -745,37 +744,70 @@ HTTP status code 404
 }
 ```
 ### Get Suggestion next position `AUTH`
-`GET`: `/{idOrder}/next`
+`GET`: `/multi/next`
+
+>`orders`: json string. contain array of id order want to get Suggestion
 
 #### Response
 ```
 {
     "success": true,
     "data": {
-        "nextPos": {
+        "11": {
             "id": 2,
-            "name": "OuxO5EQPnm",
+            "name": "im9n2cNtqE",
             "address_id": "27280",
             "type_id": 3,
-            "created_at": "2024-03-27T17:19:54.000000Z",
-            "updated_at": "2024-03-27T17:19:54.000000Z",
+            "created_at": "2024-04-05T06:21:17.000000Z",
+            "updated_at": "2024-04-05T06:21:17.000000Z",
             "cap": "2",
             "vung": "773",
-            "detail": null
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14"
+            },
+            "detail": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            }
         }
     },
-    "message": ""
+    "message": "gui dia diem diem goi y tiep theo"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "orders": [
+            {
+                "12": "Order id invalid."
+            },
+            {
+                "22": "Order id invalid."
+            }
+        ]
+    },
+    "status_code": 422
 }
 ```
 
 ### Create request move to next position `AUTH`
-`POST`: `/{order}/next`
+`POST`: `/multi/next`
 
-> `from_address_id` `nullable|string|(idAddress hop le)`  
-> `to_address_id` `nullable|string|(idAddress hop le)`  
-> `from_id`: `nullable|exists:work_plates,id`,  
-> `to_id` : `nullable|exists:work_plates,id`,  
-> `description` : `nullable|string`  
+> `data`: là 1 chuỗi json. chứa mảng các item:  
+> Mỗi Item sẽ có:
+> - `to_id`: id wp tồn tại trong hệ thống.  
+> - `to_address_id`: id wards tồn tại.  
+> - `from_id`: id wp tồn tại trong hệ thống.  
+> - `from_address_id`: id wards tồn tại.  
+> - `orderId`: id order muốn chuyển.  
 
 #### Response
 ```
@@ -783,6 +815,30 @@ HTTP status code 404
     "success": true,
     "data": [],
     "message": "move to next post ok"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "request-no-1": [
+            {
+                "to": "must has one of to id or to address id"
+            }
+        ],
+        "request-no-2": [
+            {
+                "from": "must has one of from id or from address id"
+            }
+        ],
+        "request-no-3": [
+            {
+                "from": "must has one of from id or from address id",
+                "to_address_id": "must be string"
+            }
+        ]
+    },
+    "status_code": 422
 }
 ```
 

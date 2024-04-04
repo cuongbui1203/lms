@@ -88,7 +88,7 @@ class OrderController extends Controller
             $order = Order::find($orderId);
             $workPlate = routingAnother($order);
             if ($workPlate) {
-                $workPlate->load('detail');
+                $workPlate->load('detail', 'type');
             } else {
                 $workPlate = 'shipping';
             }
@@ -100,18 +100,20 @@ class OrderController extends Controller
         return $this->sendSuccess($res, 'gui dia diem diem goi y tiep theo');
     }
 
-    public function MoveToNextPos(MoveOrderRequest $request, Order $order)
+    public function MoveToNextPos(MoveOrderRequest $request)
     {
-        $notification = new Noti($request->only([
-            'from_id',
-            'to_id',
-            'from_address_id',
-            'to_address_id',
-            'description',
-        ]));
-        $notification->order_id = $order->id;
-        $notification->status_id = StatusEnum::TO_THE_TRANSACTION_POINT;
-        $notification->save();
+        $inputs = collect(json_decode($request->data));
+        $inputs->map(function ($e) {
+            $notification = new Noti();
+            $notification->from_id = $e->from_id ?? null;
+            $notification->to_id = $e->to_id ?? null;
+            $notification->from_address_id = $e->from_address_id ?? null;
+            $notification->to_address_id = $e->to_address_id ?? null;
+            $notification->description = $e->description ?? null;
+            $notification->order_id = $e->orderId;
+            $notification->status_id = StatusEnum::TO_THE_TRANSACTION_POINT;
+            $notification->save();
+        });
 
         return $this->sendSuccess([], 'move to next post ok');
     }
