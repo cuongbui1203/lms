@@ -14,11 +14,14 @@ use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Str;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
@@ -68,6 +71,49 @@ class UserController extends Controller
         return $this->sendSuccess($user, 'create User success');
     }
 
+    /**
+     * Add the CSRF token to the response cookies.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    private function addCookieToResponse($request, $response)
+    {
+        $config = config('session');
+
+        if ($response instanceof Responsable) {
+            $response = $response->toResponse($request);
+        }
+
+        $response->headers->setCookie($this->newCookie($request, $config));
+
+        return $response;
+    }
+
+    /**
+     * Create a new "XSRF-TOKEN" cookie that contains the CSRF token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  array  $config
+     * @return \Symfony\Component\HttpFoundation\Cookie
+     */
+    private function newCookie($request, $config)
+    {
+        return new Cookie(
+            'XSRF-TOKEN',
+            $request->session()->token(),
+            Carbon::now()->addRealSeconds(60 * $config['lifetime'])->getTimestamp(),
+            $config['path'],
+            $config['domain'],
+            $config['secure'],
+            false,
+            false,
+            $config['same_site'] ?? null,
+            $config['partitioned'] ?? false
+        );
+    }
+
     public function login(LoginUserRequest $request)
     {
         $user = User::where('email', '=', $request->username)
@@ -83,9 +129,11 @@ class UserController extends Controller
         $res = [];
         $res['user'] = $user;
         $res['token'] = $user->createToken('loginToken')->plainTextToken;
-        $res['csrf_token'] = $request->session()->token();
+        // $res['csrf_token'] = $request->session()->token();
+        $res['csrf_token'] = csrf_token();
 
-        return $this->sendSuccess($res, 'User login successfully.');
+        return $this->addCookieToResponse($request, $this->sendSuccess($res, 'User login successfully.'));
+        // return $this->sendSuccess($res, 'User login successfully.');
     }
 
     public function logout(Request $request)
