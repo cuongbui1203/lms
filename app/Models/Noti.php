@@ -13,6 +13,8 @@ class Noti extends Model
 
     protected $table = 'notifications';
 
+    protected $appends = ['from_address', 'to_address'];
+
     protected $fillable = [
         'order_id',
         'from_id',
@@ -41,17 +43,17 @@ class Noti extends Model
         return $this->hasOne(Status::class, 'id', 'status_id');
     }
 
-    protected function fromAddressId(): Attribute
+    protected function fromAddress(): Attribute
     {
         return Attribute::make(
-            get: fn(string | null $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['from_address_id']),
         );
     }
 
-    protected function toAddressId(): Attribute
+    protected function toAddress(): Attribute
     {
         return Attribute::make(
-            get: fn(string | null $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['to_address_id']),
         );
     }
 }
