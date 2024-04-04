@@ -39,8 +39,6 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Illuminate\Session\Middleware\StartSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -70,5 +68,6 @@ class Kernel extends HttpKernel
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,
         'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
+        'session' => \Illuminate\Session\Middleware\StartSession::class,
     ];
 }
