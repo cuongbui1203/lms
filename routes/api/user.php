@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [UserController::class, 'login'])
+    ->middleware('session')
     ->name('.login');
 Route::post('', [UserController::class, 'store'])
     ->name('.register');
