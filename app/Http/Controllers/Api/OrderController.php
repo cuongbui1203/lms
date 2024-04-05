@@ -6,6 +6,7 @@ use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
+use App\Http\Requests\Order\GetNextPostRequest;
 use App\Http\Requests\Order\MoveOrderRequest;
 use App\Models\Noti;
 use App\Models\Order;
@@ -78,18 +79,25 @@ class OrderController extends Controller
         return $this->sendSuccess($detail, 'add order detail success');
     }
 
-    public function getNextPos(Order $order)
+    public function getNextPos(GetNextPostRequest $request)
     {
-        $workPlate = routingAnother($order);
-        if ($workPlate) {
-            $workPlate->load('detail');
-        } else {
-            $workPlate = 'shipping';
+        $orderIds = $request->getOrders();
+        $res = [];
+        foreach ($orderIds as $orderId) {
+            /** @var Order $order */
+            $order = Order::find($orderId);
+            $workPlate = routingAnother($order);
+            if ($workPlate) {
+                $workPlate->load('detail');
+            } else {
+                $workPlate = 'shipping';
+            }
+
+            $res[$orderId] = $workPlate;
+            // $res->pus
         }
 
-        return $this->sendSuccess([
-            'nextPos' => $workPlate,
-        ]);
+        return $this->sendSuccess($res, 'gui dia diem diem goi y tiep theo');
     }
 
     public function MoveToNextPos(MoveOrderRequest $request, Order $order)

@@ -13,6 +13,8 @@ class WorkPlate extends Model
 {
     use HasFactory;
 
+    protected $appends = ['address'];
+
     public function type(): BelongsTo
     {
         return $this->belongsTo(Type::class);
@@ -28,10 +30,10 @@ class WorkPlate extends Model
         return $this->hasOne(WarehouseDetail::class, 'wp_id');
     }
 
-    protected function addressId(): Attribute
+    protected function address(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['address_id']),
         );
     }
 }

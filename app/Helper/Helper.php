@@ -265,7 +265,7 @@ if (!function_exists('routingAnother')) {
     function routingAnother(Order $order)
     {
         $noti = $order->notifications->last();
-        $idAddressHT = $noti->to_address_id ?? $noti->to->address_id; // address id hiện tại
+        $idAddressHT = $noti->to_address_id === null ? $noti->to->address_id : $noti->to_address_id; // address id hiện tại
         $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address_id; // address id ng nhan
         $res = null;

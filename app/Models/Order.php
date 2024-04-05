@@ -15,6 +15,8 @@ class Order extends Model
         'id',
     ];
 
+    protected $appends = ['sender_address', 'receiver_address'];
+
     public function details(): HasMany
     {
         return $this->hasMany(OrderDetail::class);
@@ -30,17 +32,17 @@ class Order extends Model
         'updated_at' => 'timestamp',
     ];
 
-    protected function senderAddressId(): Attribute
+    protected function senderAddress(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['sender_address_id']),
         );
     }
 
-    protected function receiverAddressId(): Attribute
+    protected function receiverAddress(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['to_address_id']),
         );
     }
 }
