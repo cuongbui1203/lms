@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
@@ -27,6 +28,11 @@ class Order extends Model
         return $this->hasMany(Noti::class, 'order_id', 'id');
     }
 
+    public function vehicle(): BelongsTo
+    {
+        return $this->belongsTo(Vehicle::class, 'id', 'vehicle_id');
+    }
+
     protected $cast = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
@@ -43,6 +49,20 @@ class Order extends Model
     {
         return Attribute::make(
             get: fn() => getAddress($this->attributes['to_address_id']),
+        );
+    }
+
+    protected function mass(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $mass = 0;
+                foreach ($this->details as $e) {
+                    $mass += $e->mass;
+                }
+
+                return $mass;
+            }
         );
     }
 }

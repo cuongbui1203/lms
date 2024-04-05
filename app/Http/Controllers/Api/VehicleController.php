@@ -31,7 +31,9 @@ class VehicleController extends Controller
 
         $vehicle->save();
 
-        return $this->sendSuccess([], 'create vehicle success');
+        return $this->sendSuccess([
+            'vehicle' => $vehicle,
+        ], 'create vehicle success');
     }
 
     /**

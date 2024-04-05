@@ -12,6 +12,7 @@ use App\Http\Requests\Order\MoveOrderRequest;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Vehicle;
 use Auth;
 
 class OrderController extends Controller
@@ -144,5 +145,16 @@ class OrderController extends Controller
         });
 
         return $this->sendSuccess([], 'success');
+    }
+
+    public function ganChoXe(Order $order, Vehicle $vehicle)
+    {
+        if ($order->mass + $vehicle->payload <= $vehicle->max_payload) {
+            $order->vehicle_id = $vehicle->id;
+
+            return $this->sendSuccess([], 'success');
+        }
+
+        return $this->sendError('fail', ['overload']);
     }
 }
