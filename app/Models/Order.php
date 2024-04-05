@@ -60,6 +60,7 @@ class Order extends Model
                 foreach ($this->details as $e) {
                     $mass += $e->mass;
                 }
+
                 return $mass;
             }
         );

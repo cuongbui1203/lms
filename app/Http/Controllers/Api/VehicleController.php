@@ -32,7 +32,7 @@ class VehicleController extends Controller
         $vehicle->save();
 
         return $this->sendSuccess([
-            'vehicle'=>$vehicle
+            'vehicle' => $vehicle,
         ], 'create vehicle success');
     }
 
