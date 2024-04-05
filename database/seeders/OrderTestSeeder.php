@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\AddressTypeEnum;
+use App\Enums\StatusEnum;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\WorkPlate;
@@ -91,7 +92,7 @@ class OrderTestSeeder extends Seeder
         $notification->from_address_id = '27280';
         $notification->to_address_id = '27280';
         $notification->description = '';
-        $notification->status_id = RoleEnum::CREATE;
+        $notification->status_id = StatusEnum::CREATE;
 
         $notification->save();
     }
