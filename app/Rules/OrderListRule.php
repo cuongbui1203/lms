@@ -12,6 +12,7 @@ class OrderListRule implements Rule
     public function __construct()
     {
         //
+        // dd($this);
     }
 
     /**

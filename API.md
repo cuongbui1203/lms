@@ -843,13 +843,29 @@ HTTP status code 404
 ```
 
 ### Confirm order arrived `AUTH`
-`PUT`: `{order}/arrived`
-
+`PUT`: `multi/arrived`
+> `data`: json. array contain list id order
 #### Response
 ```
 {
     "success": true,
     "data": [],
     "message": "success"
+}
+```
+```
+{
+    "success": false,
+    "error": {
+        "orders": [
+            {
+                "12": "Order id invalid."
+            },
+            {
+                "22": "Order id invalid."
+            }
+        ]
+    },
+    "status_code": 422
 }
 ```
