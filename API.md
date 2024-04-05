@@ -519,7 +519,16 @@ HTTP code 404
 ```
 {
     "success": true,
-    "data": [],
+    "data": {
+        "vehicle": {
+            "name": "tét",
+            "type_id": "4",
+            "payload": "10000",
+            "updated_at": "2024-04-05T18:54:07.000000Z",
+            "created_at": "2024-04-05T18:54:07.000000Z",
+            "id": 1
+        }
+    },
     "message": "create vehicle success"
 }
 ```
@@ -867,5 +876,24 @@ HTTP status code 404
         ]
     },
     "status_code": 422
+}
+```
+### Transfer to the car `AUTH`
+`PUT`: `{orderId}/vehicles/{vehicleId}`
+#### Response
+```
+{
+    "success": true,
+    "message": "success",
+    "data":[]
+}
+```
+```
+{
+    "success": false,
+    "message": "fail",
+    "errors": [
+        "overload"
+    ]
 }
 ```
