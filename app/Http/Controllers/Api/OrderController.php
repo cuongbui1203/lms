@@ -149,11 +149,13 @@ class OrderController extends Controller
 
     public function ganChoXe(Order $order, Vehicle $vehicle)
     {
+
         if ($order->mass + $vehicle->payload <= $vehicle->max_payload) {
             $order->vehicle_id = $vehicle->id;
 
             return $this->sendSuccess([], 'success');
         }
+
 
         return $this->sendError('fail', ['overload']);
     }
