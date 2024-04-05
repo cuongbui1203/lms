@@ -10,3 +10,4 @@ Route::put('/multi/arrived', [OrderController::class, 'arrivedPos']);
 Route::get('/{order}', [OrderController::class, 'show']);
 Route::delete('/{order}', [OrderController::class, 'destroy']);
 Route::post('/{order}', [OrderController::class, 'addDetail']);
+Route::put('/{order}/vehicles/{vehicle}', [OrderController::class, 'ganChoXe']);
