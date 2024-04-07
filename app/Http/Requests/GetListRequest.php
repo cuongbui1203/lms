@@ -21,6 +21,7 @@ class GetListRequest extends FormRequest
     {
         return [
             'page' => 'numeric|min:1',
+            'pageSize' => 'numeric|min:1',
         ];
     }
 }

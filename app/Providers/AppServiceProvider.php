@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Builder::macro('paginateAnother', function ($pageSize, $page = 1, $columns = ['*']) {
+        Builder::macro('paginateAnother', function (int $pageSize, int $page = 1, array $columns = ['*']) {
             $total = $this->count();
-            $data = $this->orderBy('id')->where('id', '>', ($page - 1) * $pageSize)->limit($pageSize)->get();
+            $data = $this->orderBy('id')->where('id', '>', ($page - 1) * $pageSize)->limit($pageSize)->get($columns);
 
             $res = [];
             $res['total'] = $total;
@@ -36,8 +36,8 @@ class AppServiceProvider extends ServiceProvider
             return $res;
         });
 
-        Collection::macro('paginate', function ($pageSize, $page = 1, $relations = []) {
-            $total = count($this);
+        Collection::macro('paginate', function (int $pageSize, int $page = 1, array $relations = []) {
+            $total = $this->count();
             $data = $this->slice($page - 1, $pageSize);
             foreach ($data as $e) {
                 $e->load($relations);

@@ -38,7 +38,7 @@ class UserController extends Controller
 
     public function getListAccount(GetListRequest $request)
     {
-        $pageSize = config('paginate.wp-list');
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
         $columns = ['id', 'name', 'email', 'role_id', 'wp_id'];
         $relations = ['role', 'work_plate'];
