@@ -16,7 +16,7 @@ class Order extends Model
         'id',
     ];
 
-    protected $appends = ['sender_address', 'receiver_address'];
+    protected $appends = ['sender_address', 'receiver_address', 'mass'];
 
     public function details(): HasMany
     {
@@ -48,21 +48,14 @@ class Order extends Model
     protected function receiverAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['to_address_id']),
+            get: fn() => getAddress($this->attributes['receiver_address_id']),
         );
     }
 
     protected function mass(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $mass = 0;
-                foreach ($this->details as $e) {
-                    $mass += $e->mass;
-                }
-
-                return $mass;
-            }
+            get: fn() => $this->details->sum('mass'),
         );
     }
 }
