@@ -271,7 +271,8 @@ HTTP status code 500
   
 
 Param
->page: number|min:1  
+>`page`: number|min:1  
+>`pageSize`: number|min:1  
 
 ### Response
 ```
@@ -604,9 +605,279 @@ http status code 402
 ```
 
 ## Order
+### Get List order `AUTH`
+`GET`: `orders`
+> `page`: numeric|min:1  
+> `pageSize`: numeric|min:1
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 13,
+        "currentPage": 1,
+        "pageSize": 1,
+        "data": [
+            {
+                "id": 1,
+                "sender_name": "Thaddeus Hansen",
+                "sender_address_id": "27562",
+                "sender_phone": "+1.934.230.8271",
+                "receiver_name": "Godfrey Spinka V",
+                "receiver_address_id": "10963",
+                "receiver_phone": "+1-715-600-3602",
+                "created_at": "2024-04-07T07:33:56.000000Z",
+                "updated_at": "2024-04-07T07:33:56.000000Z",
+                "vehicle_id": null,
+                "sender_address": {
+                    "provinceCode": "79",
+                    "districtCode": "784",
+                    "wardCode": "27562",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Huyện Hóc Môn",
+                    "ward": "Xã Tân Hiệp"
+                },
+                "receiver_address": {
+                    "provinceCode": "30",
+                    "districtCode": "296",
+                    "wardCode": "10963",
+                    "province": "Tỉnh Hải Dương",
+                    "district": "Huyện Bình Giang",
+                    "ward": "Xã Long Xuyên"
+                },
+                "mass": 99417077,
+                "notifications": [],
+                "details": [
+                    {
+                        "id": 1,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Easter Pollich Sr.",
+                        "mass": 2091977,
+                        "desc": "Optio qui ad maiores et dolores laborum modi deleniti. Consequatur voluptates consequuntur est dolor culpa quis quo ut. Est qui ut eos. Cupiditate odit magni aut amet impedit sit.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 2,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Roxane Strosin",
+                        "mass": 7815564,
+                        "desc": "Tenetur amet maiores et enim occaecati omnis. Rerum saepe nisi deserunt velit. Assumenda error voluptas numquam et illo et impedit cum.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 3,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 11,
+                        "order_id": 1,
+                        "name": "Alize Carter",
+                        "mass": 2761765,
+                        "desc": "Nihil quae aut possimus numquam. Earum at impedit ipsam est dignissimos. Dolores et sit est et praesentium saepe odit.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 4,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 12,
+                        "order_id": 1,
+                        "name": "Josephine Bogan",
+                        "mass": 8583778,
+                        "desc": "Aut tempora impedit ut neque. Ut et rem sit autem. Ut accusantium veniam eligendi necessitatibus.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 5,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Dr. Shaniya Murphy",
+                        "mass": 6753831,
+                        "desc": "Sed earum animi quas sunt ut aut temporibus et. Est aut sunt reprehenderit unde reprehenderit. Porro veniam et velit ut.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 6,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 12,
+                        "order_id": 1,
+                        "name": "Carmella Mayert",
+                        "mass": 171200,
+                        "desc": "Qui nesciunt voluptas placeat ut autem. Possimus aut numquam qui rem. Ipsa ex aliquid temporibus voluptates qui.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 7,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Mrs. Hertha Strosin",
+                        "mass": 9533647,
+                        "desc": "Aspernatur ipsum autem illum quaerat. Eius aut eum atque eum. Nihil autem odit delectus sit illo voluptatem. Ea qui aspernatur et ea nihil ea.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 8,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Mariano Rau",
+                        "mass": 3574813,
+                        "desc": "Beatae quisquam quibusdam nemo in enim aut. Molestiae aut ut ex illo reprehenderit quo. Dolorem quia quia eveniet.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 9,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Kavon Bailey",
+                        "mass": 9846276,
+                        "desc": "Deleniti nihil et dolores maiores. Animi numquam quis quia at quam. Animi excepturi in aut omnis nihil. Asperiores eveniet atque quis atque possimus fuga consectetur.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 10,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 11,
+                        "order_id": 1,
+                        "name": "Saul Hand",
+                        "mass": 1941860,
+                        "desc": "Enim nostrum pariatur ab eveniet. Rerum et error in voluptatibus voluptas et ea. Deleniti sapiente ut est et harum.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 11,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Ali Windler",
+                        "mass": 7651595,
+                        "desc": "Odio sed id amet quidem. Non dolorum aperiam aperiam. Quasi ullam asperiores nihil est nam facere tempore ipsam. Officia reprehenderit aliquid dolorem inventore. Modi praesentium sit deleniti illum.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 12,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Jovanny Vandervort",
+                        "mass": 6565686,
+                        "desc": "Aut et est numquam at ducimus. Non placeat quisquam non. Omnis neque et possimus quia consequatur id. Sed dolore rerum et incidunt odit occaecati quia.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 13,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 11,
+                        "order_id": 1,
+                        "name": "Leda Shanahan",
+                        "mass": 7924084,
+                        "desc": "Quibusdam adipisci quos quam voluptatem suscipit est placeat. Doloremque aut ut dolores qui omnis saepe. Iusto debitis odit et.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 14,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Keaton Kihn",
+                        "mass": 1866531,
+                        "desc": "Provident autem totam nostrum ut qui ullam et. Animi possimus saepe sit sequi aliquam autem sunt et. Fugiat laudantium commodi sunt. Natus sapiente at et commodi rerum.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 15,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 9,
+                        "order_id": 1,
+                        "name": "Dr. Oran Schamberger",
+                        "mass": 1606324,
+                        "desc": "Ea ducimus voluptatibus ratione praesentium expedita necessitatibus architecto. Sit repellendus assumenda optio aut facere. A ratione minus esse et aut. Doloribus repudiandae ratione id qui quia qui.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 16,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 12,
+                        "order_id": 1,
+                        "name": "Ernesto Ratke",
+                        "mass": 740051,
+                        "desc": "Hic nulla fuga ut dolorem molestiae perferendis unde quae. Adipisci corrupti laboriosam ipsa non iure. Fugit alias aliquid iste.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 17,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Joey McDermott",
+                        "mass": 708107,
+                        "desc": "Quidem et neque distinctio possimus. At qui sunt voluptas ut vitae exercitationem velit. Maxime modi cupiditate quam nam dolor.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 18,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 11,
+                        "order_id": 1,
+                        "name": "Dexter Runolfsson",
+                        "mass": 7851577,
+                        "desc": "Explicabo repellat ipsam et. Quaerat quia quos nostrum hic et. Quaerat et quibusdam itaque sit aperiam voluptas. Quis quia sint eos.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 19,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 10,
+                        "order_id": 1,
+                        "name": "Janet Mayer",
+                        "mass": 9647806,
+                        "desc": "Et delectus voluptas cumque voluptatibus temporibus quaerat. Rerum consequuntur eaque totam deleniti eum molestias numquam cupiditate. Modi aut at ullam soluta.",
+                        "image_id": null
+                    },
+                    {
+                        "id": 20,
+                        "created_at": "2024-04-07T07:33:56.000000Z",
+                        "updated_at": "2024-04-07T07:33:56.000000Z",
+                        "type_id": 11,
+                        "order_id": 1,
+                        "name": "Delphine Metz",
+                        "mass": 1780605,
+                        "desc": "Quasi sit et optio consectetur. Perspiciatis aut error aut quae magni impedit. Quibusdam ex blanditiis maiores itaque quidem nihil est. In quaerat excepturi qui eos.",
+                        "image_id": null
+                    }
+                ]
+            }
+        ]
+    },
+    "message": "success"
+}
+```
 
 ### Create `AUTH` 
-
+`POST`: `orders`
 > `sender_name`: required|string  
 > `sender_phone`: required|string  
 > `sender_address_id`: required|exists  

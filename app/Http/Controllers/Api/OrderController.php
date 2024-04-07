@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\ArrivedPostRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
@@ -17,6 +18,17 @@ use Auth;
 
 class OrderController extends Controller
 {
+    public function index(GetListRequest $request)
+    {
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relations = ['notifications', 'details'];
+
+        $orders = Order::all()->paginate($pageSize, $page, $relations);
+
+        return $this->sendSuccess($orders, 'success');
+    }
+
     public function store(CreateOrderRequest $request)
     {
         $user = Auth::user();
@@ -149,13 +161,11 @@ class OrderController extends Controller
 
     public function ganChoXe(Order $order, Vehicle $vehicle)
     {
-
         if ($order->mass + $vehicle->payload <= $vehicle->max_payload) {
             $order->vehicle_id = $vehicle->id;
 
             return $this->sendSuccess([], 'success');
         }
-
 
         return $this->sendError('fail', ['overload']);
     }
