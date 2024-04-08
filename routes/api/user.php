@@ -23,5 +23,10 @@ Route::middleware('auth:sanctum')->group(
             ->name('.update');
         Route::get('/', [UserController::class, 'getListAccount']);
         Route::put('/{user}/change-wp', [UserController::class, 'changeWP']);
+
+        Route::middleware('adminManager')
+            ->group(function () {
+                Route::post('/create/employee', [UserController::class, 'createEmployee']);
+            });
     }
 );

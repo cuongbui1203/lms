@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ChangeWPRequest;
+use App\Http\Requests\Auth\CreateEmployeeRequest;
 use App\Http\Requests\Auth\LoginUserRequest;
 use App\Http\Requests\Auth\RegisterUserRequest;
 use App\Http\Requests\Auth\ResetPasswordLinkRequest;
@@ -16,6 +17,7 @@ use App\Jobs\SendGreetingEmail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -162,9 +164,11 @@ class UserController extends Controller
         $user->address = $request->address ?? $user->address;
         $user->dob = $request->dob ?? $user->dob;
         $user->phone = $request->phone ?? $user->phone;
+        if ($request->hasFile('image')) {
+            try {
+                deleteImage($user->img_id);
+            } catch (ModelNotFoundException $e) {} // phpcs:ignore
 
-        if (isset($request->image)) {
-            deleteImage($user->img_id);
             $user->img_id = storeImage('users', $request->file('image'));
         }
 
@@ -229,5 +233,33 @@ class UserController extends Controller
         }
 
         return $this->sendError('cant reset password', 'email invalid');
+    }
+
+    public function createEmployee(CreateEmployeeRequest $request)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $newUser = new User($request->only([
+            'username',
+            'email',
+            'phone',
+            'dob',
+            'name',
+        ]));
+        $newUser->address_id = $request->address_id;
+        $newUser->role_id = RoleEnum::EMPLOYEE;
+        $newUser->wp_id = $user->wp_id;
+        if ($user->role_id === RoleEnum::ADMIN) {
+            $newUser->role_id = $request->role_id ?? $newUser->role_id;
+            $newUser->wp_id = $request->wp_id ?? $newUser->wp_id;
+        }
+
+        $newUser->unguard();
+        $newUser->password = 'password';
+        $newUser->save();
+        $newUser->unguard(false);
+        $newUser->load('role', 'work_plate', 'img');
+
+        return $this->sendSuccess($newUser, 'create employee success');
     }
 }

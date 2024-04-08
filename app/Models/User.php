@@ -20,15 +20,23 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    // protected $fillable = [
-    //     'name',
-    //     'email',
-    //     'password',
-    // ];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'dob',
+        'username',
+        'address',
+        'img_id',
+    ];
 
     protected $guard = [
         'role_id',
         'password',
+    ];
+
+    protected $appends = [
+        'address',
     ];
 
     /**
@@ -54,7 +62,7 @@ class User extends Authenticatable
     protected function address(): Attribute
     {
         return Attribute::make(
-            get: fn(string $value) => getAddress($value),
+            get: fn() => getAddress($this->attributes['address_id']),
         );
     }
 

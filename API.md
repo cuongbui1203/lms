@@ -304,6 +304,71 @@ Param
 }
 ```
 
+### Create employee account `AUTH` `ADMIN|MANAGER`
+`POST`: `users/create/employee`
+
+> `name`: required  
+> `email`: required|email  
+> `phone`: required  
+> `dob`: date  
+> `username`: required  
+> `address_id`: required
+> only admin can change:  
+> `role_id`
+> `wp_id`
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "username": "test",
+        "email": "test@admin.com",
+        "phone": "0123456789",
+        "name": "test",
+        "address_id": "27280",
+        "role_id": 4,
+        "wp_id": 1,
+        "updated_at": "2024-04-08T16:38:10.000000Z",
+        "created_at": "2024-04-08T16:38:10.000000Z",
+        "id": 26,
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14"
+        },
+        "role": {
+            "id": 4,
+            "name": "Employee",
+            "desc": "Employee",
+            "created_at": "2024-04-08T16:21:30.000000Z",
+            "updated_at": "2024-04-08T16:21:30.000000Z"
+        },
+        "work_plate": {
+            "id": 1,
+            "name": "YKxjEiyVko",
+            "address_id": "27280",
+            "type_id": 2,
+            "created_at": "2024-04-08T16:21:35.000000Z",
+            "updated_at": "2024-04-08T16:21:35.000000Z",
+            "cap": "3",
+            "vung": "27280",
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14"
+            }
+        },
+        "img": null
+    },
+    "message": "create employee success"
+}
+```
 ## Image
 ### GetImage
 `post`: `images/{id}`  
