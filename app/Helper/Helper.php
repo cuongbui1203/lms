@@ -4,6 +4,7 @@ use App\Enums\AddressTypeEnum;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\WorkPlate;
+use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('storeImage')) {
     function storeImage($path, $file)
