@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\CheckAdmin::class,
         'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
         'session' => \Illuminate\Session\Middleware\StartSession::class,
+        'adminManager' => \App\Http\Middleware\CheckAdminManager::class,
     ];
 }

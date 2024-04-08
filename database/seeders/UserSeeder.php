@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\RoleEnum;
 use App\Models\User;
+use DB;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -21,7 +22,7 @@ class UserSeeder extends Seeder
                 'phone' => fake()->phoneNumber(),
                 'dob' => now(),
                 'username' => 'admin',
-                'address' => '27298',
+                'address_id' => '27298',
                 'role_id' => RoleEnum::ADMIN,
                 'wp_id' => '1',
             ],
@@ -32,7 +33,7 @@ class UserSeeder extends Seeder
                 'phone' => fake()->phoneNumber(),
                 'dob' => now(),
                 'username' => 'driver',
-                'address' => '27298',
+                'address_id' => '27298',
                 'role_id' => RoleEnum::DRIVER,
                 'wp_id' => '1',
             ],
@@ -43,7 +44,7 @@ class UserSeeder extends Seeder
                 'phone' => fake()->phoneNumber(),
                 'dob' => now(),
                 'username' => 'user',
-                'address' => '27298',
+                'address_id' => '27298',
                 'role_id' => RoleEnum::USER,
                 'wp_id' => '1',
             ],
@@ -54,7 +55,7 @@ class UserSeeder extends Seeder
                 'phone' => fake()->phoneNumber(),
                 'dob' => now(),
                 'username' => 'employee',
-                'address' => '27298',
+                'address_id' => '27298',
                 'role_id' => RoleEnum::EMPLOYEE,
                 'wp_id' => '1',
             ],
@@ -65,12 +66,16 @@ class UserSeeder extends Seeder
                 'phone' => fake()->phoneNumber(),
                 'dob' => now(),
                 'username' => 'manager',
-                'address' => '27298',
+                'address_id' => '27298',
                 'role_id' => RoleEnum::MANAGER,
                 'wp_id' => '1',
             ],
         ];
         User::insert($users);
-        User::factory(10)->create(['role_id' => RoleEnum::USER]);
+        $wardIds = DB::connection('sqlite_vn_map')->table('wards')->get('code')->pluck('code');
+        User::factory(10)->create(['role_id' => RoleEnum::USER])->each(function ($user) use ($wardIds) {
+            $user->address_id = $wardIds->random();
+            $user->save();
+        });
     }
 }

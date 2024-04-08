@@ -37,6 +37,6 @@ Route::prefix('orders')
 
 Route::name('.image')
     ->prefix('images')
-    ->get('/{image}', [ImageController::class, 'show'])->name('show');
+    ->get('/{image}', [ImageController::class, 'show'])->name('.show');
 
 Route::middleware(['auth:sanctum'])->get('types/{for}', [TypeController::class, 'index']);
