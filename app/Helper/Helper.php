@@ -18,9 +18,17 @@ if (!function_exists('storeImage')) {
 }
 
 if (!function_exists('deleteImage')) {
+    /**
+     * delete image
+     *
+     * @param int $id
+     * @return void
+     *
+     * @throws Illuminate\Database\Eloquent\ModelNotFoundException
+     */
     function deleteImage($id)
     {
-        $image = Image::find($id);
+        $image = Image::findOrFail($id);
         $path = $image->url;
         Storage::delete($path);
         $image->delete();
