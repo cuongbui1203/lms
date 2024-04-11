@@ -8,13 +8,14 @@ use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\ArrivedPostRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
-use App\Http\Requests\Order\GetNextPostRequest;
+use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Order\MoveOrderRequest;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Vehicle;
 use Auth;
+use Exception;
 
 class OrderController extends Controller
 {
@@ -64,12 +65,16 @@ class OrderController extends Controller
         return $this->sendSuccess($order, 'get Order Detail success');
     }
 
-    public function destroy(Order $order)
+    public function destroy(ListOrderIdRequest $request)
     {
-        $order->details()->delete();
-        $order->notifications()->delete();
-
-        $order->delete();
+        $orderIds = $request->getOrders();
+        try {
+            Noti::whereIn('order_id', $orderIds)->delete();
+            OrderDetail::whereIn('order_id', $orderIds)->delete();
+            Order::whereIn('id', $orderIds)->delete();
+        } catch (Exception $e) {
+            dd($e);
+        }
 
         return $this->sendSuccess([], 'delete success');
     }
@@ -93,7 +98,7 @@ class OrderController extends Controller
         return $this->sendSuccess($detail, 'add order detail success');
     }
 
-    public function getNextPos(GetNextPostRequest $request)
+    public function getNextPos(ListOrderIdRequest $request)
     {
         $orderIds = $request->getOrders();
         $res = [];
@@ -108,7 +113,6 @@ class OrderController extends Controller
             }
 
             $res[$orderId] = $workPlate;
-            // $res->pus
         }
 
         return $this->sendSuccess($res, 'gui dia diem diem goi y tiep theo');

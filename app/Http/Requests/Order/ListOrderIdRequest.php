@@ -5,7 +5,7 @@ namespace App\Http\Requests\Order;
 use App\Http\Requests\FormRequest;
 use App\Rules\OrderListRule;
 
-class GetNextPostRequest extends FormRequest
+class ListOrderIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,6 +30,11 @@ class GetNextPostRequest extends FormRequest
         ];
     }
 
+    /**
+     * convert json string to array orderId
+     *
+     * @return array
+     */
     public function getOrders()
     {
         return json_decode($this->get('orders'));
