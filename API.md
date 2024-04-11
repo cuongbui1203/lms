@@ -671,6 +671,95 @@ HTTP code 404
     "status_code": 422
 }
 ```
+
+### Get Suggestion WP `AUTH`
+`GET`: `work-plates/suggestion-wp`
+
+> `address_id`: required|string| address code valid
+
+#### Response
+```
+{
+    "success": true,
+    "data": [
+        [
+            {
+                "id": 1,
+                "name": "FHkVuLD2yg",
+                "address_id": "27280",
+                "created_at": "2024-04-10T15:23:53.000000Z",
+                "updated_at": "2024-04-10T15:23:53.000000Z",
+                "type_id": 2,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27280",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 14"
+                },
+                "manager": {
+                    "id": 5,
+                    "name": "Prof. Seamus Cremin",
+                    "address": null
+                },
+                "type": {
+                    "id": 2,
+                    "name": "transactionPoint",
+                    "for": 1
+                },
+                "detail": {
+                    "id": 3,
+                    "wp_id": 1,
+                    "max_payload": 123333,
+                    "payload": 0,
+                    "created_at": "2024-04-11T11:38:01.000000Z",
+                    "updated_at": "2024-04-11T11:38:01.000000Z"
+                }
+            },
+            {
+                "id": 2,
+                "name": "iVDjUP0IOS",
+                "address_id": "27280",
+                "created_at": "2024-04-10T15:23:53.000000Z",
+                "updated_at": "2024-04-10T15:23:53.000000Z",
+                "type_id": 3,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27280",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 14"
+                },
+                "manager": null,
+                "type": {
+                    "id": 3,
+                    "name": "transshipmentPoint",
+                    "for": 1
+                },
+                "detail": null
+            }
+        ]
+    ],
+    "message": "get suggestion wp success"
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "address_id",
+            "message": [
+                "The address id field is required."
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
+
 ## Type `AUTH`
 `GET` `types\{work-plates|vehicles}`
 
