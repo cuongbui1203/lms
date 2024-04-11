@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\ChangeWPRequest;
 use App\Http\Requests\Auth\CreateEmployeeRequest;
 use App\Http\Requests\Auth\LoginUserRequest;
@@ -276,5 +277,22 @@ class UserController extends Controller
         $newUser->load('role', 'work_plate', 'img');
 
         return $this->sendSuccess($newUser, 'create employee success');
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return $this->sendError('old password invalid', []);
+        }
+
+        $user->unguard();
+        $user->password = $request->new_password;
+        $user->save();
+        $user->unguard(false);
+
+        return $this->sendSuccess($user, 'change Password success');
     }
 }

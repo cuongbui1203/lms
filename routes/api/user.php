@@ -13,6 +13,7 @@ Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::middleware('auth:sanctum')->group(
     function () {
+        Route::put('/change-password', [UserController::class, 'changePassword']);
         Route::withoutMiddleware('csrf')
             ->delete('/me', [UserController::class, 'logout']);
         Route::get('/me', [UserController::class, 'index'])
