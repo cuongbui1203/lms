@@ -268,8 +268,6 @@ HTTP status code 500
 
 ## Get list Account `AUTH` `Admin`
 `GET` `users\`  
-  
-
 Param
 >`page`: number|min:1  
 >`pageSize`: number|min:1  
@@ -369,6 +367,64 @@ Param
     "message": "create employee success"
 }
 ```
+
+## Change Password `AUTH`
+`PUT`: `users\change-password`
+
+> `old_password` required  
+> `new_password` required, min:8, letters, numbers, mixLetter, confirmed
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "name": "Ewell Heller",
+        "email": "admin@admin.com",
+        "email_verified_at": null,
+        "created_at": null,
+        "updated_at": "2024-04-11T12:39:02.000000Z",
+        "phone": "+1-239-946-9272",
+        "dob": "2024/04/10",
+        "username": "admin",
+        "address_id": "27280",
+        "role_id": 1,
+        "wp_id": 1,
+        "img_id": 2,
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14"
+        }
+    },
+    "message": "change Password success"
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "old_password",
+            "message": [
+                "The old password field is required."
+            ]
+        },
+        {
+            "field": "new_password",
+            "message": [
+                "The new password field is required."
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
+
 ## Image
 ### GetImage
 `post`: `images/{id}`  
