@@ -8,4 +8,4 @@ Route::put('/{workPlate}', [WorkPlateController::class, 'update'])->name('update
 Route::delete('/{workPlate}', [WorkPlateController::class, 'destroy'])->name('destroy');
 Route::get('/', [WorkPlateController::class, 'index']);
 Route::get('/{workPlate}', [WorkPlateController::class, 'show']);
-Route::post('/{workPlate}/detail', [WorkPlateController::class, 'addDetail']);
+Route::put('/{workPlate}/detail', [WorkPlateController::class, 'addDetail']);

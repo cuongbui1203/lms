@@ -57,13 +57,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime:Y/m/d H:i',
         'password' => 'hashed',
-        'dob' => 'date:d/m/Y',
+        'dob' => 'date:Y/m/d',
     ];
 
     protected function address(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['address_id']),
+            get: function () {
+                if (array_key_exists('address_id', $this->attributes)) {
+                    return getAddress($this->attributes['address_id']);
+                }
+
+                return null;
+            },
         );
     }
 
