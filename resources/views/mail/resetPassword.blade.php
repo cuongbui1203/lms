@@ -340,15 +340,22 @@
                                 colspan="2">
                                 <h1
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:30px;line-height:40px;font-weight:bold;margin:0px 0px 0px 0px;padding:0px 0px 30px 0px;text-align:center;">
-                                    Chào mừng đến với [Tên thương hiệu/doanh nghiệp của bạn]!</h1>
+                                    Reset Password Request</h1>
                                 <p
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:30px;font-weight:bold;color:#000000 !important;margin:0px 0px 0px 0px;padding:0px 0px 16px 0px;text-align:center;">
                                     Hi {{ name }},</p>
                                 <p
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:30px;color:#121314;margin:0px auto 0px auto;padding:0px 0px 0 0px;text-align:center;max-width:500px !important;">
-                                    Cảm ơn bạn đã đăng ký nhận email từ chúng tôi. Chúng tôi rất vui mừng chào đón bạn
-                                    đến với cộng đồng [Tên thương hiệu/doanh nghiệp của bạn]!</p>
-
+                                    Did you forget your password? If so, please click the button below to create a new
+                                    one.</p>
+                                <div class="button-wrap" style="padding:30px 0px 30px 0px;text-align:center;">
+                                    <div class="button-wrap"><a class="cta-button" href="#resetPasswordLink"
+                                            style="background-color:#00e59b;color:#000000;font-size:12px;line-height:20px;cursor:pointer;font-weight:bold;font-family:Arial, Helvetica, sans-serif;text-align:center;text-decoration:none;padding:14px 26px 14px 26px;display:inline-block;">Reset
+                                            Password</a></div>
+                                </div>
+                                <p
+                                    style="font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:30px;color:#121314;margin:0px auto 0px auto;padding:0px 0px 16px 0px;text-align:center;max-width:500px !important;">
+                                    If you did not lose your password, feel free to ignore this email.</p>
 
                             </td>
                         </tr>
@@ -377,6 +384,7 @@
                         </p>
                     </div>
                 </div>
+                =20
             </td>
         </tr>
     </table>
