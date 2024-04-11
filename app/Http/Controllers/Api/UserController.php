@@ -167,6 +167,11 @@ class UserController extends Controller
         $user->phone = $request->phone ?? $user->phone;
         if ($handler->role_id === RoleEnum::ADMIN) {
             $user->role_id = $request->role_id ?? $user->role_id;
+            if ($request->role_id === RoleEnum::MANAGER) {
+                User::where('role_id', '=', RoleEnum::MANAGER)
+                    ->where('wp_id', '=', $user->wp_id)
+                    ->update(['role_id' => RoleEnum::EMPLOYEE]);
+            }
         }
 
         if ($request->hasFile('image')) {
@@ -257,6 +262,11 @@ class UserController extends Controller
         if ($user->role_id === RoleEnum::ADMIN) {
             $newUser->role_id = $request->role_id ?? $newUser->role_id;
             $newUser->wp_id = $request->wp_id ?? $newUser->wp_id;
+            if ($request->role_id === RoleEnum::MANAGER) {
+                User::where('role_id', '=', RoleEnum::MANAGER)
+                    ->where('wp_id', '=', $user->wp_id)
+                    ->update(['role_id' => RoleEnum::EMPLOYEE]);
+            }
         }
 
         $newUser->unguard();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\WorkPlate;
 
+use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;
 use App\Rules\VungRule;
 use Illuminate\Validation\Rule;
@@ -13,7 +14,7 @@ class CreateWPRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->role_id === RoleEnum::ADMIN;
     }
 
     /**
@@ -23,12 +24,20 @@ class CreateWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd('s');
         return [
             'name' => 'required',
             'address_id' => ['required', Rule::exists('sqlite_vn_map.wards', 'code')],
-            'typeId' => 'required|exists:types,id',
+            'type_id' => [
+                'required',
+                Rule::in(
+                    config('type.workPlate.transactionPoint'),
+                    config('type.workPlate.warehouse'),
+                    config('type.workPlate.transshipmentPoint'),
+                ),
+            ],
             'vung' => ['required', new VungRule()],
+            'max_payload' => 'numeric',
+
         ];
     }
 }

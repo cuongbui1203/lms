@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoleEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,7 @@ class WorkPlate extends Model
 {
     use HasFactory;
 
-    protected $appends = ['address'];
+    protected $appends = ['address', 'manager'];
 
     public function type(): BelongsTo
     {
@@ -28,6 +29,17 @@ class WorkPlate extends Model
     public function detail(): HasOne
     {
         return $this->hasOne(WarehouseDetail::class, 'wp_id');
+    }
+
+    protected function manager(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return User::where('role_id', '=', RoleEnum::MANAGER)
+                    ->where('wp_id', '=', $this->attributes['id'])
+                    ->first(['id', 'name']);
+            }
+        );
     }
 
     protected function address(): Attribute

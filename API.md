@@ -384,8 +384,9 @@ Param
 
 #### Cac truong yeu cau:
 > - name: required
-> - address: required
-> - type_id: required
+> - address_id: required|string
+> - type_id: required|numeric
+> - max_payload: numeric
 
 #### Response
 ```
@@ -393,11 +394,21 @@ Param
     "success": true,
     "data": {
         "name": "test",
-        "address": "ew",
+        "address_id": "27280",
         "type_id": "1",
-        "updated_at": "2024-03-15T03:48:29.000000Z",
-        "created_at": "2024-03-15T03:48:29.000000Z",
-        "id": 2
+        "vung": "27280",
+        "updated_at": "2024-04-11T11:37:06.000000Z",
+        "created_at": "2024-04-11T11:37:06.000000Z",
+        "id": 19,
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14"
+        },
+        "manager": null
     },
     "message": "WorkPlate create success"
 }
@@ -405,11 +416,20 @@ Param
 ```
 {
     "success": false,
-    "error": {
-        "address": [
-            "The address field is required."
-        ]
-    },
+    "error": [
+        {
+            "field": "address_id",
+            "message": [
+                "The address id field is required."
+            ]
+        },
+        {
+            "field": "type_id",
+            "message": [
+                "The type id field is required."
+            ]
+        }
+    ],
     "status_code": 422
 }
 ```
@@ -447,7 +467,154 @@ Param
 ```
 HTTP code 404
 ```
+### Get List WP `AUTH`
+`GET` `work-plates`
 
+#### Response
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "FHkVuLD2yg",
+            "address_id": "27280",
+            "created_at": "2024-04-10T15:23:53.000000Z",
+            "updated_at": "2024-04-10T15:23:53.000000Z",
+            "type_id": 2,
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14"
+            },
+            "manager": {
+                "id": 5,
+                "name": "Prof. Seamus Cremin",
+                "email": "manager@admin.com",
+                "email_verified_at": null,
+                "created_at": null,
+                "updated_at": null,
+                "phone": "651.495.3206",
+                "dob": "10/04/2024",
+                "username": "manager",
+                "address_id": "27298",
+                "role_id": 5,
+                "wp_id": 1,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27298",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 01"
+                }
+            },
+            "type": {
+                "id": 2,
+                "name": "transactionPoint",
+                "for": 1
+            },
+            "detail": {
+                "id": 3,
+                "wp_id": 1,
+                "max_payload": 123333,
+                "payload": 0,
+                "created_at": "2024-04-11T11:38:01.000000Z",
+                "updated_at": "2024-04-11T11:38:01.000000Z"
+            }
+        },
+        {
+            "id": 2,
+            "name": "iVDjUP0IOS",
+            "address_id": "27280",
+            "created_at": "2024-04-10T15:23:53.000000Z",
+            "updated_at": "2024-04-10T15:23:53.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14"
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        }
+    ],
+    "message": "Get list work plate success"
+}
+```
+
+### Update WorkPlate `AUTH` `ADMIN`
+`PUT`: `work-plates/{wpId}`
+> name: string  
+> address_id: string  
+> type_id: numeric,
+> max_payload: numeric  
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "id": 19,
+        "name": "test",
+        "address_id": "27280",
+        "type_id": 1,
+        "created_at": "2024-04-11T11:37:06.000000Z",
+        "updated_at": "2024-04-11T11:37:06.000000Z",
+        "cap": "3",
+        "vung": "27280",
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14"
+        },
+        "manager": null,
+        "detail": {
+            "id": 6,
+            "wp_id": 19,
+            "max_payload": 0,
+            "payload": 0,
+            "created_at": "2024-04-11T12:15:26.000000Z",
+            "updated_at": "2024-04-11T12:15:26.000000Z"
+        },
+        "type": {
+            "id": 1,
+            "name": "warehouse",
+            "for": 1
+        }
+    },
+    "message": ""
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "address_id",
+            "message": [
+                "The selected address_id is invalid."
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
 ## Type `AUTH`
 `GET` `types\{work-plates|vehicles}`
 

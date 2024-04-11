@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\WorkPlate;
 
+use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;
+use App\Rules\VungRule;
+use Illuminate\Validation\Rule;
 
 class UpdateWPRequest extends FormRequest
 {
@@ -11,7 +14,7 @@ class UpdateWPRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->role_id === RoleEnum::ADMIN;
     }
 
     /**
@@ -22,8 +25,16 @@ class UpdateWPRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'address' => 'required',
+            'name' => 'string',
+            'address_id' => [new VungRule()],
+            'max_payload' => 'numeric',
+            'type_id' => [
+                Rule::in(
+                    config('type.workPlate.warehouse'),
+                    config('type.workPlate.transactionPoint'),
+                    config('type.workPlate.transshipmentPoint')
+                ),
+            ],
         ];
     }
 }
