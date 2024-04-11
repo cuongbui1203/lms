@@ -57,6 +57,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime:Y/m/d H:i',
         'password' => 'hashed',
+        'dob' => 'date:d/m/Y',
     ];
 
     protected function address(): Attribute

@@ -19,7 +19,7 @@ class VungRule implements ValidationRule
         $w = $db->table('wards')->where('code', $value)->exists();
         $d = $db->table('districts')->where('code', $value)->exists();
         $p = $db->table('provinces')->where('code', $value)->exists();
-        // dd((($d || $w) || $d));
+
         if (!(($d || $w) || $p)) {
             $fail("The selected $attribute is invalid.");
         }

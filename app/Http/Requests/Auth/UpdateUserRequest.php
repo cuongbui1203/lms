@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;
+use App\Rules\VungRule;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -27,7 +30,13 @@ class UpdateUserRequest extends FormRequest
             'image' => 'image',
             'email' => 'email',
             'phone' => 'string',
-            'address' => 'string',
+            'address_id' => [
+                'string',
+                new VungRule(),
+            ],
+            'role_id' => [
+                Rule::in(RoleEnum::getValues()),
+            ],
         ];
     }
 }
