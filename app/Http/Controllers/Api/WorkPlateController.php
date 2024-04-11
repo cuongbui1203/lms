@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\AddressTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WorkPlate\CreateWPRequest;
+use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
 use App\Http\Requests\WorkPlate\UpdateWPRequest;
 use App\Models\WorkPlate;
+use Illuminate\Support\Collection;
 
 class WorkPlateController extends Controller
 {
@@ -103,5 +106,18 @@ class WorkPlateController extends Controller
         $workPlate->delete();
 
         return response()->noContent();
+    }
+
+    public function getSuggestionWP(GetSuggestionWPRequest $request)
+    {
+        $res = new Collection();
+        $addressCode = [$request->address_id];
+        array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::DISTRICT));
+        array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::PROVINCE));
+        $res->push(WorkPlate::whereIn('vung', $addressCode)
+            ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
+            ->load('type', 'detail'));
+
+        return $this->sendSuccess($res, 'get suggestion wp success');
     }
 }

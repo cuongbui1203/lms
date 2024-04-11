@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\WorkPlate;
 
 use App\Http\Requests\FormRequest;
-use Illuminate\Validation\Rules\Password;
+use App\Rules\VungRule;
 
-class ChangePasswordRequest extends FormRequest
+class GetSuggestionWPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,7 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'old_password' => ['required'],
-            'new_password' => [
-                'required',
-                'confirmed',
-                Password::min(8)->letters()->numbers()->mixedCase(),
-            ],
+            'address_id' => ['required', new VungRule()],
         ];
     }
 }
