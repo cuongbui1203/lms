@@ -42,8 +42,8 @@ class UserController extends Controller
     {
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
-        $columns = ['id', 'name', 'email', 'role_id', 'wp_id'];
-        $relations = ['role', 'work_plate'];
+        $columns = ['id', 'name', 'email', 'address_id', 'role_id', 'wp_id'];
+        $relations = ['role', 'work_plate', 'vehicle'];
 
         $users = User::get($columns)->paginate($pageSize, $page, $relations);
 
@@ -150,7 +150,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load('role', 'work-plate');
+        $user->load('role', 'work-plate', 'img', 'vehicle');
 
         return $this->sendSuccess($user, 'Send user');
     }
@@ -160,10 +160,15 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $handler = auth()->user();
         $user->name = $request->name ?? $user->name;
-        $user->address = $request->address ?? $user->address;
+        $user->address_id = $request->address_id ?? $user->address_id;
         $user->dob = $request->dob ?? $user->dob;
         $user->phone = $request->phone ?? $user->phone;
+        if ($handler->role_id === RoleEnum::ADMIN) {
+            $user->role_id = $request->role_id ?? $user->role_id;
+        }
+
         if ($request->hasFile('image')) {
             try {
                 deleteImage($user->img_id);
