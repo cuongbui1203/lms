@@ -8,7 +8,7 @@ Route::post('/', [OrderController::class, 'store']);
 Route::get('/multi/next', [OrderController::class, 'getNextPos']);
 Route::post('/multi/next', [OrderController::class, 'moveToNextPos']);
 Route::put('/multi/arrived', [OrderController::class, 'arrivedPos']);
+Route::delete('/multi', [OrderController::class, 'destroy']);
 Route::get('/{order}', [OrderController::class, 'show']);
-Route::delete('/{order}', [OrderController::class, 'destroy']);
 Route::post('/{order}', [OrderController::class, 'addDetail']);
 Route::put('/{order}/vehicles/{vehicle}', [OrderController::class, 'ganChoXe']);

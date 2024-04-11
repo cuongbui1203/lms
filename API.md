@@ -676,7 +676,6 @@ HTTP code 404
 `GET`: `work-plates/suggestion-wp`
 
 > `address_id`: required|string| address code valid
-
 #### Response
 ```
 {
@@ -1543,5 +1542,33 @@ HTTP status code 404
     "errors": [
         "overload"
     ]
+}
+```
+
+### Delete Order `AUTH`
+`DELETE`: `multi`
+
+>`orders`: repuired| address code valid
+
+#### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "delete success"
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "orders",
+            "message": [
+                "The orders field is required."
+            ]
+        }
+    ],
+    "status_code": 422
 }
 ```
