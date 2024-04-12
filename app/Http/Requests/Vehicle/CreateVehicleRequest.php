@@ -36,6 +36,15 @@ class CreateVehicleRequest extends FormRequest
                     config('type.vehicle.tractor'),
                 ]),
             ],
+            'goodsType' => [
+                'required',
+                Rule::in([
+                    config('type.goods.fragile'),
+                    config('type.goods.normal'),
+                    config('type.goods.oversized'),
+                    config('type.goods.hazardous'),
+                ]),
+            ],
         ];
     }
 }

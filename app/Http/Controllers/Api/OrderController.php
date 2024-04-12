@@ -26,6 +26,7 @@ class OrderController extends Controller
         $relations = ['notifications', 'details'];
 
         $orders = Order::all()->paginate($pageSize, $page, $relations);
+        $orders->append('sender_address', 'receiver_address');
 
         return $this->sendSuccess($orders, 'success');
     }
@@ -54,6 +55,7 @@ class OrderController extends Controller
         $notification->save();
 
         $order->load(['notifications']);
+        $order->append('sender_address', 'receiver_address');
 
         return $this->sendSuccess($order);
     }
@@ -61,6 +63,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['notifications', 'details']);
+        $order->append('sender_address', 'receiver_address');
 
         return $this->sendSuccess($order, 'get Order Detail success');
     }
@@ -73,7 +76,6 @@ class OrderController extends Controller
             OrderDetail::whereIn('order_id', $orderIds)->delete();
             Order::whereIn('id', $orderIds)->delete();
         } catch (Exception $e) {
-            dd($e);
         }
 
         return $this->sendSuccess([], 'delete success');
@@ -83,7 +85,6 @@ class OrderController extends Controller
     {
         $detail = new OrderDetail([
             'order_id' => $order->id,
-            'type_id' => $request->type_id,
             'desc' => $request->desc,
             'mass' => $request->mass,
             'name' => $request->name,

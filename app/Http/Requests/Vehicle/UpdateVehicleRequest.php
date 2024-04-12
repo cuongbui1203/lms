@@ -33,6 +33,14 @@ class UpdateVehicleRequest extends FormRequest
             ]),
             'payload' => 'numerics|min:0',
             'driverId' => 'exists:users,id',
+            'goodsType' => [
+                Rule::in([
+                    config('type.goods.fragile'),
+                    config('type.goods.normal'),
+                    config('type.goods.oversized'),
+                    config('type.goods.hazardous'),
+                ]),
+            ],
         ];
     }
 }
