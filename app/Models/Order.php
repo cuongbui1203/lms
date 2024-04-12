@@ -16,7 +16,7 @@ class Order extends Model
         'id',
     ];
 
-    protected $appends = ['sender_address', 'receiver_address', 'mass'];
+    protected $appends = ['mass'];
 
     public function details(): HasMany
     {
@@ -31,6 +31,11 @@ class Order extends Model
     public function vehicle(): BelongsTo
     {
         return $this->belongsTo(Vehicle::class, 'id', 'vehicle_id');
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
     }
 
     protected $cast = [

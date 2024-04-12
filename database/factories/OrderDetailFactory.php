@@ -22,7 +22,6 @@ class OrderDetailFactory extends Factory
             'desc' => fake()->text(),
             'created_at' => now(),
             'updated_at' => now(),
-            'type_id' => rand(9, 12),
         ];
     }
 }

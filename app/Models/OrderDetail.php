@@ -12,17 +12,11 @@ class OrderDetail extends Model
 
     protected $fillable = [
         'order_id',
-        'type_id',
         'mass',
         'desc',
         'image_id',
         'name',
     ];
-
-    public function type(): BelongsTo
-    {
-        return $this->belongsTo(Type::class);
-    }
 
     public function order(): BelongsTo
     {

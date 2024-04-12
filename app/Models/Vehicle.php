@@ -18,11 +18,17 @@ class Vehicle extends Model
         'type_id',
         'driver_id',
         'max_payload',
+        'goods_type',
     ];
 
     public function type(): BelongsTo
     {
         return $this->belongsTo(Type::class);
+    }
+
+    public function goodsType(): BelongsTo
+    {
+        return $this->belongsTo(Type::class, 'goods_type', 'id');
     }
 
     public function driver(): HasOne
