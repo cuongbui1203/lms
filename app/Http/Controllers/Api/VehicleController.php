@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Models\Vehicle;
+use DB;
 
 class VehicleController extends Controller
 {
@@ -14,7 +16,7 @@ class VehicleController extends Controller
      */
     public function index()
     {
-        $vehicles = Vehicle::all()->load(['driver', 'type']);
+        $vehicles = Vehicle::all()->load(['driver', 'type', 'goodsType']);
 
         return $this->sendSuccess($vehicles);
     }
@@ -28,7 +30,7 @@ class VehicleController extends Controller
         $vehicle->name = $request->name;
         $vehicle->type_id = $request->typeId;
         $vehicle->payload = $request->payload;
-
+        $vehicle->goods_type = $request->goodsType;
         $vehicle->save();
 
         return $this->sendSuccess([
@@ -41,7 +43,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        $vehicle->load(['type', 'driver']);
+        $vehicle->load(['type', 'driver', 'goodsType']);
 
         return $this->sendSuccess($vehicle);
     }
@@ -54,6 +56,7 @@ class VehicleController extends Controller
         $vehicle->name = $request->name ?? $vehicle->name;
         $vehicle->driver_id = $request->driverId ?? $vehicle->driver_id;
         $vehicle->payload = $request->payload ?? $vehicle->payload;
+        $vehicle->goods_type = $request->goodsType ?? $vehicle->goods_type;
 
         $vehicle->save();
 
@@ -68,5 +71,13 @@ class VehicleController extends Controller
         $vehicle->delete();
 
         return $this->sendSuccess([], 'delete success');
+    }
+
+    public function getSuggestionVehicle(ListOrderIdRequest $request)
+    {
+        $typeIds = DB::table('orders')->whereIn('id', $request->getOrders())->get(['type_id'])->pluck('type_id');
+        $vehicles = Vehicle::whereIn('goods_type', $typeIds)->get();
+
+        return $this->sendSuccess($vehicles);
     }
 }

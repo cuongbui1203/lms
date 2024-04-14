@@ -118,6 +118,6 @@ class WorkPlateController extends Controller
             ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
             ->load('type', 'detail'));
 
-        return $this->sendSuccess($res, 'get suggestion wp success');
+        return $this->sendSuccess($res->first()->toArray(), 'get suggestion wp success');
     }
 }

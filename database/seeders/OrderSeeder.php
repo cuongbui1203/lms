@@ -17,7 +17,6 @@ class OrderSeeder extends Seeder
     private function createDetail($orderId)
     {
         (new OrderDetail([
-            'type_id' => random_int(9, 12),
             'order_id' => $orderId,
             'name' => fake()->name(),
             'mass' => random_int(0, 10000000),
@@ -28,6 +27,7 @@ class OrderSeeder extends Seeder
     private function createOrder($addressIds)
     {
         $order = new Order([
+            'type_id' => random_int(9, 12),
             'sender_name' => fake()->name(),
             'sender_address_id' => $this->random($addressIds),
             'sender_phone' => fake()->phoneNumber(),

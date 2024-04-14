@@ -311,6 +311,7 @@ Param
 > `dob`: date  
 > `username`: required  
 > `address_id`: required
+> `image`: image  
 > only admin can change:  
 > `role_id`
 > `wp_id`
@@ -1572,3 +1573,29 @@ HTTP status code 404
     "status_code": 422
 }
 ```
+### Get suggestion Vehicle `AUTH`
+`GET` `vehicles/multi/suggestion`
+
+> - `orders`: required, list id orders
+
+#### Response
+```
+{
+    "success": true,
+    "data": [
+        {
+            "id": 3,
+            "created_at": "2024-04-12T07:08:42.000000Z",
+            "updated_at": "2024-04-12T07:08:42.000000Z",
+            "name": "tét",
+            "payload": 10000,
+            "type_id": 4,
+            "driver_id": null,
+            "max_payload": 0,
+            "goods_type": 10
+        }
+    ],
+    "message": ""
+}
+```
+
