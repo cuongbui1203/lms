@@ -28,6 +28,11 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
+    /**
+     * Show current users
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         /**
@@ -39,6 +44,12 @@ class UserController extends Controller
         return $this->sendSuccess($user);
     }
 
+    /**
+     * Get list all Account
+     *
+     * @param GetListRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getListAccount(GetListRequest $request)
     {
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
@@ -52,14 +63,19 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Register new account
+     *
+     * @param RegisterUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(RegisterUserRequest $request)
     {
         $user = new User();
+        $user->unguard();
         $user->name = $request->name;
         $user->username = $request->username;
-        $user->password = Hash::make($request->password);
+        $user->email = $request->email;
+        $user->password = $request->password;
         $user->role_id = RoleEnum::USER;
 
         if (isset($request->image)) {
@@ -70,6 +86,7 @@ class UserController extends Controller
 
         $job = new SendGreetingEmail($user);
         dispatch($job);
+        $user->unguard(false);
 
         return $this->sendSuccess($user, 'create User success');
     }
@@ -117,6 +134,12 @@ class UserController extends Controller
         );
     }
 
+    /**
+     * handle Login action
+     *
+     * @param LoginUserRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(LoginUserRequest $request)
     {
         $user = User::where('email', '=', $request->username)
@@ -136,9 +159,14 @@ class UserController extends Controller
         $res['csrf_token'] = csrf_token();
 
         return $this->addCookieToResponse($request, $this->sendSuccess($res, 'User login successfully.'));
-        // return $this->sendSuccess($res, 'User login successfully.');
     }
 
+    /**
+     * Handle Logout action
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
@@ -260,6 +288,10 @@ class UserController extends Controller
         $newUser->address_id = $request->address_id;
         $newUser->role_id = RoleEnum::EMPLOYEE;
         $newUser->wp_id = $user->wp_id;
+        if ($request->hasFile('image')) {
+            $newUser->img_id = storeImage('/user', $request->file('image'));
+        }
+
         if ($user->role_id === RoleEnum::ADMIN) {
             $newUser->role_id = $request->role_id ?? $newUser->role_id;
             $newUser->wp_id = $request->wp_id ?? $newUser->wp_id;

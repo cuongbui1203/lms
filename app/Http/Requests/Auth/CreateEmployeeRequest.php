@@ -38,6 +38,7 @@ class CreateEmployeeRequest extends FormRequest
                 ]),
             ],
             'wp_id' => 'exists:work_plates,id',
+            'img' => 'image',
         ];
     }
 }
