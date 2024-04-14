@@ -311,6 +311,7 @@ Param
 > `dob`: date  
 > `username`: required  
 > `address_id`: required
+> `image`: image  
 > only admin can change:  
 > `role_id`
 > `wp_id`

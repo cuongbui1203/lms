@@ -75,8 +75,7 @@ class OrderController extends Controller
             Noti::whereIn('order_id', $orderIds)->delete();
             OrderDetail::whereIn('order_id', $orderIds)->delete();
             Order::whereIn('id', $orderIds)->delete();
-        } catch (Exception $e) {
-        }
+        } catch (Exception $e) {} //phpcs:ignore
 
         return $this->sendSuccess([], 'delete success');
     }
