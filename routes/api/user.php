@@ -16,18 +16,27 @@ Route::middleware('auth:sanctum')->group(
         Route::get('/{user}', [UserController::class, 'show'])
             ->middleware('userValid')
             ->name('.show');
+
         Route::put('/change-password', [UserController::class, 'changePassword']);
+
         Route::withoutMiddleware('csrf')
             ->delete('/me', [UserController::class, 'logout']);
+
         Route::get('/me', [UserController::class, 'index'])
             ->name('.index');
+
         Route::put('/{user}', [UserController::class, 'update'])
             ->name('.update');
+
         Route::get('/', [UserController::class, 'getListAccount']);
+
         Route::put('/{user}/change-wp', [UserController::class, 'changeWP']);
+
         Route::middleware('adminManager')
             ->group(function () {
                 Route::post('/create/employee', [UserController::class, 'createEmployee']);
+                Route::delete('/{user}', [UserController::class, 'destroy']);
+                // Route::delete('/{user}', function()Ơ);
             });
     }
 );

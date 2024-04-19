@@ -230,7 +230,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->img()->delete();
+        /** @var User $handler */
+        $handler = auth()->user();
+        if ($handler->role_id === RoleEnum::MANAGER && $handler->wp_id !== $user->wp_id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied',
+            ], 403);
+        }
+
+        try {
+            deleteImage($user->img_id);
+        } catch (ModelNotFoundException $e) {} //phpcs:ignore
+
         $user->delete();
 
         return $this->sendSuccess('', 'delete success');
