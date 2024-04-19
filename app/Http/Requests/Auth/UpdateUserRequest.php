@@ -14,7 +14,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        $user = auth()->user();
+        $id = (int) getLastSegmentRegex(request()->getPathInfo());
+
+        return $user && ($user->role_id === RoleEnum::ADMIN || $user->id === $id);
     }
 
     /**

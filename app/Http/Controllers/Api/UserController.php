@@ -211,6 +211,7 @@ class UserController extends Controller
             $user->img_id = storeImage('users', $request->file('image'));
         }
 
+        $user->load('role', 'work_plate', 'img', 'vehicle');
         $user->save();
 
         return $this->sendSuccess($user, 'update user success');
