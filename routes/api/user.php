@@ -32,11 +32,13 @@ Route::middleware('auth:sanctum')->group(
 
         Route::put('/{user}/change-wp', [UserController::class, 'changeWP']);
 
+        Route::get('/lists/users', [UserController::class, 'getListUser'])
+            ->middleware('admin');
+
         Route::middleware('adminManager')
             ->group(function () {
                 Route::post('/create/employee', [UserController::class, 'createEmployee']);
                 Route::delete('/{user}', [UserController::class, 'destroy']);
-                // Route::delete('/{user}', function()Ơ);
             });
     }
 );

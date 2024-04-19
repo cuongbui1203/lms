@@ -14,6 +14,7 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListAccountRequest;
+use App\Http\Requests\GetListRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
 use Carbon\Carbon;
@@ -28,6 +29,17 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class UserController extends Controller
 {
+    public function getListUser(GetListRequest $request)
+    {
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relations = ['role', 'img'];
+        $users = User::where('role_id', RoleEnum::USER)
+            ->get()->paginate($pageSize, $page, $relations);
+
+        return $this->sendSuccess($users, 'success');
+    }
+
     /**
      * Show current users
      *
