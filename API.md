@@ -266,39 +266,211 @@ HTTP status code 500
 ```
 
 
-## Get list Account `AUTH` `Admin`
+## Get list Account `AUTH` `ADMIN` `MANAGER`
 `GET` `users\`  
 Param
 >`page`: number|min:1  
 >`pageSize`: number|min:1  
+>`role`: roleId
 
 ### Response
 ```
 {
     "success": true,
     "data": {
-        "total": 1,
+        "total": 4,
         "currentPage": 1,
-        "pageSize": 12,
+        "pageSize": 3,
         "data": [
             {
                 "id": 1,
-                "name": "test",
-                "email": null,
+                "name": "Esmeralda Shields DDS",
+                "email": "admin@admin.com",
+                "email_verified_at": null,
+                "created_at": null,
+                "updated_at": "2024-04-19T07:27:10.000000Z",
+                "phone": "240.353.9638",
+                "dob": "2024/04/19",
+                "username": "admin",
+                "address_id": "27298",
+                "role_id": 1,
+                "wp_id": 1,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27298",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 01"
+                },
+                "role": {
+                    "id": 1,
+                    "name": "Admin",
+                    "desc": "Admin",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "work_plate": {
+                    "id": 1,
+                    "name": "IqZ59e2yzJ",
+                    "address_id": "27280",
+                    "type_id": 2,
+                    "created_at": "2024-04-18T19:05:58.000000Z",
+                    "updated_at": "2024-04-18T19:05:58.000000Z",
+                    "cap": "3",
+                    "vung": "27280",
+                    "address": {
+                        "provinceCode": "79",
+                        "districtCode": "773",
+                        "wardCode": "27280",
+                        "province": "Thành phố Hồ Chí Minh",
+                        "district": "Quận 4",
+                        "ward": "Phường 14"
+                    },
+                    "manager": {
+                        "id": 5,
+                        "name": "Reyes O'Conner V",
+                        "address": null
+                    }
+                },
+                "vehicle": null,
+                "img": null
+            },
+            {
+                "id": 2,
+                "name": "Miss Lori Windler",
+                "email": "driver@admin.com",
+                "email_verified_at": null,
+                "created_at": null,
+                "updated_at": "2024-04-19T07:31:58.000000Z",
+                "phone": "+1.870.806.5610",
+                "dob": "2024/04/19",
+                "username": "driver",
+                "address_id": "27298",
                 "role_id": 3,
-                "wp_id": null,
+                "wp_id": 1,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27298",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 01"
+                },
                 "role": {
                     "id": 3,
-                    "name": "User",
-                    "desc": "User",
-                    "created_at": "2024-03-14T10:51:05.000000Z",
-                    "updated_at": "2024-03-14T10:51:05.000000Z"
+                    "name": "Driver",
+                    "desc": "Driver",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
                 },
-                "work_plate": null
+                "work_plate": {
+                    "id": 1,
+                    "name": "IqZ59e2yzJ",
+                    "address_id": "27280",
+                    "type_id": 2,
+                    "created_at": "2024-04-18T19:05:58.000000Z",
+                    "updated_at": "2024-04-18T19:05:58.000000Z",
+                    "cap": "3",
+                    "vung": "27280",
+                    "address": {
+                        "provinceCode": "79",
+                        "districtCode": "773",
+                        "wardCode": "27280",
+                        "province": "Thành phố Hồ Chí Minh",
+                        "district": "Quận 4",
+                        "ward": "Phường 14"
+                    },
+                    "manager": {
+                        "id": 5,
+                        "name": "Reyes O'Conner V",
+                        "address": null
+                    }
+                },
+                "vehicle": null,
+                "img": null
+            },
+            {
+                "id": 4,
+                "name": "Hortense Kuhn",
+                "email": "employee@admin.com",
+                "email_verified_at": null,
+                "created_at": null,
+                "updated_at": null,
+                "phone": "(610) 818-7295",
+                "dob": "2024/04/19",
+                "username": "employee",
+                "address_id": "27298",
+                "role_id": 4,
+                "wp_id": 1,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27298",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 01"
+                },
+                "role": {
+                    "id": 4,
+                    "name": "Employee",
+                    "desc": "Employee",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "work_plate": {
+                    "id": 1,
+                    "name": "IqZ59e2yzJ",
+                    "address_id": "27280",
+                    "type_id": 2,
+                    "created_at": "2024-04-18T19:05:58.000000Z",
+                    "updated_at": "2024-04-18T19:05:58.000000Z",
+                    "cap": "3",
+                    "vung": "27280",
+                    "address": {
+                        "provinceCode": "79",
+                        "districtCode": "773",
+                        "wardCode": "27280",
+                        "province": "Thành phố Hồ Chí Minh",
+                        "district": "Quận 4",
+                        "ward": "Phường 14"
+                    },
+                    "manager": {
+                        "id": 5,
+                        "name": "Reyes O'Conner V",
+                        "address": null
+                    }
+                },
+                "vehicle": null,
+                "img": null
             }
         ]
     },
-    "message": "success"
+    "message": ""
+}
+```
+
+### Delete Employee `AUTH` `ADMIN` `MANAGER`
+`DELETE`: `users/{id}`
+#### Response 
+```
+{
+    "success": true,
+    "data": "",
+    "message": "delete success"
+}
+```
+```
+http status 404
+```
+```
+http status 403
+{
+    "success": false,
+    "message": "Access denied"
 }
 ```
 
