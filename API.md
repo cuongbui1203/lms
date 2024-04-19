@@ -453,6 +453,312 @@ Param
 }
 ```
 
+### Get list user `AUTH` `ADMIN`
+`GET` `usres/lists/uesrs`
+
+>`page`: number|min:1  
+>`pageSize`: number|min:1  
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 9,
+        "currentPage": 1,
+        "pageSize": 12,
+        "data": [
+            {
+                "id": 3,
+                "name": "Prof. Jaquelin Harvey IV",
+                "email": "user@admin.com",
+                "email_verified_at": null,
+                "created_at": null,
+                "updated_at": null,
+                "phone": "+1-949-316-1036",
+                "dob": "2024/04/19",
+                "username": "user",
+                "address_id": "27298",
+                "role_id": 2,
+                "wp_id": 1,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27298",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 01"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 6,
+                "name": "Ona Schamberger",
+                "email": "fisher.mia@example.net",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "+1.769.712.0859",
+                "dob": "2024/04/19",
+                "username": "amos32",
+                "address_id": "06631",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "20",
+                    "districtCode": "189",
+                    "wardCode": "06631",
+                    "province": "Tỉnh Lạng Sơn",
+                    "district": "Huyện Đình Lập",
+                    "ward": "Xã Thái Bình"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 7,
+                "name": "Bartholome Willms II",
+                "email": "price.alanna@example.org",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "+1-480-559-6962",
+                "dob": "2024/04/19",
+                "username": "loyce.kerluke",
+                "address_id": "11746",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "31",
+                    "districtCode": "314",
+                    "wardCode": "11746",
+                    "province": "Thành phố Hải Phòng",
+                    "district": "Huyện Kiến Thuỵ",
+                    "ward": "Xã Đoàn Xá"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 8,
+                "name": "Derek Rolfson",
+                "email": "sferry@example.com",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "351-674-4041",
+                "dob": "2024/04/19",
+                "username": "ed.armstrong",
+                "address_id": "08710",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "26",
+                    "districtCode": "243",
+                    "wardCode": "08710",
+                    "province": "Tỉnh Vĩnh Phúc",
+                    "district": "Thành phố Vĩnh Yên",
+                    "ward": "Phường Liên Bảo"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 9,
+                "name": "Mr. Marques Smitham PhD",
+                "email": "deckow.cheyenne@example.net",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "260-298-9190",
+                "dob": "2024/04/19",
+                "username": "karine98",
+                "address_id": "10174",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "01",
+                    "districtCode": "278",
+                    "wardCode": "10174",
+                    "province": "Thành phố Hà Nội",
+                    "district": "Huyện Thanh Oai",
+                    "ward": "Xã Cao Dương"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 10,
+                "name": "Stanford Pfeffer",
+                "email": "pattie.langosh@example.net",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "256.997.6831",
+                "dob": "2024/04/19",
+                "username": "willow.boyer",
+                "address_id": "29542",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "86",
+                    "districtCode": "855",
+                    "wardCode": "29542",
+                    "province": "Tỉnh Vĩnh Long",
+                    "district": "Thành phố Vĩnh Long",
+                    "ward": "Phường 9"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 11,
+                "name": "Isobel Senger",
+                "email": "will.dillan@example.com",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "678.547.0922",
+                "dob": "2024/04/19",
+                "username": "tyrel95",
+                "address_id": "26299",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "75",
+                    "districtCode": "738",
+                    "wardCode": "26299",
+                    "province": "Tỉnh Đồng Nai",
+                    "district": "Huyện Thống Nhất",
+                    "ward": "Xã Gia Tân 1"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 12,
+                "name": "Dr. Davion Nikolaus Jr.",
+                "email": "kenna.harvey@example.org",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "845-589-7059",
+                "dob": "2024/04/19",
+                "username": "hortense53",
+                "address_id": "08959",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "26",
+                    "districtCode": "249",
+                    "wardCode": "08959",
+                    "province": "Tỉnh Vĩnh Phúc",
+                    "district": "Huyện Bình Xuyên",
+                    "ward": "Xã Sơn Lôi"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 15,
+                "name": "Prof. Fae Wilderman",
+                "email": "kendrick.swift@example.org",
+                "email_verified_at": "2024/04/19 02:05",
+                "created_at": "2024-04-18T19:05:58.000000Z",
+                "updated_at": "2024-04-18T19:05:58.000000Z",
+                "phone": "313.437.3311",
+                "dob": "2024/04/19",
+                "username": "myra89",
+                "address_id": "19639",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "45",
+                    "districtCode": "469",
+                    "wardCode": "19639",
+                    "province": "Tỉnh Quảng Trị",
+                    "district": "Huyện Triệu Phong",
+                    "ward": "Xã Triệu Trạch"
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-18T19:05:44.000000Z",
+                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                },
+                "img": null
+            }
+        ]
+    },
+    "message": "success"
+}
+```
+```
+{
+    "success": false,
+    "message": "Access denied"
+}
+```
+
+
 ### Delete Employee `AUTH` `ADMIN` `MANAGER`
 `DELETE`: `users/{id}`
 #### Response 
