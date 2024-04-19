@@ -13,7 +13,7 @@ use App\Http\Requests\Auth\ResetPasswordLinkRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\UpdateRoleRequest;
 use App\Http\Requests\Auth\UpdateUserRequest;
-use App\Http\Requests\GetListRequest;
+use App\Http\Requests\GetListAccountRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
 use Carbon\Carbon;
@@ -47,17 +47,35 @@ class UserController extends Controller
     /**
      * Get list all Account
      *
-     * @param GetListRequest $request
+     * @param GetListAccountRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getListAccount(GetListRequest $request)
+    public function getListAccount(GetListAccountRequest $request)
     {
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
-        $columns = ['id', 'name', 'email', 'address_id', 'role_id', 'wp_id'];
-        $relations = ['role', 'work_plate', 'vehicle'];
+        $relations = ['role', 'work_plate', 'vehicle', 'img'];
+        /** @var User $handler */
+        $handler = auth()->user();
+        if ($handler->role_id === RoleEnum::MANAGER) {
+            $users = User::where(function ($query) {
+                $query->where('role_id', RoleEnum::EMPLOYEE)
+                    ->orWhere('role_id', RoleEnum::DRIVER);
 
-        $users = User::get($columns)->paginate($pageSize, $page, $relations);
+                return $query;
+            })
+                ->where('wp_id', $handler->wp_id)
+                ->get();
+            $users = $users->paginate($pageSize, $page, $relations);
+        } else {
+            $role = $request->role_id ?? null;
+            $users = User::where('role_id', '!=', RoleEnum::USER);
+            if ($role && in_array($role, [RoleEnum::getValues()])) {
+                $users->where('role_id', $role);
+            }
+
+            $users = $users->get()->paginate($pageSize, $page, $relations);
+        }
 
         return $this->sendSuccess($users, 'success');
     }

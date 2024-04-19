@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         Collection::macro('paginate', function (int $pageSize, int $page = 1, array $relations = []) {
             $total = $this->count();
-            $data = $this->slice($page - 1, $pageSize);
+            $data = $this->slice(($page - 1) * $pageSize, $pageSize)->values();
             foreach ($data as $e) {
                 $e->load($relations);
             }
