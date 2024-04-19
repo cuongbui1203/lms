@@ -6,6 +6,17 @@ use App\Models\Order;
 use App\Models\WorkPlate;
 use Illuminate\Support\Facades\Storage;
 
+if (!function_exists('getLastSegmentRegex')) {
+    function getLastSegmentRegex(string $string)
+    {
+        if (preg_match('/\/([^\/]+)$/', $string, $matches)) {
+            return $matches[1];
+        }
+
+        return '';
+    }
+}
+
 if (!function_exists('storeImage')) {
     function storeImage($path, $file)
     {

@@ -138,7 +138,7 @@ class UserController extends Controller
      * handle Login action
      *
      * @param LoginUserRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function login(LoginUserRequest $request)
     {
@@ -179,7 +179,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user->load('role', 'work-plate', 'img', 'vehicle');
+        $user->load('role', 'work_plate', 'img', 'vehicle');
 
         return $this->sendSuccess($user, 'Send user');
     }
