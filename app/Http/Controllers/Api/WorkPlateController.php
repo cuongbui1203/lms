@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\AddressTypeEnum;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetListWPRequest;
 use App\Http\Requests\WorkPlate\CreateWPRequest;
 use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
@@ -13,9 +14,14 @@ use Illuminate\Support\Collection;
 
 class WorkPlateController extends Controller
 {
-    public function index()
+    public function index(GetListWPRequest $request)
     {
-        $wp = WorkPlate::all(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id']);
+        $wp = WorkPlate::query();
+        if ($request->type_id) {
+            $wp->where('type_id', '=', $request->type_id);
+        }
+
+        $wp = $wp->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id']);
         $wp->load('type', 'detail');
 
         return $this->sendSuccess($wp, 'Get list work plate success');

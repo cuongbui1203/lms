@@ -1002,8 +1002,10 @@ http status 403
 ```
 HTTP code 404
 ```
-### Get List WP `AUTH`
+### Get List WP `AUTH` `ADMIN` `MANAGER` `EMPLOYEE` 
 `GET` `work-plates`
+
+> `type_id`: 1,2,3
 
 #### Response
 ```
@@ -1087,6 +1089,23 @@ HTTP code 404
         }
     ],
     "message": "Get list work plate success"
+}
+```
+```
+http status 403
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "type_id",
+            "message": [
+                "The selected type id is invalid."
+            ]
+        }
+    ],
+    "status_code": 422
 }
 ```
 
