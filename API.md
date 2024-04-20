@@ -147,8 +147,10 @@ HTTP status code 500
 ```
 
 ## Get user info `AUTH` 
-`GET`: `users/me`  
- 
+`GET`: `users/:id` 
+
+> `id` id cua user muon xem vs admin | id ban than  
+
 ### Response
 ### Success
 ```
