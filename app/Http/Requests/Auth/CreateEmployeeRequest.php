@@ -25,10 +25,10 @@ class CreateEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'required',
             'dob' => 'date',
-            'username' => 'required',
+            'username' => 'required|unique:users,username',
             'address_id' => 'required|exists:sqlite_vn_map.wards,code',
             'role_id' => [
                 Rule::in([
