@@ -35,7 +35,7 @@ class CreateWPRequest extends FormRequest
                     config('type.workPlate.transshipmentPoint'),
                 ),
             ],
-            'cap' => ['required', Rule::in([AddressTypeEnum::getValues()])],
+            'cap' => ['required', Rule::in(AddressTypeEnum::getValues())],
             'max_payload' => 'numeric',
 
         ];

@@ -18,6 +18,8 @@ class Order extends Model
 
     protected $appends = ['mass'];
 
+    protected $with = ['type'];
+
     public function details(): HasMany
     {
         return $this->hasMany(OrderDetail::class);

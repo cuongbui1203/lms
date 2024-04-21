@@ -25,8 +25,9 @@ class OrderController extends Controller
         $page = $request->page ?? 1;
         $relations = ['notifications', 'details'];
 
-        $orders = Order::all()->paginate($pageSize, $page, $relations);
-        $orders->append('sender_address', 'receiver_address');
+        $orders = Order::all()
+            ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
+            ->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders, 'success');
     }
@@ -167,6 +168,7 @@ class OrderController extends Controller
     {
         if ($order->mass + $vehicle->payload <= $vehicle->max_payload) {
             $order->vehicle_id = $vehicle->id;
+            $vehicle->payload += $order->mass;
 
             return $this->sendSuccess([], 'success');
         }
