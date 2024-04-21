@@ -221,7 +221,7 @@ class UserController extends Controller
     {
         $handler = auth()->user();
         $user->name = $request->name ?? $user->name;
-        $user->email = $request->name ?? $user->email;
+        $user->email = $request->email ?? $user->email;
         $user->address_id = $request->address_id ?? $user->address_id;
         $user->dob = $request->dob ?? $user->dob;
         $user->phone = $request->phone ?? $user->phone;
