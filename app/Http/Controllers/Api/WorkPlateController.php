@@ -36,7 +36,8 @@ class WorkPlateController extends Controller
         $workPlate->name = $request->name;
         $workPlate->address_id = $request->address_id;
         $workPlate->type_id = $request->type_id;
-        $workPlate->vung = $request->vung;
+        $workPlate->cap = $request->cap;
+        $workPlate->vung = getAddressCode($request->address_id, $request->cap);
         if ($request->type_id === config('type.workPlate.warehouse')) {
             $workPlate->detail()->create([
                 'max_payload' => $request->max_payload,

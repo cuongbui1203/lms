@@ -923,8 +923,11 @@ http status 403
 > - name: required
 > - address_id: required|string
 > - type_id: required|numeric
+> - cap: required|numeric|in(1,2,3)  
 > - max_payload: numeric
 
+
+> 1,2,3: ward, district, province
 #### Response
 ```
 {

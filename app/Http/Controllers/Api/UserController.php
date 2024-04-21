@@ -217,10 +217,11 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user) // phpcs:ignore
     {
         $handler = auth()->user();
         $user->name = $request->name ?? $user->name;
+        $user->email = $request->name ?? $user->email;
         $user->address_id = $request->address_id ?? $user->address_id;
         $user->dob = $request->dob ?? $user->dob;
         $user->phone = $request->phone ?? $user->phone;

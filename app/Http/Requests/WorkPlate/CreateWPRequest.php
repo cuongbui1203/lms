@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\WorkPlate;
 
+use App\Enums\AddressTypeEnum;
 use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;
-use App\Rules\VungRule;
 use Illuminate\Validation\Rule;
 
 class CreateWPRequest extends FormRequest
@@ -35,7 +35,7 @@ class CreateWPRequest extends FormRequest
                     config('type.workPlate.transshipmentPoint'),
                 ),
             ],
-            'vung' => ['required', new VungRule()],
+            'cap' => ['required', Rule::in([AddressTypeEnum::getValues()])],
             'max_payload' => 'numeric',
 
         ];
