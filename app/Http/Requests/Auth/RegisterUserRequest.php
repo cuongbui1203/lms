@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\FormRequest;
+use App\Rules\ValidUsernameRule;
 use Illuminate\Validation\Rules\Password;
 
 class RegisterUserRequest extends FormRequest
@@ -24,7 +25,7 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'username' => 'required|unique:users,username',
+            'username' => ['required', 'unique:users,username', new ValidUsernameRule()],
             'email' => 'required|unique:users,email',
             'password' => [
                 'required',

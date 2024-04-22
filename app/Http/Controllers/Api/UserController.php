@@ -80,9 +80,9 @@ class UserController extends Controller
                 ->get();
             $users = $users->paginate($pageSize, $page, $relations);
         } else {
-            $role = $request->role_id ?? null;
+            $role = ((int) $request->role_id) ?? null;
             $users = User::where('role_id', '!=', RoleEnum::USER);
-            if ($role && in_array($role, [RoleEnum::getValues()])) {
+            if ($role && in_array($role, RoleEnum::getValues())) {
                 $users->where('role_id', $role);
             }
 
@@ -172,8 +172,11 @@ class UserController extends Controller
      */
     public function login(LoginUserRequest $request)
     {
-        $user = User::where('email', '=', $request->username)
-            ->orWhere('username', '=', $request->username)->first();
+        $user = User::where(function ($query) {
+            return request()->isUsername ?
+            $query->where('username', '=', request()->username) :
+            $query->where('email', '=', request()->username);
+        })->first();
 
         if (!Hash::check($request->password, $user->password)) {
             return $this->sendError('auth error', []);

@@ -15,13 +15,16 @@ class UsernameRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $patten = '/^[w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$/';
-        if (!DB::table('users')->where('username', '=', $value)->exists()) {
-            if (preg_match($patten, $value)) {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+            if (!DB::table('users')->where('username', '=', $value)->exists()) {
                 $fail('The :attribute must be email or username');
-            } else if (!DB::table('users')->where('email', '=', $value)->exists()) {
-                $fail('The email or username doesn\'t exists');
+            } else {
+                request()->merge(['isUsername' => true]);
             }
+        } else if (!DB::table('users')->where('email', '=', $value)->exists()) {
+            $fail('The email or username doesn\'t exists');
+        } else {
+            request()->merge(['isUsername' => false]);
         }
     }
 }

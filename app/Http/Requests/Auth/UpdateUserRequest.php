@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'string',
             'dob' => 'date',
             'image' => 'image',
-            'email' => 'email',
+            'email' => 'email|unique:users,email',
             'phone' => 'string',
             'address_id' => [
                 'string',

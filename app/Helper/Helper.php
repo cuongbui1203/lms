@@ -10,7 +10,7 @@ if (!function_exists('getLastSegmentRegex')) {
     function getLastSegmentRegex(string $string)
     {
         if (preg_match('/\/([^\/]+)$/', $string, $matches)) {
-            return $matches[1];
+            return (int) $matches[1];
         }
 
         return '';
