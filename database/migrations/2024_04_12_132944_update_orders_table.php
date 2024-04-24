@@ -34,7 +34,6 @@ return new class extends Migration
         });
         Schema::table('order_details', function (Blueprint $table) {
             $table->foreignId('type_id');
-            $table->foreign('type_id')->references('id')->on('types');
         });
         Schema::table('vehicles', function (Blueprint $table) {
             $table->dropConstrainedForeignId('goods_type');

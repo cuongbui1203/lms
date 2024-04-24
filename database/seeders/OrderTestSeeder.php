@@ -82,6 +82,7 @@ class OrderTestSeeder extends Seeder
         $order->receiver_name = 'receiver';
         $order->receiver_phone = '123123123';
         $order->receiver_address_id = '07159';
+        $order->status_id = StatusEnum::CREATE;
 
         $order->save();
 

@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\ArrivedPostRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
+use App\Http\Requests\Order\GetListOrderRequest;
 use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Order\MoveOrderRequest;
+use App\Http\Requests\Order\UpdateShippedOrderRequest;
+use App\Http\Requests\Order\UpdateShippingOrderRequest;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -19,13 +21,16 @@ use Exception;
 
 class OrderController extends Controller
 {
-    public function index(GetListRequest $request)
+    public function index(GetListOrderRequest $request)
     {
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
         $relations = ['notifications', 'details'];
-
-        $orders = Order::all()
+        $orders = Order::query();
+        if ($request->status) {
+            $orders = $orders->where('status_id', '=', $request->status);
+        }
+        $orders = $orders->get()
             ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
             ->paginate($pageSize, $page, $relations);
 
@@ -43,6 +48,7 @@ class OrderController extends Controller
         $order->receiver_name = $request->receiver_name;
         $order->receiver_phone = $request->receiver_phone;
         $order->receiver_address_id = $request->receiver_address_id;
+        $order->status_id = StatusEnum::CREATE;
 
         $order->save();
 
@@ -122,6 +128,11 @@ class OrderController extends Controller
     public function MoveToNextPos(MoveOrderRequest $request)
     {
         $inputs = collect(json_decode($request->data));
+        $orderIds = $inputs->pluck('orderId');
+        Order::whereIn('id', $orderIds)->update([
+            'status_id' => StatusEnum::R_DELIVERY,
+        ]);
+
         $inputs->map(function ($e) {
             $notification = new Noti();
             $notification->from_id = $e->from_id ?? null;
@@ -170,9 +181,61 @@ class OrderController extends Controller
             $order->vehicle_id = $vehicle->id;
             $vehicle->payload += $order->mass;
 
-            return $this->sendSuccess([], 'success');
+            return $this->sendSuccess([
+                'success' => true,
+            ], 'success');
         }
 
         return $this->sendError('fail', ['overload']);
+    }
+
+    public function shipping(UpdateShippingOrderRequest $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $orderIds = $request->getOrders();
+        Order::whereIn('id', $orderIds)->update([
+            'status_id' => StatusEnum::SHIPPING,
+        ]);
+        foreach ($orderIds as $orderId) {
+            $notification = new Noti();
+            $notification->from_id = $user->work_plate->id;
+            $notification->to_id = $user->work_plate->id;
+            $notification->from_address_id = $user->work_plate->address_id;
+            $notification->to_address_id = $user->work_plate->address_id;
+            $notification->description = 'Shipping';
+            $notification->order_id = $orderId;
+            $notification->status_id = StatusEnum::SHIPPING;
+            $notification->save();
+        }
+        return $this->sendSuccess([
+            'success' => true,
+            'message' => 'success',
+        ]);
+    }
+
+    public function shipped(UpdateShippedOrderRequest $request, Order $order)
+    {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        /** @var \App\Models\Noti $noti */
+        $noti = $order->notifications->last();
+        $noti->status_id = StatusEnum::DONE;
+
+        $notification = new Noti();
+        $notification->from_id = $user->work_plate->id;
+        $notification->to_id = $user->work_plate->id;
+        $notification->from_address_id = $user->work_plate->address_id;
+        $notification->to_address_id = $user->work_plate->address_id;
+        $notification->description = 'Shipping';
+        $notification->order_id = $order->id;
+        $notification->status_id = $request->status;
+        $notification->save();
+
+        $order->status_id = $request->status;
+
+        return $this->sendSuccess([
+            'success' => true,
+        ]);
     }
 }

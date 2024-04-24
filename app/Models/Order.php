@@ -20,6 +20,11 @@ class Order extends Model
 
     protected $with = ['type'];
 
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
     public function details(): HasMany
     {
         return $this->hasMany(OrderDetail::class);

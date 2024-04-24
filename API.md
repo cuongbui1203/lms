@@ -2101,3 +2101,63 @@ HTTP status code 404
 }
 ```
 
+### Shipping `AUTH` `ADMIN` `SHIPPER`
+`PUT` `orders/multi/shipping`
+
+> - `orders`: required, list id orders
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "success": true,
+        "message": "success"
+    },
+    "message": ""
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "orders",
+            "message": [
+                "must be valid json string"
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
+
+### Shipped `AUTH` `ADMIN` `SHIPPER`
+`PUT` `orders/{orderId}/shipped`
+
+> `status`: requied, in(9,11,12)
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "success": true
+    },
+    "message": ""
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "status",
+            "message": [
+                "The selected status is invalid."
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
