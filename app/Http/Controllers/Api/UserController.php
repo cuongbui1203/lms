@@ -225,7 +225,7 @@ class UserController extends Controller
         $handler = auth()->user();
         $user->name = $request->name ?? $user->name;
         $user->email = $request->email ?? $user->email;
-        $user->address_id = $request->address_id ?? $user->address_id;
+        $user->address_id = [$request->address_id ?? $user->address_id, $request->address];
         $user->dob = $request->dob ?? $user->dob;
         $user->phone = $request->phone ?? $user->phone;
         if ($handler->role_id === RoleEnum::ADMIN) {

@@ -16,6 +16,7 @@ class UpdateShippedOrderRequest extends FormRequest
     {
         /** @var \App\Models\User $user */
         $user = auth()->user();
+
         return $user && (in_array($user->role_id, [
             RoleEnum::ADMIN,
             RoleEnum::SHIPPER,
@@ -35,7 +36,7 @@ class UpdateShippedOrderRequest extends FormRequest
                 Rule::in([
                     StatusEnum::COMPLETE,
                     StatusEnum::FAIL,
-                    StatusEnum::RETURN ,
+                    StatusEnum::RETURN,
                 ]),
             ],
         ];

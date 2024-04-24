@@ -27,6 +27,7 @@ class CreateWPRequest extends FormRequest
         return [
             'name' => 'required',
             'address_id' => ['required', Rule::exists('sqlite_vn_map.wards', 'code')],
+            'address' => ['required', 'string', 'nullable'],
             'type_id' => [
                 'required',
                 Rule::in(

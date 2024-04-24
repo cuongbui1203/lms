@@ -30,6 +30,7 @@ class OrderController extends Controller
         if ($request->status) {
             $orders = $orders->where('status_id', '=', $request->status);
         }
+
         $orders = $orders->get()
             ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
             ->paginate($pageSize, $page, $relations);
@@ -201,13 +202,12 @@ class OrderController extends Controller
             $notification = new Noti();
             $notification->from_id = $user->work_plate->id;
             $notification->to_id = $user->work_plate->id;
-            $notification->from_address_id = $user->work_plate->address_id;
-            $notification->to_address_id = $user->work_plate->address_id;
             $notification->description = 'Shipping';
             $notification->order_id = $orderId;
             $notification->status_id = StatusEnum::SHIPPING;
             $notification->save();
         }
+
         return $this->sendSuccess([
             'success' => true,
             'message' => 'success',

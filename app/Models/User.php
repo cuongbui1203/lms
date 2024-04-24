@@ -26,7 +26,7 @@ class User extends Authenticatable
         'phone',
         'dob',
         'username',
-        'address',
+        'address_id',
         'img_id',
     ];
 
@@ -49,6 +49,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'address_id',
     ];
 
     /**
@@ -67,11 +68,22 @@ class User extends Authenticatable
         return Attribute::make(
             get: function () {
                 if (array_key_exists('address_id', $this->attributes)) {
-                    return getAddress($this->attributes['address_id']);
+                    $arrayAddress = explode('|', $this->attributes['address_id']);
+                    $address = getAddress($arrayAddress[0]);
+                    $address->{'address'} = $arrayAddress[1] ?? '';
+
+                    return $address;
                 }
 
                 return null;
             },
+        );
+    }
+
+    protected function addressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1] ?? '',
         );
     }
 

@@ -37,6 +37,7 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 new VungRule(),
             ],
+            'address' => 'string|nullable',
             'role_id' => [
                 Rule::in(RoleEnum::getValues()),
             ],

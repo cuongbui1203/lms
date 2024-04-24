@@ -13,6 +13,7 @@ class UpdateShippingOrderRequest extends ListOrderIdRequest
     {
         /** @var \App\Models\User $user */
         $user = auth()->user();
+
         return $user && (in_array($user->role_id, [
             RoleEnum::ADMIN,
             RoleEnum::SHIPPER,

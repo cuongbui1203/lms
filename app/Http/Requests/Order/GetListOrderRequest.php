@@ -23,7 +23,6 @@ class GetListOrderRequest extends GetListRequest
      */
     public function rules(): array
     {
-
         return array_merge(
             parent::rules(),
             [

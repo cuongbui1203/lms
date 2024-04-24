@@ -158,29 +158,61 @@ HTTP status code 500
     "success": true,
     "data": {
         "id": 1,
-        "name": "test",
-        "email": null,
+        "name": "Lysanne Deckow IV",
+        "email": "admin@admin.com",
         "email_verified_at": null,
-        "created_at": "2024-03-14 11:09:37",
-        "updated_at": "2024-03-14 11:09:37",
-        "phone": null,
-        "dob": null,
-        "username": "username26",
-        "address": null,
-        "role_id": 3,
-        "wp_id": null,
+        "created_at": null,
+        "updated_at": "2024-04-24T18:58:03.000000Z",
+        "phone": "+1-270-765-894",
+        "dob": "2024/07/10",
+        "username": "admin",
+        "role_id": 1,
+        "wp_id": 1,
         "img_id": null,
-        "img": null,
-        "work_plate": null,
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27298",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 01",
+            "address": "hn"
+        },
         "role": {
-            "id": 3,
-            "name": "User",
-            "desc": "User",
-            "created_at": "2024-03-14T10:51:05.000000Z",
-            "updated_at": "2024-03-14T10:51:05.000000Z"
-        }
+            "id": 1,
+            "name": "Admin",
+            "desc": "Admin",
+            "created_at": "2024-04-24T17:43:35.000000Z",
+            "updated_at": "2024-04-24T17:43:35.000000Z"
+        },
+        "work_plate": {
+            "id": 1,
+            "name": "DQyWw9Xf1S",
+            "type_id": 2,
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "cap": "3",
+            "vung": "27280",
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14",
+                "address": ""
+            },
+            "manager": {
+                "id": 5,
+                "name": "Roberto Emard",
+                "address": null,
+                "role": null
+            }
+        },
+        "img": null,
+        "vehicle": null
     },
-    "message": ""
+    "message": "Send user"
 }
 ```
 ### Fail
@@ -193,6 +225,7 @@ HTTP status code 500
 >`email`: email  
 >`phone`: string
 >`address`: string
+>`address_id`: string wardId
 >`image`: image
 
 ### Response
@@ -201,18 +234,59 @@ HTTP status code 500
     "success": true,
     "data": {
         "id": 1,
-        "name": "test",
-        "email": null,
+        "name": "Lysanne Deckow IV",
+        "email": "admin@admin.com",
         "email_verified_at": null,
-        "created_at": "2024-03-21 15:32:58",
-        "updated_at": "2024-03-21 15:32:58",
-        "phone": null,
-        "dob": null,
-        "username": "username",
-        "address": null,
-        "role_id": 2,
-        "wp_id": null,
-        "img_id": null
+        "created_at": null,
+        "updated_at": "2024-04-24T18:58:03.000000Z",
+        "phone": "+1-270-765-894",
+        "dob": "2024/07/10",
+        "username": "admin",
+        "role_id": 1,
+        "wp_id": 1,
+        "img_id": null,
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27298",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 01",
+            "address": "hn"
+        },
+        "role": {
+            "id": 1,
+            "name": "Admin",
+            "desc": "Admin",
+            "created_at": "2024-04-24T17:43:35.000000Z",
+            "updated_at": "2024-04-24T17:43:35.000000Z"
+        },
+        "work_plate": {
+            "id": 1,
+            "name": "DQyWw9Xf1S",
+            "address_id": "27280",
+            "type_id": 2,
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "cap": "3",
+            "vung": "27280",
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14"
+            },
+            "manager": {
+                "id": 5,
+                "name": "Roberto Emard",
+                "address": null,
+                "role": null
+            }
+        },
+        "img": null,
+        "vehicle": null
     },
     "message": "update user success"
 }
@@ -280,131 +354,20 @@ Param
 {
     "success": true,
     "data": {
-        "total": 4,
+        "total": 1,
         "currentPage": 1,
         "pageSize": 3,
         "data": [
             {
-                "id": 1,
-                "name": "Esmeralda Shields DDS",
-                "email": "admin@admin.com",
-                "email_verified_at": null,
-                "created_at": null,
-                "updated_at": "2024-04-19T07:27:10.000000Z",
-                "phone": "240.353.9638",
-                "dob": "2024/04/19",
-                "username": "admin",
-                "address_id": "27298",
-                "role_id": 1,
-                "wp_id": 1,
-                "img_id": null,
-                "address": {
-                    "provinceCode": "79",
-                    "districtCode": "773",
-                    "wardCode": "27298",
-                    "province": "Thành phố Hồ Chí Minh",
-                    "district": "Quận 4",
-                    "ward": "Phường 01"
-                },
-                "role": {
-                    "id": 1,
-                    "name": "Admin",
-                    "desc": "Admin",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
-                },
-                "work_plate": {
-                    "id": 1,
-                    "name": "IqZ59e2yzJ",
-                    "address_id": "27280",
-                    "type_id": 2,
-                    "created_at": "2024-04-18T19:05:58.000000Z",
-                    "updated_at": "2024-04-18T19:05:58.000000Z",
-                    "cap": "3",
-                    "vung": "27280",
-                    "address": {
-                        "provinceCode": "79",
-                        "districtCode": "773",
-                        "wardCode": "27280",
-                        "province": "Thành phố Hồ Chí Minh",
-                        "district": "Quận 4",
-                        "ward": "Phường 14"
-                    },
-                    "manager": {
-                        "id": 5,
-                        "name": "Reyes O'Conner V",
-                        "address": null
-                    }
-                },
-                "vehicle": null,
-                "img": null
-            },
-            {
-                "id": 2,
-                "name": "Miss Lori Windler",
-                "email": "driver@admin.com",
-                "email_verified_at": null,
-                "created_at": null,
-                "updated_at": "2024-04-19T07:31:58.000000Z",
-                "phone": "+1.870.806.5610",
-                "dob": "2024/04/19",
-                "username": "driver",
-                "address_id": "27298",
-                "role_id": 3,
-                "wp_id": 1,
-                "img_id": null,
-                "address": {
-                    "provinceCode": "79",
-                    "districtCode": "773",
-                    "wardCode": "27298",
-                    "province": "Thành phố Hồ Chí Minh",
-                    "district": "Quận 4",
-                    "ward": "Phường 01"
-                },
-                "role": {
-                    "id": 3,
-                    "name": "Driver",
-                    "desc": "Driver",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
-                },
-                "work_plate": {
-                    "id": 1,
-                    "name": "IqZ59e2yzJ",
-                    "address_id": "27280",
-                    "type_id": 2,
-                    "created_at": "2024-04-18T19:05:58.000000Z",
-                    "updated_at": "2024-04-18T19:05:58.000000Z",
-                    "cap": "3",
-                    "vung": "27280",
-                    "address": {
-                        "provinceCode": "79",
-                        "districtCode": "773",
-                        "wardCode": "27280",
-                        "province": "Thành phố Hồ Chí Minh",
-                        "district": "Quận 4",
-                        "ward": "Phường 14"
-                    },
-                    "manager": {
-                        "id": 5,
-                        "name": "Reyes O'Conner V",
-                        "address": null
-                    }
-                },
-                "vehicle": null,
-                "img": null
-            },
-            {
                 "id": 4,
-                "name": "Hortense Kuhn",
+                "name": "Prof. Kaela Dickinson",
                 "email": "employee@admin.com",
                 "email_verified_at": null,
                 "created_at": null,
                 "updated_at": null,
-                "phone": "(610) 818-7295",
-                "dob": "2024/04/19",
+                "phone": "248-446-3183",
+                "dob": "2024/04/25",
                 "username": "employee",
-                "address_id": "27298",
                 "role_id": 4,
                 "wp_id": 1,
                 "img_id": null,
@@ -414,22 +377,22 @@ Param
                     "wardCode": "27298",
                     "province": "Thành phố Hồ Chí Minh",
                     "district": "Quận 4",
-                    "ward": "Phường 01"
+                    "ward": "Phường 01",
+                    "address": ""
                 },
                 "role": {
                     "id": 4,
                     "name": "Employee",
                     "desc": "Employee",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "work_plate": {
                     "id": 1,
-                    "name": "IqZ59e2yzJ",
-                    "address_id": "27280",
+                    "name": "DQyWw9Xf1S",
                     "type_id": 2,
-                    "created_at": "2024-04-18T19:05:58.000000Z",
-                    "updated_at": "2024-04-18T19:05:58.000000Z",
+                    "created_at": "2024-04-24T17:43:52.000000Z",
+                    "updated_at": "2024-04-24T17:43:52.000000Z",
                     "cap": "3",
                     "vung": "27280",
                     "address": {
@@ -438,12 +401,14 @@ Param
                         "wardCode": "27280",
                         "province": "Thành phố Hồ Chí Minh",
                         "district": "Quận 4",
-                        "ward": "Phường 14"
+                        "ward": "Phường 14",
+                        "address": ""
                     },
                     "manager": {
                         "id": 5,
-                        "name": "Reyes O'Conner V",
-                        "address": null
+                        "name": "Roberto Emard",
+                        "address": null,
+                        "role": null
                     }
                 },
                 "vehicle": null,
@@ -451,7 +416,7 @@ Param
             }
         ]
     },
-    "message": ""
+    "message": "success"
 }
 ```
 
@@ -465,21 +430,20 @@ Param
 {
     "success": true,
     "data": {
-        "total": 9,
+        "total": 11,
         "currentPage": 1,
         "pageSize": 12,
         "data": [
             {
                 "id": 3,
-                "name": "Prof. Jaquelin Harvey IV",
+                "name": "Morton Hayes",
                 "email": "user@admin.com",
                 "email_verified_at": null,
                 "created_at": null,
                 "updated_at": null,
-                "phone": "+1-949-316-1036",
-                "dob": "2024/04/19",
+                "phone": "1-219-213-2504",
+                "dob": "2024/04/25",
                 "username": "user",
-                "address_id": "27298",
                 "role_id": 2,
                 "wp_id": 1,
                 "img_id": null,
@@ -489,262 +453,325 @@ Param
                     "wardCode": "27298",
                     "province": "Thành phố Hồ Chí Minh",
                     "district": "Quận 4",
-                    "ward": "Phường 01"
+                    "ward": "Phường 01",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 6,
-                "name": "Ona Schamberger",
-                "email": "fisher.mia@example.net",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "+1.769.712.0859",
-                "dob": "2024/04/19",
-                "username": "amos32",
-                "address_id": "06631",
+                "name": "Dr. Coralie Keeling Jr.",
+                "email": "ernie64@example.com",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "+1 (317) 612-3035",
+                "dob": "2024/04/25",
+                "username": "keaton38",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "20",
-                    "districtCode": "189",
-                    "wardCode": "06631",
-                    "province": "Tỉnh Lạng Sơn",
-                    "district": "Huyện Đình Lập",
-                    "ward": "Xã Thái Bình"
+                    "provinceCode": "51",
+                    "districtCode": "529",
+                    "wardCode": "21319",
+                    "province": "Tỉnh Quảng Ngãi",
+                    "district": "Huyện Sơn Hà",
+                    "ward": "Xã Sơn Hải",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 7,
-                "name": "Bartholome Willms II",
-                "email": "price.alanna@example.org",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "+1-480-559-6962",
-                "dob": "2024/04/19",
-                "username": "loyce.kerluke",
-                "address_id": "11746",
+                "name": "Gussie Moen",
+                "email": "serena.yundt@example.net",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "+1.234.602.4264",
+                "dob": "2024/04/25",
+                "username": "claire45",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "31",
-                    "districtCode": "314",
-                    "wardCode": "11746",
-                    "province": "Thành phố Hải Phòng",
-                    "district": "Huyện Kiến Thuỵ",
-                    "ward": "Xã Đoàn Xá"
+                    "provinceCode": "40",
+                    "districtCode": "430",
+                    "wardCode": "17968",
+                    "province": "Tỉnh Nghệ An",
+                    "district": "Huyện Nam Đàn",
+                    "ward": "Xã Thượng Tân Lộc",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 8,
-                "name": "Derek Rolfson",
-                "email": "sferry@example.com",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "351-674-4041",
-                "dob": "2024/04/19",
-                "username": "ed.armstrong",
-                "address_id": "08710",
+                "name": "Dr. Karlie Fahey II",
+                "email": "fisher.freeman@example.org",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "+1 (484) 345-1793",
+                "dob": "2024/04/25",
+                "username": "lambert.sanford",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "26",
-                    "districtCode": "243",
-                    "wardCode": "08710",
-                    "province": "Tỉnh Vĩnh Phúc",
-                    "district": "Thành phố Vĩnh Yên",
-                    "ward": "Phường Liên Bảo"
+                    "provinceCode": "14",
+                    "districtCode": "120",
+                    "wardCode": "03814",
+                    "province": "Tỉnh Sơn La",
+                    "district": "Huyện Mường La",
+                    "ward": "Xã Chiềng Lao",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 9,
-                "name": "Mr. Marques Smitham PhD",
-                "email": "deckow.cheyenne@example.net",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "260-298-9190",
-                "dob": "2024/04/19",
-                "username": "karine98",
-                "address_id": "10174",
+                "name": "Robert Muller",
+                "email": "ubosco@example.net",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "(561) 591-8091",
+                "dob": "2024/04/25",
+                "username": "tony18",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "01",
-                    "districtCode": "278",
-                    "wardCode": "10174",
-                    "province": "Thành phố Hà Nội",
-                    "district": "Huyện Thanh Oai",
-                    "ward": "Xã Cao Dương"
+                    "provinceCode": "36",
+                    "districtCode": "360",
+                    "wardCode": "13828",
+                    "province": "Tỉnh Nam Định",
+                    "district": "Huyện Ý Yên",
+                    "ward": "Xã Yên Phú",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 10,
-                "name": "Stanford Pfeffer",
-                "email": "pattie.langosh@example.net",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "256.997.6831",
-                "dob": "2024/04/19",
-                "username": "willow.boyer",
-                "address_id": "29542",
+                "name": "Prof. Alexandre Grimes",
+                "email": "schaden.edyth@example.net",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "(320) 633-4760",
+                "dob": "2024/04/25",
+                "username": "becker.carlos",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "86",
-                    "districtCode": "855",
-                    "wardCode": "29542",
-                    "province": "Tỉnh Vĩnh Long",
-                    "district": "Thành phố Vĩnh Long",
-                    "ward": "Phường 9"
+                    "provinceCode": "51",
+                    "districtCode": "525",
+                    "wardCode": "21127",
+                    "province": "Tỉnh Quảng Ngãi",
+                    "district": "Huyện Trà Bồng",
+                    "ward": "Xã Trà Bình",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 11,
-                "name": "Isobel Senger",
-                "email": "will.dillan@example.com",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "678.547.0922",
-                "dob": "2024/04/19",
-                "username": "tyrel95",
-                "address_id": "26299",
+                "name": "Ian Hessel V",
+                "email": "aida.hyatt@example.org",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "689.421.1938",
+                "dob": "2024/04/25",
+                "username": "torphy.wellington",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "75",
-                    "districtCode": "738",
-                    "wardCode": "26299",
-                    "province": "Tỉnh Đồng Nai",
-                    "district": "Huyện Thống Nhất",
-                    "ward": "Xã Gia Tân 1"
+                    "provinceCode": "38",
+                    "districtCode": "380",
+                    "wardCode": "15850",
+                    "province": "Tỉnh Thanh Hóa",
+                    "district": "Thành phố Thanh Hóa",
+                    "ward": "Xã Thiệu Vân",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 12,
-                "name": "Dr. Davion Nikolaus Jr.",
-                "email": "kenna.harvey@example.org",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "845-589-7059",
-                "dob": "2024/04/19",
-                "username": "hortense53",
-                "address_id": "08959",
+                "name": "Jarrett Jakubowski",
+                "email": "dena.christiansen@example.org",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "283-943-6812",
+                "dob": "2024/04/25",
+                "username": "florine11",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "26",
-                    "districtCode": "249",
-                    "wardCode": "08959",
-                    "province": "Tỉnh Vĩnh Phúc",
-                    "district": "Huyện Bình Xuyên",
-                    "ward": "Xã Sơn Lôi"
+                    "provinceCode": "60",
+                    "districtCode": "593",
+                    "wardCode": "22945",
+                    "province": "Tỉnh Bình Thuận",
+                    "district": "Thành phố Phan Thiết",
+                    "ward": "Phường Lạc Đạo",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 13,
+                "name": "Bernadette Hermiston MD",
+                "email": "jwindler@example.com",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "(743) 380-8425",
+                "dob": "2024/04/25",
+                "username": "nathaniel39",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "84",
+                    "districtCode": "850",
+                    "wardCode": "29521",
+                    "province": "Tỉnh Trà Vinh",
+                    "district": "Huyện Duyên Hải",
+                    "ward": "Xã Long Khánh",
+                    "address": ""
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
+                },
+                "img": null
+            },
+            {
+                "id": 14,
+                "name": "Mrs. Hattie Gottlieb",
+                "email": "edna.damore@example.net",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "+16202138535",
+                "dob": "2024/04/25",
+                "username": "lueilwitz.eula",
+                "role_id": 2,
+                "wp_id": null,
+                "img_id": null,
+                "address": {
+                    "provinceCode": "19",
+                    "districtCode": "169",
+                    "wardCode": "05689",
+                    "province": "Tỉnh Thái Nguyên",
+                    "district": "Huyện Đồng Hỷ",
+                    "ward": "Xã Cây Thị",
+                    "address": ""
+                },
+                "role": {
+                    "id": 2,
+                    "name": "User",
+                    "desc": "User",
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             },
             {
                 "id": 15,
-                "name": "Prof. Fae Wilderman",
-                "email": "kendrick.swift@example.org",
-                "email_verified_at": "2024/04/19 02:05",
-                "created_at": "2024-04-18T19:05:58.000000Z",
-                "updated_at": "2024-04-18T19:05:58.000000Z",
-                "phone": "313.437.3311",
-                "dob": "2024/04/19",
-                "username": "myra89",
-                "address_id": "19639",
+                "name": "Nelson Daugherty",
+                "email": "hahn.doris@example.org",
+                "email_verified_at": "2024/04/25 00:43",
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z",
+                "phone": "402.898.7751",
+                "dob": "2024/04/25",
+                "username": "veum.jordan",
                 "role_id": 2,
                 "wp_id": null,
                 "img_id": null,
                 "address": {
-                    "provinceCode": "45",
-                    "districtCode": "469",
-                    "wardCode": "19639",
-                    "province": "Tỉnh Quảng Trị",
-                    "district": "Huyện Triệu Phong",
-                    "ward": "Xã Triệu Trạch"
+                    "provinceCode": "40",
+                    "districtCode": "420",
+                    "wardCode": "17053",
+                    "province": "Tỉnh Nghệ An",
+                    "district": "Huyện Quỳ Hợp",
+                    "ward": "Xã Liên Hợp",
+                    "address": ""
                 },
                 "role": {
                     "id": 2,
                     "name": "User",
                     "desc": "User",
-                    "created_at": "2024-04-18T19:05:44.000000Z",
-                    "updated_at": "2024-04-18T19:05:44.000000Z"
+                    "created_at": "2024-04-24T17:43:35.000000Z",
+                    "updated_at": "2024-04-24T17:43:35.000000Z"
                 },
                 "img": null
             }
@@ -791,6 +818,7 @@ http status 403
 > `dob`: date  
 > `username`: required  
 > `address_id`: required
+> `address`: required
 > `image`: image  
 > only admin can change:  
 > `role_id`
@@ -922,6 +950,7 @@ http status 403
 #### Cac truong yeu cau:
 > - name: required
 > - address_id: required|string
+> - address: required|string
 > - type_id: required|numeric
 > - cap: required|numeric|in(1,2,3)  
 > - max_payload: numeric
@@ -934,19 +963,20 @@ http status 403
     "success": true,
     "data": {
         "name": "test",
-        "address_id": "27280",
         "type_id": "1",
+        "cap": "1",
         "vung": "27280",
-        "updated_at": "2024-04-11T11:37:06.000000Z",
-        "created_at": "2024-04-11T11:37:06.000000Z",
-        "id": 19,
+        "updated_at": "2024-04-24T19:38:02.000000Z",
+        "created_at": "2024-04-24T19:38:02.000000Z",
+        "id": 18,
         "address": {
             "provinceCode": "79",
             "districtCode": "773",
             "wardCode": "27280",
             "province": "Thành phố Hồ Chí Minh",
             "district": "Quận 4",
-            "ward": "Phường 14"
+            "ward": "Phường 14",
+            "address": "hn"
         },
         "manager": null
     },
@@ -982,23 +1012,28 @@ http status 403
 {
     "success": true,
     "data": {
-        "id": 1,
+        "id": 18,
         "name": "test",
-        "address": "ew",
         "type_id": 1,
-        "created_at": "2024-03-14T18:27:39.000000Z",
-        "updated_at": "2024-03-14T18:27:39.000000Z",
-        "detail": {
-            "id": 1,
-            "wp_id": 1,
-            "max_payload": 1000,
-            "payload": 0,
-            "created_at": "2024-03-14T18:47:00.000000Z",
-            "updated_at": "2024-03-14T18:47:00.000000Z"
+        "created_at": "2024-04-24T19:38:02.000000Z",
+        "updated_at": "2024-04-24T19:38:02.000000Z",
+        "cap": "1",
+        "vung": "27280",
+        "address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14",
+            "address": "hn"
         },
+        "manager": null,
+        "detail": null,
         "type": {
             "id": 1,
-            "name": "warehouse"
+            "name": "warehouse",
+            "for": 1
         }
     },
     "message": "Get success"
@@ -1019,10 +1054,9 @@ HTTP code 404
     "data": [
         {
             "id": 1,
-            "name": "FHkVuLD2yg",
-            "address_id": "27280",
-            "created_at": "2024-04-10T15:23:53.000000Z",
-            "updated_at": "2024-04-10T15:23:53.000000Z",
+            "name": "DQyWw9Xf1S",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
             "type_id": 2,
             "address": {
                 "provinceCode": "79",
@@ -1030,51 +1064,27 @@ HTTP code 404
                 "wardCode": "27280",
                 "province": "Thành phố Hồ Chí Minh",
                 "district": "Quận 4",
-                "ward": "Phường 14"
+                "ward": "Phường 14",
+                "address": ""
             },
             "manager": {
                 "id": 5,
-                "name": "Prof. Seamus Cremin",
-                "email": "manager@admin.com",
-                "email_verified_at": null,
-                "created_at": null,
-                "updated_at": null,
-                "phone": "651.495.3206",
-                "dob": "10/04/2024",
-                "username": "manager",
-                "address_id": "27298",
-                "role_id": 5,
-                "wp_id": 1,
-                "img_id": null,
-                "address": {
-                    "provinceCode": "79",
-                    "districtCode": "773",
-                    "wardCode": "27298",
-                    "province": "Thành phố Hồ Chí Minh",
-                    "district": "Quận 4",
-                    "ward": "Phường 01"
-                }
+                "name": "Roberto Emard",
+                "address": null,
+                "role": null
             },
             "type": {
                 "id": 2,
                 "name": "transactionPoint",
                 "for": 1
             },
-            "detail": {
-                "id": 3,
-                "wp_id": 1,
-                "max_payload": 123333,
-                "payload": 0,
-                "created_at": "2024-04-11T11:38:01.000000Z",
-                "updated_at": "2024-04-11T11:38:01.000000Z"
-            }
+            "detail": null
         },
         {
             "id": 2,
-            "name": "iVDjUP0IOS",
-            "address_id": "27280",
-            "created_at": "2024-04-10T15:23:53.000000Z",
-            "updated_at": "2024-04-10T15:23:53.000000Z",
+            "name": "Dzri6o24H2",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
             "type_id": 3,
             "address": {
                 "provinceCode": "79",
@@ -1082,12 +1092,409 @@ HTTP code 404
                 "wardCode": "27280",
                 "province": "Thành phố Hồ Chí Minh",
                 "district": "Quận 4",
-                "ward": "Phường 14"
+                "ward": "Phường 14",
+                "address": ""
             },
             "manager": null,
             "type": {
                 "id": 3,
                 "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 3,
+            "name": "UZWOhSTKhB",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 4,
+            "name": "Yj6c4aWbim",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "22",
+                "districtCode": "206",
+                "wardCode": "07159",
+                "province": "Tỉnh Quảng Ninh",
+                "district": "Thị xã Quảng Yên",
+                "ward": "Phường Tân An",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 5,
+            "name": "2YiOp1OIYV",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "22",
+                "districtCode": "206",
+                "wardCode": "07159",
+                "province": "Tỉnh Quảng Ninh",
+                "district": "Thị xã Quảng Yên",
+                "ward": "Phường Tân An",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 6,
+            "name": "9FjZd16msj",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 2,
+            "address": {
+                "provinceCode": "22",
+                "districtCode": "206",
+                "wardCode": "07159",
+                "province": "Tỉnh Quảng Ninh",
+                "district": "Thị xã Quảng Yên",
+                "ward": "Phường Tân An",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 2,
+                "name": "transactionPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 7,
+            "name": "Taya Rippin",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 2,
+            "address": {
+                "provinceCode": "17",
+                "districtCode": "156",
+                "wardCode": "05254",
+                "province": "Tỉnh Hoà Bình",
+                "district": "Huyện Mai Châu",
+                "ward": "Xã Thành Sơn",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 2,
+                "name": "transactionPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 8,
+            "name": "Leda Douglas",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "20",
+                "districtCode": "181",
+                "wardCode": "06106",
+                "province": "Tỉnh Lạng Sơn",
+                "district": "Huyện Bình Gia",
+                "ward": "Xã Mông Ân",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
+                "for": 1
+            },
+            "detail": {
+                "id": 1,
+                "wp_id": 8,
+                "max_payload": 8628,
+                "payload": 0,
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z"
+            }
+        },
+        {
+            "id": 9,
+            "name": "Ms. Claire Lowe DVM",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "38",
+                "districtCode": "395",
+                "wardCode": "15514",
+                "province": "Tỉnh Thanh Hóa",
+                "district": "Huyện Thọ Xuân",
+                "ward": "Xã Xuân Trường",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 10,
+            "name": "Hassie Ankunding",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 2,
+            "address": {
+                "provinceCode": "20",
+                "districtCode": "186",
+                "wardCode": "06454",
+                "province": "Tỉnh Lạng Sơn",
+                "district": "Huyện Hữu Lũng",
+                "ward": "Xã Sơn Hà",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 2,
+                "name": "transactionPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 11,
+            "name": "Khalid Wilderman",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "34",
+                "districtCode": "341",
+                "wardCode": "12826",
+                "province": "Tỉnh Thái Bình",
+                "district": "Huyện Thái Thụy",
+                "ward": "Thị trấn Diêm Điền",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
+                "for": 1
+            },
+            "detail": {
+                "id": 2,
+                "wp_id": 11,
+                "max_payload": 5405,
+                "payload": 0,
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z"
+            }
+        },
+        {
+            "id": 12,
+            "name": "Willie Kertzmann DDS",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "22",
+                "districtCode": "193",
+                "wardCode": "06664",
+                "province": "Tỉnh Quảng Ninh",
+                "district": "Thành phố Hạ Long",
+                "ward": "Phường Hà Tu",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 13,
+            "name": "Prudence Hodkiewicz",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 3,
+            "address": {
+                "provinceCode": "08",
+                "districtCode": "070",
+                "wardCode": "02512",
+                "province": "Tỉnh Tuyên Quang",
+                "district": "Thành phố Tuyên Quang",
+                "ward": "Phường An Tường",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 3,
+                "name": "transshipmentPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 14,
+            "name": "Prof. Braden Kiehn",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "10",
+                "districtCode": "083",
+                "wardCode": "02755",
+                "province": "Tỉnh Lào Cai",
+                "district": "Huyện Mường Khương",
+                "ward": "Xã Tả Ngải Chồ",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
+                "for": 1
+            },
+            "detail": {
+                "id": 3,
+                "wp_id": 14,
+                "max_payload": 6910,
+                "payload": 0,
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z"
+            }
+        },
+        {
+            "id": 15,
+            "name": "Vince Predovic",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "38",
+                "districtCode": "391",
+                "wardCode": "15196",
+                "province": "Tỉnh Thanh Hóa",
+                "district": "Huyện Thạch Thành",
+                "ward": "Xã Thạch Lâm",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
+                "for": 1
+            },
+            "detail": {
+                "id": 4,
+                "wp_id": 15,
+                "max_payload": 5117,
+                "payload": 0,
+                "created_at": "2024-04-24T17:43:52.000000Z",
+                "updated_at": "2024-04-24T17:43:52.000000Z"
+            }
+        },
+        {
+            "id": 16,
+            "name": "Flossie Gutkowski",
+            "created_at": "2024-04-24T17:43:52.000000Z",
+            "updated_at": "2024-04-24T17:43:52.000000Z",
+            "type_id": 2,
+            "address": {
+                "provinceCode": "37",
+                "districtCode": "377",
+                "wardCode": "14728",
+                "province": "Tỉnh Ninh Bình",
+                "district": "Huyện Yên Mô",
+                "ward": "Xã Yên Từ",
+                "address": ""
+            },
+            "manager": null,
+            "type": {
+                "id": 2,
+                "name": "transactionPoint",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 17,
+            "name": "test",
+            "created_at": "2024-04-24T19:12:12.000000Z",
+            "updated_at": "2024-04-24T19:12:12.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14",
+                "address": "hn"
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
+                "for": 1
+            },
+            "detail": null
+        },
+        {
+            "id": 18,
+            "name": "test",
+            "created_at": "2024-04-24T19:38:02.000000Z",
+            "updated_at": "2024-04-24T19:38:02.000000Z",
+            "type_id": 1,
+            "address": {
+                "provinceCode": "79",
+                "districtCode": "773",
+                "wardCode": "27280",
+                "province": "Thành phố Hồ Chí Minh",
+                "district": "Quận 4",
+                "ward": "Phường 14",
+                "address": "hn"
+            },
+            "manager": null,
+            "type": {
+                "id": 1,
+                "name": "warehouse",
                 "for": 1
             },
             "detail": null
@@ -1118,6 +1525,7 @@ http status 403
 `PUT`: `work-plates/{wpId}`
 > name: string  
 > address_id: string  
+> address: string  
 > type_id: numeric,
 > max_payload: numeric  
 
@@ -1128,7 +1536,6 @@ http status 403
     "data": {
         "id": 19,
         "name": "test",
-        "address_id": "27280",
         "type_id": 1,
         "created_at": "2024-04-11T11:37:06.000000Z",
         "updated_at": "2024-04-11T11:37:06.000000Z",
@@ -1140,7 +1547,8 @@ http status 403
             "wardCode": "27280",
             "province": "Thành phố Hồ Chí Minh",
             "district": "Quận 4",
-            "ward": "Phường 14"
+            "ward": "Phường 14",
+            "address":"hn"
         },
         "manager": null,
         "detail": {
@@ -1199,6 +1607,7 @@ http status 403
                     "province": "Thành phố Hồ Chí Minh",
                     "district": "Quận 4",
                     "ward": "Phường 14"
+                    "address":"hn"
                 },
                 "manager": {
                     "id": 5,
@@ -1233,6 +1642,7 @@ http status 403
                     "province": "Thành phố Hồ Chí Minh",
                     "district": "Quận 4",
                     "ward": "Phường 14"
+                    "address":"hn"
                 },
                 "manager": null,
                 "type": {
