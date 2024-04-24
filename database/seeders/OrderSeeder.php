@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\StatusEnum;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use DB;
@@ -34,6 +35,7 @@ class OrderSeeder extends Seeder
             'receiver_name' => fake()->name(),
             'receiver_phone' => fake()->phoneNumber(),
             'receiver_address_id' => $this->random($addressIds),
+            'status_id' => StatusEnum::CREATE,
         ]);
         $order->save();
 

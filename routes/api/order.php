@@ -5,10 +5,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [OrderController::class, 'index']);
 Route::post('/', [OrderController::class, 'store']);
-Route::get('/multi/next', [OrderController::class, 'getNextPos']);
-Route::post('/multi/next', [OrderController::class, 'moveToNextPos']);
-Route::put('/multi/arrived', [OrderController::class, 'arrivedPos']);
-Route::delete('/multi', [OrderController::class, 'destroy']);
-Route::get('/{order}', [OrderController::class, 'show']);
-Route::post('/{order}', [OrderController::class, 'addDetail']);
-Route::put('/{order}/vehicles/{vehicle}', [OrderController::class, 'ganChoXe']);
+
+Route::prefix('multi')
+    ->group(function () {
+        Route::delete('/', [OrderController::class, 'destroy']);
+        Route::put('shipping', [OrderController::class, 'shipping']);
+        Route::get('next', [OrderController::class, 'getNextPos']);
+        Route::post('next', [OrderController::class, 'moveToNextPos']);
+        Route::put('arrived', [OrderController::class, 'arrivedPos']);
+    });
+
+Route::prefix('{order}')
+    ->group(function () {
+        Route::get('', [OrderController::class, 'show']);
+        Route::post('', [OrderController::class, 'addDetail']);
+        Route::put('/shipped', [OrderController::class, 'shipped']);
+        Route::put('/vehicles/{vehicle}', [OrderController::class, 'ganChoXe']);
+    });

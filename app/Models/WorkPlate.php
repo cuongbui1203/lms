@@ -14,6 +14,10 @@ class WorkPlate extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'address_id',
+    ];
+
     protected $appends = ['address', 'manager'];
 
     public function type(): BelongsTo
@@ -45,7 +49,20 @@ class WorkPlate extends Model
     protected function address(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['address_id']),
+            get: function () {
+                $arrayAddress = explode('|', $this->attributes['address_id']);
+                $address = getAddress($arrayAddress[0]);
+                $address->{'address'} = $arrayAddress[1] ?? '';
+
+                return $address;
+            },
+        );
+    }
+
+    protected function addressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1] ?? '',
         );
     }
 }

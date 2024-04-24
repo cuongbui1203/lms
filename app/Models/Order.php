@@ -20,6 +20,16 @@ class Order extends Model
 
     protected $with = ['type'];
 
+    protected $hidden = [
+        'sender_address_id',
+        'receiver_address_id',
+    ];
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
+    }
+
     public function details(): HasMany
     {
         return $this->hasMany(OrderDetail::class);
@@ -40,7 +50,7 @@ class Order extends Model
         return $this->belongsTo(Type::class);
     }
 
-    protected $cast = [
+    protected $casts = [
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
     ];
@@ -48,14 +58,40 @@ class Order extends Model
     protected function senderAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['sender_address_id']),
+            get: function () {
+                $arrayAddress = explode('|', $this->attributes['sender_address_id']);
+                $address = getAddress($arrayAddress[0]);
+                $address->{'address'} = $arrayAddress[1] ?? '';
+
+                return $address;
+            }
         );
     }
 
     protected function receiverAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['receiver_address_id']),
+            get: function () {
+                $arrayAddress = explode('|', $this->attributes['receiver_address_id']);
+                $address = getAddress($arrayAddress[0]);
+                $address->{'address'} = $arrayAddress[1] ?? '';
+
+                return $address;
+            }
+        );
+    }
+
+    protected function receiverAddressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1] ?? '',
+        );
+    }
+
+    protected function senderAddressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1] ?? '',
         );
     }
 

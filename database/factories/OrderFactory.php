@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StatusEnum;
 use DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
@@ -15,7 +16,7 @@ class OrderFactory extends Factory
 
     public function __construct()
     {
-        $this->ids = DB::connection('sqlite_vn_map')->table('wards')->get(['code']);
+        $this::$ids = DB::connection('sqlite_vn_map')->table('wards')->get(['code']);
     }
 
     /**
@@ -32,6 +33,7 @@ class OrderFactory extends Factory
             'receiver_name' => fake()->name(),
             'receiver_phone' => fake()->phoneNumber(),
             'receiver_address_id' => $this->ids->random()->code,
+            'status_id' => StatusEnum::CREATE,
             'type_id' => rand(9, 12),
             'created_at' => now(),
             'updated_at' => now(),

@@ -30,11 +30,13 @@ class CreateEmployeeRequest extends FormRequest
             'dob' => 'date',
             'username' => 'required|unique:users,username',
             'address_id' => 'required|exists:sqlite_vn_map.wards,code',
+            'address' => 'required|string|nullable',
             'role_id' => [
                 Rule::in([
                     RoleEnum::DRIVER,
                     RoleEnum::EMPLOYEE,
                     RoleEnum::MANAGER,
+                    RoleEnum::SHIPPER,
                 ]),
             ],
             'wp_id' => 'exists:work_plates,id',

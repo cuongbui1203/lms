@@ -34,7 +34,7 @@ class WorkPlateController extends Controller
     {
         $workPlate = new WorkPlate();
         $workPlate->name = $request->name;
-        $workPlate->address_id = $request->address_id;
+        $workPlate->address_id = [$request->address_id, $request->address];
         $workPlate->type_id = $request->type_id;
         $workPlate->cap = $request->cap;
         $workPlate->vung = getAddressCode($request->address_id, $request->cap);
@@ -78,7 +78,7 @@ class WorkPlateController extends Controller
     public function update(UpdateWPRequest $request, WorkPlate $workPlate)
     {
         $workPlate->name = $request->name ?? $workPlate->name;
-        $workPlate->address_id = $request->address_id ?? $request->address_id;
+        $workPlate->address_id = [$request->address_id ?? $request->address_id, $request->address];
         if (
             $workPlate->type_id === config('type.workPlate.warehouse') &&
             $request->type_id &&

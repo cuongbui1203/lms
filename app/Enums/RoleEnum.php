@@ -13,4 +13,5 @@ final class RoleEnum extends Enum
     public const DRIVER = 3;
     public const EMPLOYEE = 4;
     public const MANAGER = 5;
+    public const SHIPPER = 6;
 }

@@ -27,6 +27,7 @@ class UpdateWPRequest extends FormRequest
         return [
             'name' => 'string',
             'address_id' => [new VungRule()],
+            'address' => 'string|nullable',
             'max_payload' => 'numeric',
             'type_id' => [
                 Rule::in(
