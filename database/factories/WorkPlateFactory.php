@@ -26,7 +26,7 @@ class WorkPlateFactory extends Factory
         // dd(config('type.workPlate'));
         return [
             'name' => fake()->name(),
-            'address_id' => $idAddress,
+            'address_id' => [$idAddress, 'test'],
             'cap' => $cap,
             'vung' => $vung,
             'created_at' => now(),
@@ -35,5 +35,5 @@ class WorkPlateFactory extends Factory
         ];
     }
 
-    // public 
+    // public
 }

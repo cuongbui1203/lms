@@ -30,11 +30,11 @@ class OrderSeeder extends Seeder
         $order = new Order([
             'type_id' => random_int(9, 12),
             'sender_name' => fake()->name(),
-            'sender_address_id' => $this->random($addressIds),
+            'sender_address_id' => [$this->random($addressIds), 'hn'],
             'sender_phone' => fake()->phoneNumber(),
             'receiver_name' => fake()->name(),
             'receiver_phone' => fake()->phoneNumber(),
-            'receiver_address_id' => $this->random($addressIds),
+            'receiver_address_id' => [$this->random($addressIds), 'hn'],
             'status_id' => StatusEnum::CREATE,
         ]);
         $order->save();

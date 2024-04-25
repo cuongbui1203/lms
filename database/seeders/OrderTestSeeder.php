@@ -16,7 +16,7 @@ class OrderTestSeeder extends Seeder
     {
         $res = WorkPlate::create([
             'name' => $name,
-            'address_id' => $addressId,
+            'address_id' => [$addressId, 'test'],
             'type_id' => $type,
             'cap' => $cap,
             'vung' => getAddressCode($addressId, $cap),
@@ -78,10 +78,10 @@ class OrderTestSeeder extends Seeder
         $order = new Order();
         $order->sender_name = 'senderName';
         $order->sender_phone = '0123456789';
-        $order->sender_address_id = '27280';
+        $order->sender_address_id = ['27280', 'hn'];
         $order->receiver_name = 'receiver';
         $order->receiver_phone = '123123123';
-        $order->receiver_address_id = '07159';
+        $order->receiver_address_id = ['07159', 'hn'];
         $order->status_id = StatusEnum::CREATE;
 
         $order->save();

@@ -21,7 +21,7 @@ class WorkPlateController extends Controller
             $wp->where('type_id', '=', $request->type_id);
         }
 
-        $wp = $wp->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id']);
+        $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id']);
         $wp->load('type', 'detail');
 
         return $this->sendSuccess($wp, 'Get list work plate success');
@@ -75,9 +75,17 @@ class WorkPlateController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWPRequest $request, WorkPlate $workPlate)
+    public function update(UpdateWPRequest $request, WorkPlate $workPlate) //phpcs:ignore
     {
         $workPlate->name = $request->name ?? $workPlate->name;
+        if ($request->address_id) {
+            $workPlate->address_id = [$request->address_id, $workPlate->address->address];
+        }
+
+        if ($request->address) {
+            $workPlate->address_id = [$workPlate->address->wardCode, $request->address];
+        }
+
         $workPlate->address_id = [$request->address_id ?? $request->address_id, $request->address];
         if (
             $workPlate->type_id === config('type.workPlate.warehouse') &&
@@ -96,9 +104,15 @@ class WorkPlateController extends Controller
             }
         }
 
+        if ($request->cap) {
+            $workPlate->cap = $request->cap;
+            $workPlate->vung = getAddressCode($workPlate->address->wardCode, $request->cap);
+        }
+
+        $workPlate->save();
         $workPlate->load('type');
 
-        return $this->sendSuccess($workPlate);
+        return $this->sendSuccess(WorkPlate::find($workPlate->id));
     }
 
     /**

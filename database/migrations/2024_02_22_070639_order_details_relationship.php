@@ -28,8 +28,8 @@ return new class extends Migration
     {
         Schema::table(
             'order_details', function (Blueprint $table) {
-                $table->dropConstrainedForeignId('type_id');
-                $table->dropConstrainedForeignId('order_id');
+                // $table->dropConstrainedForeignId('type_id');
+                // $table->dropConstrainedForeignId('order_id');
             }
         );
     }

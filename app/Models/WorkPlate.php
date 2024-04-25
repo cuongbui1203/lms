@@ -18,6 +18,10 @@ class WorkPlate extends Model
         'address_id',
     ];
 
+    protected $casts = [
+        'cap' => 'integer',
+    ];
+
     protected $appends = ['address', 'manager'];
 
     public function type(): BelongsTo
@@ -50,7 +54,7 @@ class WorkPlate extends Model
     {
         return Attribute::make(
             get: function () {
-                $arrayAddress = explode('|', $this->attributes['address_id']);
+                $arrayAddress = explode('|', $this->original['address_id']);
                 $address = getAddress($arrayAddress[0]);
                 $address->{'address'} = $arrayAddress[1] ?? '';
 

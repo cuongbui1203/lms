@@ -74,7 +74,7 @@ class UserSeeder extends Seeder
         User::insert($users);
         $wardIds = DB::connection('sqlite_vn_map')->table('wards')->get('code')->pluck('code');
         User::factory(10)->create(['role_id' => RoleEnum::USER])->each(function ($user) use ($wardIds) {
-            $user->address_id = $wardIds->random();
+            $user->address_id = [$wardIds->random(), ''];
             $user->save();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\WorkPlate;
 
+use App\Enums\AddressTypeEnum;
 use App\Enums\RoleEnum;
 use App\Http\Requests\FormRequest;
 use App\Rules\VungRule;
@@ -36,6 +37,7 @@ class UpdateWPRequest extends FormRequest
                     config('type.workPlate.transshipmentPoint')
                 ),
             ],
+            'cap' => [Rule::in(AddressTypeEnum::getValues())],
         ];
     }
 }

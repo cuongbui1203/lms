@@ -1528,6 +1528,7 @@ http status 403
 > address: string  
 > type_id: numeric,
 > max_payload: numeric  
+> cap: muneric| 1 2 3
 
 #### Response
 ```
@@ -1898,6 +1899,7 @@ http status code 402
 `GET`: `orders`
 > `page`: numeric|min:1  
 > `pageSize`: numeric|min:1
+> `status`: numeric| 9 11 12
 #### Response
 ```
 {
