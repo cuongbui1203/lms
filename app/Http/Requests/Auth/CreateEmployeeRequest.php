@@ -29,8 +29,8 @@ class CreateEmployeeRequest extends FormRequest
             'phone' => 'required',
             'dob' => 'date',
             'username' => 'required|unique:users,username',
-            'address_id' => 'required|exists:sqlite_vn_map.wards,code',
-            'address' => 'required|string|nullable',
+            'address_id' => 'exists:sqlite_vn_map.wards,code',
+            'address' => 'string|nullable',
             'role_id' => [
                 Rule::in([
                     RoleEnum::DRIVER,

@@ -332,7 +332,10 @@ class UserController extends Controller
             'dob',
             'name',
         ]));
-        $newUser->address_id = $request->address_id;
+        $address = [];
+        $address[] = $request->address_id;
+        $address[] = $request->address ?? '';
+        $newUser->address_id = $address;
         $newUser->role_id = RoleEnum::EMPLOYEE;
         $newUser->wp_id = $user->wp_id;
         if ($request->hasFile('image')) {
