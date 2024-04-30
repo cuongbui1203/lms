@@ -9,15 +9,17 @@ use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
+    private $id;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
         $user = auth()->user();
-        $id = (int) getLastSegmentRegex(request()->getPathInfo());
+        $this->id = (int) getLastSegmentRegex(request()->getPathInfo());
 
-        return $user && ($user->role_id === RoleEnum::ADMIN || $user->id === $id);
+        return $user && ($user->role_id === RoleEnum::ADMIN || $user->id === $this->id);
     }
 
     /**
@@ -31,7 +33,10 @@ class UpdateUserRequest extends FormRequest
             'name' => 'string',
             'dob' => 'date',
             'image' => 'image',
-            'email' => 'email|unique:users,email',
+            'email' => [
+                'email',
+                Rule::unique('users', 'email')->ignore($this->id),
+            ],
             'phone' => 'string',
             'address_id' => [
                 'string',
