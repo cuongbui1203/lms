@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\GetListRequest;
 use Illuminate\Validation\Rule;
 
 class GetListAccountRequest extends GetListRequest

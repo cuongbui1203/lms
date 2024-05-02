@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\WorkPlate;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\GetListRequest;
 use Illuminate\Validation\Rule;
 
-class GetListWPRequest extends FormRequest
+class GetListWPRequest extends GetListRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,7 +31,7 @@ class GetListWPRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        return array_merge(parent::rules(), [
             'type_id' => [
                 Rule::in([
                     config('type.workPlate.transactionPoint'),
@@ -38,6 +39,6 @@ class GetListWPRequest extends FormRequest
                     config('type.workPlate.warehouse'),
                 ]),
             ],
-        ];
+        ]);
     }
 }

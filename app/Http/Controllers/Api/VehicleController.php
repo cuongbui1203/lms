@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetListRequest;
 use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
@@ -14,9 +15,12 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(GetListRequest $request)
     {
-        $vehicles = Vehicle::all()->load(['driver', 'type', 'goodsType']);
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relationships = ['driver', 'type', 'goodsType'];
+        $vehicles = Vehicle::all()->paginate($pageSize, $page, $relationships);
 
         return $this->sendSuccess($vehicles);
     }

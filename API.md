@@ -1045,461 +1045,131 @@ HTTP code 404
 ### Get List WP `AUTH` `ADMIN` `MANAGER` `EMPLOYEE` 
 `GET` `work-plates`
 
+>`page`: number|min:1  
+>`pageSize`: number|min:1  
 > `type_id`: 1,2,3
 
 #### Response
 ```
 {
     "success": true,
-    "data": [
-        {
-            "id": 1,
-            "name": "DQyWw9Xf1S",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 2,
-            "address": {
-                "provinceCode": "79",
-                "districtCode": "773",
-                "wardCode": "27280",
-                "province": "Thành phố Hồ Chí Minh",
-                "district": "Quận 4",
-                "ward": "Phường 14",
-                "address": ""
+    "data": {
+        "total": 16,
+        "currentPage": 2,
+        "pageSize": 12,
+        "data": [
+            {
+                "id": 13,
+                "name": "Miss Clare Stracke Sr.",
+                "cap": 3,
+                "created_at": "2024-04-25T15:17:29.000000Z",
+                "updated_at": "2024-04-25T15:17:29.000000Z",
+                "type_id": 2,
+                "address": {
+                    "provinceCode": "40",
+                    "districtCode": "424",
+                    "wardCode": "17359",
+                    "province": "Tỉnh Nghệ An",
+                    "district": "Huyện Anh Sơn",
+                    "ward": "Xã Tào Sơn",
+                    "address": "test"
+                },
+                "manager": null,
+                "type": {
+                    "id": 2,
+                    "name": "transactionPoint",
+                    "for": 1
+                },
+                "detail": null
             },
-            "manager": {
-                "id": 5,
-                "name": "Roberto Emard",
-                "address": null,
-                "role": null
+            {
+                "id": 14,
+                "name": "Yasmin DuBuque I",
+                "cap": 1,
+                "created_at": "2024-04-25T15:17:29.000000Z",
+                "updated_at": "2024-04-25T15:17:29.000000Z",
+                "type_id": 1,
+                "address": {
+                    "provinceCode": "01",
+                    "districtCode": "278",
+                    "wardCode": "10135",
+                    "province": "Thành phố Hà Nội",
+                    "district": "Huyện Thanh Oai",
+                    "ward": "Xã Bình Minh",
+                    "address": "test"
+                },
+                "manager": null,
+                "type": {
+                    "id": 1,
+                    "name": "warehouse",
+                    "for": 1
+                },
+                "detail": {
+                    "id": 3,
+                    "wp_id": 14,
+                    "max_payload": 4324,
+                    "payload": 0,
+                    "created_at": "2024-04-25T15:17:29.000000Z",
+                    "updated_at": "2024-04-25T15:17:29.000000Z"
+                }
             },
-            "type": {
-                "id": 2,
-                "name": "transactionPoint",
-                "for": 1
+            {
+                "id": 15,
+                "name": "Dr. Vicente Lockman V",
+                "cap": 3,
+                "created_at": "2024-04-25T15:17:29.000000Z",
+                "updated_at": "2024-04-25T15:17:29.000000Z",
+                "type_id": 1,
+                "address": {
+                    "provinceCode": "37",
+                    "districtCode": "370",
+                    "wardCode": "14369",
+                    "province": "Tỉnh Ninh Bình",
+                    "district": "Thành phố Tam Điệp",
+                    "ward": "Phường Tây Sơn",
+                    "address": "test"
+                },
+                "manager": null,
+                "type": {
+                    "id": 1,
+                    "name": "warehouse",
+                    "for": 1
+                },
+                "detail": {
+                    "id": 4,
+                    "wp_id": 15,
+                    "max_payload": 2843,
+                    "payload": 0,
+                    "created_at": "2024-04-25T15:17:29.000000Z",
+                    "updated_at": "2024-04-25T15:17:29.000000Z"
+                }
             },
-            "detail": null
-        },
-        {
-            "id": 2,
-            "name": "Dzri6o24H2",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "79",
-                "districtCode": "773",
-                "wardCode": "27280",
-                "province": "Thành phố Hồ Chí Minh",
-                "district": "Quận 4",
-                "ward": "Phường 14",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 3,
-            "name": "UZWOhSTKhB",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "79",
-                "districtCode": "773",
-                "wardCode": "27280",
-                "province": "Thành phố Hồ Chí Minh",
-                "district": "Quận 4",
-                "ward": "Phường 14",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 4,
-            "name": "Yj6c4aWbim",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "22",
-                "districtCode": "206",
-                "wardCode": "07159",
-                "province": "Tỉnh Quảng Ninh",
-                "district": "Thị xã Quảng Yên",
-                "ward": "Phường Tân An",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 5,
-            "name": "2YiOp1OIYV",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "22",
-                "districtCode": "206",
-                "wardCode": "07159",
-                "province": "Tỉnh Quảng Ninh",
-                "district": "Thị xã Quảng Yên",
-                "ward": "Phường Tân An",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 6,
-            "name": "9FjZd16msj",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 2,
-            "address": {
-                "provinceCode": "22",
-                "districtCode": "206",
-                "wardCode": "07159",
-                "province": "Tỉnh Quảng Ninh",
-                "district": "Thị xã Quảng Yên",
-                "ward": "Phường Tân An",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 2,
-                "name": "transactionPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 7,
-            "name": "Taya Rippin",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 2,
-            "address": {
-                "provinceCode": "17",
-                "districtCode": "156",
-                "wardCode": "05254",
-                "province": "Tỉnh Hoà Bình",
-                "district": "Huyện Mai Châu",
-                "ward": "Xã Thành Sơn",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 2,
-                "name": "transactionPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 8,
-            "name": "Leda Douglas",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "20",
-                "districtCode": "181",
-                "wardCode": "06106",
-                "province": "Tỉnh Lạng Sơn",
-                "district": "Huyện Bình Gia",
-                "ward": "Xã Mông Ân",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": {
-                "id": 1,
-                "wp_id": 8,
-                "max_payload": 8628,
-                "payload": 0,
-                "created_at": "2024-04-24T17:43:52.000000Z",
-                "updated_at": "2024-04-24T17:43:52.000000Z"
+            {
+                "id": 16,
+                "name": "Ms. Emely Gerhold",
+                "cap": 2,
+                "created_at": "2024-04-25T15:17:29.000000Z",
+                "updated_at": "2024-04-25T15:17:29.000000Z",
+                "type_id": 3,
+                "address": {
+                    "provinceCode": "44",
+                    "districtCode": "458",
+                    "wardCode": "19078",
+                    "province": "Tỉnh Quảng Bình",
+                    "district": "Thị xã Ba Đồn",
+                    "ward": "Phường Quảng Phong",
+                    "address": "test"
+                },
+                "manager": null,
+                "type": {
+                    "id": 3,
+                    "name": "transshipmentPoint",
+                    "for": 1
+                },
+                "detail": null
             }
-        },
-        {
-            "id": 9,
-            "name": "Ms. Claire Lowe DVM",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "38",
-                "districtCode": "395",
-                "wardCode": "15514",
-                "province": "Tỉnh Thanh Hóa",
-                "district": "Huyện Thọ Xuân",
-                "ward": "Xã Xuân Trường",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 10,
-            "name": "Hassie Ankunding",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 2,
-            "address": {
-                "provinceCode": "20",
-                "districtCode": "186",
-                "wardCode": "06454",
-                "province": "Tỉnh Lạng Sơn",
-                "district": "Huyện Hữu Lũng",
-                "ward": "Xã Sơn Hà",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 2,
-                "name": "transactionPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 11,
-            "name": "Khalid Wilderman",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "34",
-                "districtCode": "341",
-                "wardCode": "12826",
-                "province": "Tỉnh Thái Bình",
-                "district": "Huyện Thái Thụy",
-                "ward": "Thị trấn Diêm Điền",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": {
-                "id": 2,
-                "wp_id": 11,
-                "max_payload": 5405,
-                "payload": 0,
-                "created_at": "2024-04-24T17:43:52.000000Z",
-                "updated_at": "2024-04-24T17:43:52.000000Z"
-            }
-        },
-        {
-            "id": 12,
-            "name": "Willie Kertzmann DDS",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "22",
-                "districtCode": "193",
-                "wardCode": "06664",
-                "province": "Tỉnh Quảng Ninh",
-                "district": "Thành phố Hạ Long",
-                "ward": "Phường Hà Tu",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 13,
-            "name": "Prudence Hodkiewicz",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 3,
-            "address": {
-                "provinceCode": "08",
-                "districtCode": "070",
-                "wardCode": "02512",
-                "province": "Tỉnh Tuyên Quang",
-                "district": "Thành phố Tuyên Quang",
-                "ward": "Phường An Tường",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 3,
-                "name": "transshipmentPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 14,
-            "name": "Prof. Braden Kiehn",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "10",
-                "districtCode": "083",
-                "wardCode": "02755",
-                "province": "Tỉnh Lào Cai",
-                "district": "Huyện Mường Khương",
-                "ward": "Xã Tả Ngải Chồ",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": {
-                "id": 3,
-                "wp_id": 14,
-                "max_payload": 6910,
-                "payload": 0,
-                "created_at": "2024-04-24T17:43:52.000000Z",
-                "updated_at": "2024-04-24T17:43:52.000000Z"
-            }
-        },
-        {
-            "id": 15,
-            "name": "Vince Predovic",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "38",
-                "districtCode": "391",
-                "wardCode": "15196",
-                "province": "Tỉnh Thanh Hóa",
-                "district": "Huyện Thạch Thành",
-                "ward": "Xã Thạch Lâm",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": {
-                "id": 4,
-                "wp_id": 15,
-                "max_payload": 5117,
-                "payload": 0,
-                "created_at": "2024-04-24T17:43:52.000000Z",
-                "updated_at": "2024-04-24T17:43:52.000000Z"
-            }
-        },
-        {
-            "id": 16,
-            "name": "Flossie Gutkowski",
-            "created_at": "2024-04-24T17:43:52.000000Z",
-            "updated_at": "2024-04-24T17:43:52.000000Z",
-            "type_id": 2,
-            "address": {
-                "provinceCode": "37",
-                "districtCode": "377",
-                "wardCode": "14728",
-                "province": "Tỉnh Ninh Bình",
-                "district": "Huyện Yên Mô",
-                "ward": "Xã Yên Từ",
-                "address": ""
-            },
-            "manager": null,
-            "type": {
-                "id": 2,
-                "name": "transactionPoint",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 17,
-            "name": "test",
-            "created_at": "2024-04-24T19:12:12.000000Z",
-            "updated_at": "2024-04-24T19:12:12.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "79",
-                "districtCode": "773",
-                "wardCode": "27280",
-                "province": "Thành phố Hồ Chí Minh",
-                "district": "Quận 4",
-                "ward": "Phường 14",
-                "address": "hn"
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": null
-        },
-        {
-            "id": 18,
-            "name": "test",
-            "created_at": "2024-04-24T19:38:02.000000Z",
-            "updated_at": "2024-04-24T19:38:02.000000Z",
-            "type_id": 1,
-            "address": {
-                "provinceCode": "79",
-                "districtCode": "773",
-                "wardCode": "27280",
-                "province": "Thành phố Hồ Chí Minh",
-                "district": "Quận 4",
-                "ward": "Phường 14",
-                "address": "hn"
-            },
-            "manager": null,
-            "type": {
-                "id": 1,
-                "name": "warehouse",
-                "for": 1
-            },
-            "detail": null
-        }
-    ],
+        ]
+    },
     "message": "Get list work plate success"
 }
 ```
@@ -1892,6 +1562,52 @@ http status code 402
     data:[],
     message:success
 }
+```
+
+## Get List Vehicle `AUTH`
+`GET` `vehicles`
+
+
+>`page`: number|min:1  
+>`pageSize`: number|min:1  
+
+### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 1,
+        "currentPage": 1,
+        "pageSize": 12,
+        "data": [
+            {
+                "id": 1,
+                "created_at": "2024-05-02T06:39:21.000000Z",
+                "updated_at": "2024-05-02T06:39:21.000000Z",
+                "name": "tét",
+                "payload": 10000,
+                "type_id": 4,
+                "driver_id": null,
+                "max_payload": 0,
+                "goods_type": {
+                    "id": 10,
+                    "name": "normal",
+                    "for": 3
+                },
+                "driver": null,
+                "type": {
+                    "id": 4,
+                    "name": "freezingCar",
+                    "for": 2
+                }
+            }
+        ]
+    },
+    "message": ""
+}
+```
+```
+http status 401
 ```
 
 ## Order

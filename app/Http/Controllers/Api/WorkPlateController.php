@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\AddressTypeEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GetListWPRequest;
 use App\Http\Requests\WorkPlate\CreateWPRequest;
+use App\Http\Requests\WorkPlate\GetListWPRequest;
 use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
 use App\Http\Requests\WorkPlate\UpdateWPRequest;
@@ -20,9 +20,11 @@ class WorkPlateController extends Controller
         if ($request->type_id) {
             $wp->where('type_id', '=', $request->type_id);
         }
-
-        $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id']);
-        $wp->load('type', 'detail');
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relationships = ['type', 'detail'];
+        $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id'])
+            ->paginate($pageSize, $page, $relationships);
 
         return $this->sendSuccess($wp, 'Get list work plate success');
     }
@@ -136,8 +138,8 @@ class WorkPlateController extends Controller
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::DISTRICT));
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::PROVINCE));
         $res->push(WorkPlate::whereIn('vung', $addressCode)
-            ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
-            ->load('type', 'detail'));
+                ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
+                ->load('type', 'detail'));
 
         return $this->sendSuccess($res->first()->toArray(), 'get suggestion wp success');
     }
