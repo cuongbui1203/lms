@@ -16,9 +16,7 @@ class ImageController extends Controller
         try {
             return response()->download($image->url, 'image');
         } catch (Exception $e) {
-            dd($e);
-
-            return response()->noContent(404);
+            abort(404);
         }
     }
 }

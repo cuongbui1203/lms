@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use App\Models\Order;
 use App\Models\WorkPlate;
+use Cache;
 use DB;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Collection;
@@ -18,11 +19,17 @@ class MoveOrderRule implements Rule
     public function __construct()
     {
         $this->errors = [];
-        $this->allOrderIds = Order::all('id');
-        $this->allWpIds = WorkPlate::all('id');
-        $this->allWardIds = DB::connection('sqlite_vn_map')
-            ->table('wards')
-            ->get('*');
+        $this->allOrderIds = Cache::remember('order_ids', now()->addMinutes(100), function () {
+            return Order::all('id');
+        });
+        $this->allWpIds = Cache::remember('wp_ids', now()->addMinutes(100), function () {
+            return WorkPlate::all('id');
+        });
+        $this->allWardIds = Cache::remember('ward_ids', now()->addMinutes(100), function () {
+            return DB::connection('sqlite_vn_map')
+                ->table('wards')
+                ->get('*');
+        });
     }
 
     /**

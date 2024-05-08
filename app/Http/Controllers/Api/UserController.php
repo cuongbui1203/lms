@@ -17,6 +17,7 @@ use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
+use Cache;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -34,8 +35,10 @@ class UserController extends Controller
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
         $relations = ['role', 'img'];
-        $users = User::where('role_id', RoleEnum::USER)
-            ->get()->paginate($pageSize, $page, $relations);
+        $users = Cache::remember('users_type_' . RoleEnum::USER, now()->addMinutes(10), function () {
+            return User::where('role_id', RoleEnum::USER)->get();
+        });
+        $users = $users->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($users, 'success');
     }
@@ -70,23 +73,33 @@ class UserController extends Controller
         /** @var User $handler */
         $handler = auth()->user();
         if ($handler->role_id === RoleEnum::MANAGER) {
-            $users = User::where(function ($query) {
-                $query->where('role_id', RoleEnum::EMPLOYEE)
-                    ->orWhere('role_id', RoleEnum::DRIVER);
+            $users = Cache::remember(
+                'accounts_wp_' . $handler->wp_id,
+                now()->addMinutes(10),
+                function () use ($handler, $pageSize, $page, $relations) {
+                    return User::where(function ($query) {
+                        $query->where('role_id', RoleEnum::EMPLOYEE)
+                            ->orWhere('role_id', RoleEnum::DRIVER);
 
-                return $query;
-            })
-                ->where('wp_id', $handler->wp_id)
-                ->get();
-            $users = $users->paginate($pageSize, $page, $relations);
+                        return $query;
+                    })->where('wp_id', $handler->wp_id)
+                        ->get()->paginate($pageSize, $page, $relations);
+                }
+            );
         } else {
             $role = ((int) $request->role_id) ?? null;
-            $users = User::where('role_id', '!=', RoleEnum::USER);
-            if ($role && in_array($role, RoleEnum::getValues())) {
-                $users->where('role_id', $role);
-            }
+            $users = Cache::remember(
+                'accounts_role_' . $role,
+                now()->addMinutes(10),
+                function () use ($role, $page, $pageSize, $relations) {
+                    $users = User::where('role_id', '!=', RoleEnum::USER);
+                    if ($role && in_array($role, RoleEnum::getValues())) {
+                        $users->where('role_id', $role);
+                    }
 
-            $users = $users->get()->paginate($pageSize, $page, $relations);
+                    return $users->get()->paginate($pageSize, $page, $relations);
+                }
+            );
         }
 
         return $this->sendSuccess($users, 'success');
@@ -210,9 +223,11 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $user)
     {
-        $user->load('role', 'work_plate', 'img', 'vehicle');
+        $user = Cache::remember('user_' . $user, now()->addMinutes(10), function () use ($user) {
+            return User::findOrFail($user)->load('role', 'work_plate', 'img', 'vehicle');
+        });
 
         return $this->sendSuccess($user, 'Send user');
     }

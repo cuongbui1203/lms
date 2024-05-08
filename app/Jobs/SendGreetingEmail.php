@@ -33,6 +33,6 @@ class SendGreetingEmail implements ShouldQueue
     {
         $mail = new GreetingMail($this->user);
 
-        Mail::to('test@gmail.com')->send($mail);
+        Mail::to($this->user->email)->send($mail);
     }
 }

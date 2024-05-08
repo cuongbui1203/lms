@@ -10,21 +10,27 @@ use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
 use App\Http\Requests\WorkPlate\UpdateWPRequest;
 use App\Models\WorkPlate;
+use Cache;
 use Illuminate\Support\Collection;
 
 class WorkPlateController extends Controller
 {
     public function index(GetListWPRequest $request)
     {
-        $wp = WorkPlate::query();
-        if ($request->type_id) {
-            $wp->where('type_id', '=', $request->type_id);
-        }
-        $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
-        $relationships = ['type', 'detail'];
-        $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id'])
-            ->paginate($pageSize, $page, $relationships);
+        $wp = Cache::remember('wp_type_' . $request->type_id, now()->addMinutes(10), function () use ($request) {
+            $pageSize = $request->pageSize ?? config('paginate.wp-list');
+            $page = $request->page ?? 1;
+            $relationships = ['type', 'detail'];
+            $wp = WorkPlate::query();
+            if ($request->type_id) {
+                $wp->where('type_id', '=', $request->type_id);
+            }
+
+            $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id'])
+                ->paginate($pageSize, $page, $relationships);
+
+            return $wp;
+        });
 
         return $this->sendSuccess($wp, 'Get list work plate success');
     }
@@ -138,8 +144,8 @@ class WorkPlateController extends Controller
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::DISTRICT));
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::PROVINCE));
         $res->push(WorkPlate::whereIn('vung', $addressCode)
-                ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
-                ->load('type', 'detail'));
+            ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
+            ->load('type', 'detail'));
 
         return $this->sendSuccess($res->first()->toArray(), 'get suggestion wp success');
     }

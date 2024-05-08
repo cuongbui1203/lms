@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Models\Order;
+use Cache;
 use Illuminate\Contracts\Validation\Rule;
 
 class OrderListRule implements Rule
@@ -12,7 +13,6 @@ class OrderListRule implements Rule
     public function __construct()
     {
         //
-        // dd($this);
     }
 
     /**
@@ -37,7 +37,9 @@ class OrderListRule implements Rule
             return false;
         }
 
-        $all = Order::all(['id'])->pluck('id')->toArray();
+        $all = Cache::remember('order_ids', now()->addMinutes(60), function () {
+            return Order::all(['id'])->pluck('id')->toArray();
+        });
         $res = array_diff($orderIds, $all);
         if (count($res) !== 0) {
             foreach ($res as $id) {

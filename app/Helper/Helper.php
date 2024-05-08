@@ -216,10 +216,10 @@ if (!function_exists('routing')) {
      */
     function routing(Order $order)
     {
-        $idAddressHT = $order->notifications->last()->to->address_id;
+        $idAddressHT = $order->notifications->last()->to->address->wardCode;
         $vungHt = $order->notifications->last()->to->vung;
         $capHt = $order->notifications->last()->to->cap;
-        $idAddressN = $order->receiver_address_id;
+        $idAddressN = $order->receiver_address->wardCode;
 
         if ($idAddressHT === $idAddressN && $capHt === AddressTypeEnum::WARD) {
             return null;
@@ -285,9 +285,9 @@ if (!function_exists('routingAnother')) {
     function routingAnother(Order $order)
     {
         $noti = $order->notifications->last();
-        $idAddressHT = $noti->to_address_id === null ? $noti->to->address_id : $noti->to_address_id; // address id hiện tại
+        $idAddressHT = $noti->to_address_id === null ? $noti->to->address->wardCode : $noti->to_address_id; // address id hiện tại
         $capHt = getAddressRank($idAddressHT); // cap hien tai
-        $idAddressN = $order->receiver_address_id; // address id ng nhan
+        $idAddressN = $order->receiver_address->wardCode; // address id ng nhan
         $res = null;
 
         while ($capHt < AddressTypeEnum::PROVINCE) {

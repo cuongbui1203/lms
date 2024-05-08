@@ -8,6 +8,7 @@ use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\UpdateVehicleRequest;
 use App\Models\Vehicle;
+use Cache;
 use DB;
 
 class VehicleController extends Controller
@@ -17,10 +18,13 @@ class VehicleController extends Controller
      */
     public function index(GetListRequest $request)
     {
-        $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
-        $relationships = ['driver', 'type', 'goodsType'];
-        $vehicles = Vehicle::all()->paginate($pageSize, $page, $relationships);
+        $vehicles = Cache::remember('vehicle', now()->addMinutes(10), function () use ($request) {
+            $pageSize = $request->pageSize ?? config('paginate.wp-list');
+            $page = $request->page ?? 1;
+            $relationships = ['driver', 'type', 'goodsType'];
+
+            return Vehicle::all()->paginate($pageSize, $page, $relationships);
+        });
 
         return $this->sendSuccess($vehicles);
     }

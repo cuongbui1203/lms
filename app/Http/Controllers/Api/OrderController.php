@@ -17,23 +17,30 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Vehicle;
 use Auth;
+use Cache;
 use Exception;
 
 class OrderController extends Controller
 {
     public function index(GetListOrderRequest $request)
     {
-        $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
-        $relations = ['notifications', 'details'];
-        $orders = Order::query();
-        if ($request->status) {
-            $orders = $orders->where('status_id', '=', $request->status);
-        }
+        $orders = Cache::remember(
+            'orders_status_' . $request->status,
+            now()->addMinutes(10),
+            function () use ($request) {
+                $pageSize = $request->pageSize ?? config('paginate.wp-list');
+                $page = $request->page ?? 1;
+                $relations = ['notifications', 'details'];
+                $res = Order::query();
+                if ($request->status) {
+                    $res = $res->where('status_id', '=', $request->status);
+                }
 
-        $orders = $orders->get()
-            ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
-            ->paginate($pageSize, $page, $relations);
+                return $res->get()
+                    ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
+                    ->paginate($pageSize, $page, $relations);
+            }
+        );
 
         return $this->sendSuccess($orders, 'success');
     }
@@ -68,10 +75,13 @@ class OrderController extends Controller
         return $this->sendSuccess($order);
     }
 
-    public function show(Order $order)
+    public function show(string $order)
     {
-        $order->load(['notifications', 'details']);
-        $order->append('sender_address', 'receiver_address');
+        $order = Cache::remember('order_' . $order, now()->addMinutes(10), function () use ($order) {
+            return Order::findOrFail($order)
+                ->load(['notifications', 'details'])
+                ->append('sender_address', 'receiver_address');
+        });
 
         return $this->sendSuccess($order, 'get Order Detail success');
     }
@@ -112,7 +122,13 @@ class OrderController extends Controller
         $res = [];
         foreach ($orderIds as $orderId) {
             /** @var Order $order */
-            $order = Order::find($orderId);
+            $order = Cache::remember(
+                'order_id_' . $orderId,
+                now()->addMinutes(10),
+                function () use ($orderId) {
+                    return Order::find($orderId);
+                }
+            );
             $workPlate = routingAnother($order);
             if ($workPlate) {
                 $workPlate->load('detail', 'type');
@@ -155,7 +171,13 @@ class OrderController extends Controller
         $user = auth()->user();
         $orders = collect(json_decode($request->data));
         $orders->map(function ($orderId) use ($user) {
-            $order = Order::find($orderId);
+            $order = Cache::remember(
+                'order_id_' . $orderId,
+                now()->addMinutes(10),
+                function () use ($orderId) {
+                    return Order::find($orderId);
+                }
+            );
             $noti = $order->notifications->last();
             if (
                 $noti->to_id === $user->work_plate->id ||
