@@ -32,13 +32,12 @@ class UserController extends Controller
 {
     public function getListUser(GetListRequest $request)
     {
+        // dd('run');
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
         $relations = ['role', 'img'];
-        $users = Cache::remember('users_type_' . RoleEnum::USER, now()->addMinutes(10), function () {
-            return User::where('role_id', RoleEnum::USER)->get();
-        });
-        $users = $users->paginate($pageSize, $page, $relations);
+        $users = User::where('role_id', RoleEnum::USER)
+            ->get()->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($users, 'success');
     }
@@ -73,33 +72,23 @@ class UserController extends Controller
         /** @var User $handler */
         $handler = auth()->user();
         if ($handler->role_id === RoleEnum::MANAGER) {
-            $users = Cache::remember(
-                'accounts_wp_' . $handler->wp_id,
-                now()->addMinutes(10),
-                function () use ($handler, $pageSize, $page, $relations) {
-                    return User::where(function ($query) {
-                        $query->where('role_id', RoleEnum::EMPLOYEE)
-                            ->orWhere('role_id', RoleEnum::DRIVER);
+            $users = User::where(function ($query) {
+                $query->where('role_id', RoleEnum::EMPLOYEE)
+                    ->orWhere('role_id', RoleEnum::DRIVER);
 
-                        return $query;
-                    })->where('wp_id', $handler->wp_id)
-                        ->get()->paginate($pageSize, $page, $relations);
-                }
-            );
+                return $query;
+            })
+                ->where('wp_id', $handler->wp_id)
+                ->get();
+            $users = $users->paginate($pageSize, $page, $relations);
         } else {
-            $role = ((int) $request->role_id) ?? null;
-            $users = Cache::remember(
-                'accounts_role_' . $role,
-                now()->addMinutes(10),
-                function () use ($role, $page, $pageSize, $relations) {
-                    $users = User::where('role_id', '!=', RoleEnum::USER);
-                    if ($role && in_array($role, RoleEnum::getValues())) {
-                        $users->where('role_id', $role);
-                    }
+            $role = ((int) $request->role) ?? null;
+            $users = User::where('role_id', '!=', RoleEnum::USER);
+            if ($role && in_array($role, RoleEnum::getValues())) {
+                $users->where('role_id', '=', $role);
+            }
 
-                    return $users->get()->paginate($pageSize, $page, $relations);
-                }
-            );
+            $users = $users->get()->paginate($pageSize, $page, $relations);
         }
 
         return $this->sendSuccess($users, 'success');

@@ -20,7 +20,7 @@ class GetListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'page' => 'numeric|min:1',
+            'page' => 'numeric|min:-1',
             'pageSize' => 'numeric|min:1',
         ];
     }

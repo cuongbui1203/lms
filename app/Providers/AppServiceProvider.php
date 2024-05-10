@@ -25,11 +25,20 @@ class AppServiceProvider extends ServiceProvider
     {
         Builder::macro('paginateAnother', function (int $pageSize, int $page = 1, array $columns = ['*']) {
             $total = $this->count();
-            $data = $this->orderBy('id')->where('id', '>', ($page - 1) * $pageSize)->limit($pageSize)->get($columns);
+            $data = $this->orderBy('id')
+                ->where(function ($query) use ($page, $pageSize, $total) {
+                    if ($page === -1) {
+                        return $query->where('id', '>', $total - $pageSize);
+                    } else {
+                        return $query->where('id', '>', ($page - 1) * $pageSize);
+                    }
+                })
+                ->limit($pageSize)
+                ->get($columns);
 
             $res = [];
             $res['total'] = $total;
-            $res['currentPage'] = $page;
+            $res['currentPage'] = $page === -1 ? (int) ($total / $pageSize) + ($total % $pageSize === 0 ? 0 : 1) : $page;
             $res['pageSize'] = $pageSize;
             $res['data'] = $data;
 
@@ -38,14 +47,18 @@ class AppServiceProvider extends ServiceProvider
 
         Collection::macro('paginate', function (int $pageSize, int $page = 1, array $relations = []) {
             $total = $this->count();
-            $data = $this->slice(($page - 1) * $pageSize, $pageSize)->values();
+            if ($page === -1) {
+                $data = $this->slice($total - $pageSize, $pageSize)->values();
+            } else {
+                $data = $this->slice(($page - 1) * $pageSize, $pageSize)->values();
+            }
             foreach ($data as $e) {
                 $e->load($relations);
             }
 
             $res = [];
             $res['total'] = $total;
-            $res['currentPage'] = $page;
+            $res['currentPage'] = $page === -1 ? (int) ($total / $pageSize) + ($total % $pageSize === 0 ? 0 : 1) : $page;
             $res['pageSize'] = $pageSize;
             $res['data'] = $data;
 
