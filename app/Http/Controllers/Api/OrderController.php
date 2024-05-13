@@ -19,28 +19,64 @@ use App\Models\Vehicle;
 use Auth;
 use Cache;
 use Exception;
+use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
     public function index(GetListOrderRequest $request)
     {
-        $orders = Cache::remember(
-            'orders_status_' . $request->status,
-            now()->addMinutes(10),
-            function () use ($request) {
-                $pageSize = $request->pageSize ?? config('paginate.wp-list');
-                $page = $request->page ?? 1;
-                $relations = ['notifications', 'details'];
-                $res = Order::query();
-                if ($request->status) {
-                    $res = $res->where('status_id', '=', $request->status);
-                }
+        /** @var User $user */
+        $user = auth()->user();
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relations = ['notifications', 'details'];
+        $res = Order::with($relations)->get()->append('sender_address', 'receiver_address');
+        switch ($request->status) {
+            case StatusEnum::AT_TRANSACTION_POINT:
+            case StatusEnum::AT_TRANSPORT_POINT:
+            case StatusEnum::TO_THE_TRANSACTION_POINT:
+            case StatusEnum::TO_THE_TRANSPORT_POINT:
+                $res = $res->filter(function ($order, $index) use ($user) {
+                    $noti = $order->notifications->last();
 
-                return $res->get()
-                    ->each(fn($order) => $order->append('sender_address', 'receiver_address'))
-                    ->paginate($pageSize, $page, $relations);
-            }
-        );
+                    return (
+                        in_array($noti->status_id, [
+                            StatusEnum::AT_TRANSACTION_POINT,
+                            StatusEnum::AT_TRANSPORT_POINT,
+                            StatusEnum::TO_THE_TRANSACTION_POINT,
+                            StatusEnum::TO_THE_TRANSPORT_POINT,
+                        ]) &&
+                        $noti->to_id === $user->wp_id
+                    );
+
+                });
+                break;
+            case StatusEnum::LEAVE_TRANSACTION_POINT:
+            case StatusEnum::LEAVE_TRANSPORT_POINT:
+            case StatusEnum::CREATE:
+            case StatusEnum::RETURN :
+            case StatusEnum::COMPLETE:
+            case StatusEnum::FAIL:
+                $res = $res->filter(function ($order) use ($user) {
+                    $noti = $order->notifications->last();
+                    return (
+                        in_array($noti->status_id, [
+                            StatusEnum::LEAVE_TRANSACTION_POINT,
+                            StatusEnum::LEAVE_TRANSPORT_POINT,
+                            StatusEnum::CREATE,
+                            StatusEnum::RETURN ,
+                            StatusEnum::COMPLETE,
+                            StatusEnum::FAIL,
+                        ]) &&
+                        $noti->from_id === $user->wp_id
+                    );
+                });
+                break;
+        }
+
+        $orders = $res->filter(function ($order) use ($request) {
+            return $order->status_id == $request->status;
+        })->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders, 'success');
     }
@@ -52,11 +88,12 @@ class OrderController extends Controller
         $order = new Order();
         $order->sender_name = $request->sender_name;
         $order->sender_phone = $request->sender_phone;
-        $order->sender_address_id = $request->sender_address_id;
+        $order->sender_address_id = [$request->sender_address_id, $request->sender_address];
         $order->receiver_name = $request->receiver_name;
         $order->receiver_phone = $request->receiver_phone;
-        $order->receiver_address_id = $request->receiver_address_id;
+        $order->receiver_address_id = [$request->receiver_address_id, $request->receiver_address];
         $order->status_id = StatusEnum::CREATE;
+        $order->type_id = $request->type_id;
 
         $order->save();
 
@@ -64,6 +101,9 @@ class OrderController extends Controller
         $notification->order_id = $order->id;
         $notification->from_id = $user->wp_id;
         $notification->to_id = $user->wp_id;
+        $notification->from_address_id = [$request->sender_address_id, $request->sender_address];
+        $notification->to_address_id = [$request->sender_address_id, $request->sender_address];
+        $notification->address_current_id = $user->work_plate->vung;
         $notification->status_id = StatusEnum::CREATE;
         $notification->description = 'create new order';
 
@@ -72,17 +112,13 @@ class OrderController extends Controller
         $order->load(['notifications']);
         $order->append('sender_address', 'receiver_address');
 
-        return $this->sendSuccess($order);
+        return $this->sendSuccess($order, "Create order success", Response::HTTP_CREATED);
     }
 
-    public function show(string $order)
+    public function show(Order $order)
     {
-        $order = Cache::remember('order_' . $order, now()->addMinutes(10), function () use ($order) {
-            return Order::findOrFail($order)
-                ->load(['notifications', 'details'])
-                ->append('sender_address', 'receiver_address');
-        });
-
+        $order->load(['notifications', 'details'])
+            ->append('sender_address', 'receiver_address');
         return $this->sendSuccess($order, 'get Order Detail success');
     }
 
@@ -151,13 +187,19 @@ class OrderController extends Controller
         ]);
 
         $inputs->map(function ($e) {
+            /** @var User $user */
+            $user = auth()->user();
             $notification = new Noti();
-            $notification->from_id = $e->from_id ?? null;
+            $notification->from_id = $user->wp_id;
             $notification->to_id = $e->to_id ?? null;
-            $notification->from_address_id = $e->from_address_id ?? null;
-            $notification->to_address_id = $e->to_address_id ?? null;
+            $notification->from_address_id = [
+                $e->from_address_id ?? $user->work_plate->address->wardCode,
+                $e->from_address ?? $user->work_plate->address->address,
+            ];
+            $notification->to_address_id = [$e->to_address_id ?? null, $e->to_address ?? null];
             $notification->description = $e->description ?? null;
             $notification->order_id = $e->orderId;
+            $notification->address_current_id = $user->work_plate->vung;
             $notification->status_id = StatusEnum::TO_THE_TRANSACTION_POINT;
             $notification->save();
         });
@@ -180,14 +222,15 @@ class OrderController extends Controller
             );
             $noti = $order->notifications->last();
             if (
-                $noti->to_id === $user->work_plate->id ||
-                $noti->to_address_id === $user->work_plate->address_id
+                (!is_null($noti->to_id) && $noti->to_id === $user->work_plate->id) ||
+                ((!is_null($noti->to_address)) && $noti->to_address->wardCode === $user->work_plate->address->wardCode)
             ) {
                 $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
                 StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
             } else {
                 $noti->to_id = $user->work_plate->id;
-                $noti->to_address_id = $user->work_plate->vung;
+                $noti->to_address_id = [$user->work_plate->address->wardCode, $user->work_plate->address->address];
+                $noti->address_current_id = $user->work_plate->vung;
                 $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
                 StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
             }

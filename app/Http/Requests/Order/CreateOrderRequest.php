@@ -3,7 +3,8 @@
 namespace App\Http\Requests\Order;
 
 use App\Http\Requests\FormRequest;
-use App\Rules\VungRule;
+use App\Rules\CheckAddressValid;
+use Illuminate\Validation\Rule;
 
 class CreateOrderRequest extends FormRequest
 {
@@ -27,8 +28,16 @@ class CreateOrderRequest extends FormRequest
             'receiver_name' => 'required',
             'sender_phone' => 'required',
             'receiver_phone' => 'required',
-            'sender_address_id' => ['required', new VungRule()],
-            'receiver_address_id' => ['required', new VungRule()],
+            'sender_address_id' => ['required', 'string', new CheckAddressValid()],
+            'receiver_address_id' => ['required', 'string', new CheckAddressValid()],
+            'sender_address' => ['nullable', 'string'],
+            'receiver_address' => ['nullable', 'string'],
+            'type_id' => ['required', Rule::in([
+                config('type.goods.fragile'),
+                config('type.goods.hazardous'),
+                config('type.goods.normal'),
+                config('type.goods.oversized'),
+            ])],
         ];
     }
 }

@@ -30,7 +30,7 @@ class User extends Authenticatable
         'img_id',
     ];
 
-    protected $guard = [
+    protected $guarded = [
         'role_id',
         'password',
     ];
@@ -70,7 +70,9 @@ class User extends Authenticatable
                 if (array_key_exists('address_id', $this->attributes)) {
                     $arrayAddress = explode('|', $this->attributes['address_id']);
                     $address = getAddress($arrayAddress[0]);
-                    $address->{'address'} = $arrayAddress[1] ?? '';
+                    if ($address) {
+                        $address->{'address'} = $arrayAddress[1] ?? '';
+                    }
 
                     return $address;
                 }

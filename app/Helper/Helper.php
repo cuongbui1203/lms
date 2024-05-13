@@ -142,24 +142,28 @@ if (!function_exists('getAddressCode')) {
 if (!function_exists('getAddress')) {
     function getAddress(string | null $addressId)
     {
-        if (is_null($addressId)) { // phpcs:ignore
+        if (is_null($addressId) || $addressId === '') { // phpcs:ignore
             return null;
         }
 
-        $res = DB::connection('sqlite_vn_map')
-            ->table(DB::raw('wards w'))
-            ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
-            ->join(DB::raw('provinces p'), 'd.province_code', '=', 'p.code')
-            ->select(
-                DB::raw('p.full_name as provinceName'),
-                DB::raw('d.full_name as districtName'),
-                DB::raw('w.full_name as wardName'),
-                DB::raw('p.code as provinceCode'),
-                DB::raw('d.code as districtCode'),
-                DB::raw('w.code as wardCode')
-            )
-            ->where(DB::raw('w.code'), $addressId)
-            ->first();
+        try {
+            $res = DB::connection('sqlite_vn_map')
+                ->table(DB::raw('wards w'))
+                ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+                ->join(DB::raw('provinces p'), 'd.province_code', '=', 'p.code')
+                ->select(
+                    DB::raw('p.full_name as provinceName'),
+                    DB::raw('d.full_name as districtName'),
+                    DB::raw('w.full_name as wardName'),
+                    DB::raw('p.code as provinceCode'),
+                    DB::raw('d.code as districtCode'),
+                    DB::raw('w.code as wardCode')
+                )
+                ->where(DB::raw('w.code'), $addressId)
+                ->first();
+        } catch (Exception $e) {
+            throw $e;
+        }
         if (!$res) {
             throw new Exception('loi truy van cho address co id: ' . $addressId, 1);
         }
@@ -285,7 +289,7 @@ if (!function_exists('routingAnother')) {
     function routingAnother(Order $order)
     {
         $noti = $order->notifications->last();
-        $idAddressHT = $noti->to_address_id === null ? $noti->to->address->wardCode : $noti->to_address_id; // address id hiện tại
+        $idAddressHT = $noti->address_current_id; // address id hiện tại
         $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address->wardCode; // address id ng nhan
         $res = null;

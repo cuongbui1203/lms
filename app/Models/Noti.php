@@ -23,6 +23,12 @@ class Noti extends Model
         'description',
     ];
 
+    protected $hidden = [
+        'from_address_id',
+        'to_address_id',
+        'address_current_id',
+    ];
+
     public function order(): HasOne
     {
         return $this->hasOne(Order::class, 'id', 'order_id');
@@ -46,14 +52,44 @@ class Noti extends Model
     protected function fromAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['from_address_id']),
+            get: function () {
+                $arrayAddress = explode('|', $this->attributes['from_address_id']);
+                $address = getAddress($arrayAddress[0]);
+                if (!is_null($address)) {
+                    $address->{'address'} = $arrayAddress[1] ?? '';
+                }
+
+                return $address;
+            },
         );
     }
 
     protected function toAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => getAddress($this->attributes['to_address_id']),
+            get: function () {
+                $arrayAddress = explode('|', $this->attributes['to_address_id']);
+                $address = getAddress($arrayAddress[0]);
+                if (!is_null($address)) {
+                    $address->{'address'} = $arrayAddress[1] ?? '';
+                }
+
+                return $address;
+            }
         );
     }
+
+    protected function fromAddressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1]
+        );
+    }
+    protected function toAddressId(): Attribute
+    {
+        return Attribute::make(
+            set: fn(array $address) => $address[0] . '|' . $address[1]
+        );
+    }
+
 }

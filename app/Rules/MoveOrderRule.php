@@ -19,11 +19,11 @@ class MoveOrderRule implements Rule
     public function __construct()
     {
         $this->errors = [];
-        $this->allOrderIds = Cache::remember('order_ids', now()->addMinutes(100), function () {
-            return Order::all('id');
+        $this->allOrderIds = Cache::remember('order_ids', now()->addMinutes(5), function () {
+            return collect(Order::all('id'));
         });
-        $this->allWpIds = Cache::remember('wp_ids', now()->addMinutes(100), function () {
-            return WorkPlate::all('id');
+        $this->allWpIds = Cache::remember('wp_ids', now()->addMinutes(5), function () {
+            return collect(WorkPlate::all('id'));
         });
         $this->allWardIds = Cache::remember('ward_ids', now()->addMinutes(100), function () {
             return DB::connection('sqlite_vn_map')

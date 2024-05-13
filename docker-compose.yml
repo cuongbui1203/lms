@@ -1,4 +1,14 @@
 services:
+    nextjs:
+        build:
+            context: ./docker/nextjs
+            dockerfile: Dockerfile
+        ports:
+            - '80:80'
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
     laravel.test:
         build:
             context: ./vendor/laravel/sail/runtimes/8.3
@@ -9,8 +19,7 @@ services:
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
-            - '${APP_PORT:-80}:80'
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+            - '${APP_PORT:-8000}:80'
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
@@ -27,7 +36,7 @@ services:
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
-            - '${FORWARD_DB_PORT:-3306}:3306'
+            - '${FORWARD_DB_PORT:-3307}:3306'
         environment:
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_HOST: '%'
@@ -63,6 +72,22 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        networks:
+            - sail
+        ports:
+            - 8080:80
+        environment:
+            PMA_ARBITRARY: 1
+            PMA_USER: ${DB_USERNAME}
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            PMA_PORT: 3306
+        depends_on:
+            - mysql
+
 networks:
     sail:
         driver: bridge

@@ -26,7 +26,7 @@ class GetListOrderRequest extends GetListRequest
         return array_merge(
             parent::rules(),
             [
-                'status' => Rule::in(StatusEnum::getValues()),
+                'status' => ['required', Rule::in(StatusEnum::getValues())],
             ]
         );
     }

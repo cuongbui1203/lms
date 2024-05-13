@@ -18,7 +18,7 @@ class Order extends Model
 
     protected $appends = ['mass'];
 
-    protected $with = ['type'];
+    protected $with = ['type:id,name'];
 
     protected $hidden = [
         'sender_address_id',

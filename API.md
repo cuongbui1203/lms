@@ -1891,6 +1891,9 @@ http status 401
 > `receiver_name`: required|string  
 > `receiver_phone`: required|string  
 > `receiver_address_id`: required|exists  
+> `sender_address`: required|string|allowsEmpty  
+> `receiver_address`: required|string|allowsEmpty  
+> `type_id`: required|numric|exists:type.goods  
 
 #### Response
 ```
@@ -1899,27 +1902,65 @@ http status 401
     "data": {
         "sender_name": "test",
         "sender_phone": "123123123",
-        "sender_address_id": "27280",
         "receiver_name": "tert",
         "receiver_phone": "123",
-        "receiver_address_id": "27283",
-        "updated_at": "2024-03-22T06:45:17.000000Z",
-        "created_at": "2024-03-22T06:45:17.000000Z",
-        "id": 13,
+        "status_id": 10,
+        "type_id": "10",
+        "updated_at": 1715568930,
+        "created_at": 1715568930,
+        "id": 15,
+        "mass": 0,
+        "sender_address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27280",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 14",
+            "address": "hn"
+        },
+        "receiver_address": {
+            "provinceCode": "79",
+            "districtCode": "773",
+            "wardCode": "27283",
+            "province": "Thành phố Hồ Chí Minh",
+            "district": "Quận 4",
+            "ward": "Phường 04",
+            "address": "hn"
+        },
         "notifications": [
             {
-                "id": 2,
-                "order_id": 13,
+                "id": 5,
+                "order_id": 15,
                 "from_id": 1,
                 "to_id": 1,
                 "status_id": 10,
-                "description": null,
-                "created_at": null,
-                "updated_at": null
+                "description": "create new order",
+                "created_at": "2024-05-13T02:55:30.000000Z",
+                "updated_at": "2024-05-13T02:55:30.000000Z",
+                "from_address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27280",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 14",
+                    "address": "hn"
+                },
+                "to_address": {
+                    "provinceCode": "79",
+                    "districtCode": "773",
+                    "wardCode": "27280",
+                    "province": "Thành phố Hồ Chí Minh",
+                    "district": "Quận 4",
+                    "ward": "Phường 14",
+                    "address": "hn"
+                }
             }
-        ]
+        ],
+        "details": []
     },
-    "message": ""
+    "message": "Create order success"
 }
 ```
 ```
@@ -2092,8 +2133,6 @@ HTTP status code 404
 > Mỗi Item sẽ có:
 > - `to_id`: id wp tồn tại trong hệ thống.  
 > - `to_address_id`: id wards tồn tại.  
-> - `from_id`: id wp tồn tại trong hệ thống.  
-> - `from_address_id`: id wards tồn tại.  
 > - `orderId`: id order muốn chuyển.  
 
 #### Response
@@ -2113,14 +2152,8 @@ HTTP status code 404
                 "to": "must has one of to id or to address id"
             }
         ],
-        "request-no-2": [
-            {
-                "from": "must has one of from id or from address id"
-            }
-        ],
         "request-no-3": [
             {
-                "from": "must has one of from id or from address id",
                 "to_address_id": "must be string"
             }
         ]
