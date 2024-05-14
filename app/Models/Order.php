@@ -18,12 +18,17 @@ class Order extends Model
 
     protected $appends = ['mass'];
 
-    protected $with = ['type:id,name'];
+    protected $with = ['type:id,name', 'createdBy:id,name'];
 
     protected $hidden = [
         'sender_address_id',
         'receiver_address_id',
     ];
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_id', 'id');
+    }
 
     public function status(): BelongsTo
     {

@@ -29,9 +29,9 @@ class AppServiceProvider extends ServiceProvider
                 ->where(function ($query) use ($page, $pageSize, $total) {
                     if ($page === -1) {
                         return $query->where('id', '>', $total - $pageSize);
-                    } else {
-                        return $query->where('id', '>', ($page - 1) * $pageSize);
                     }
+
+                    return $query->where('id', '>', ($page - 1) * $pageSize);
                 })
                 ->limit($pageSize)
                 ->get($columns);
@@ -52,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 $data = $this->slice(($page - 1) * $pageSize, $pageSize)->values();
             }
+
             foreach ($data as $e) {
                 $e->load($relations);
             }

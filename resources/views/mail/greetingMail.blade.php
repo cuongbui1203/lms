@@ -2,7 +2,7 @@
 <html dir="ltr">
 
 <head>
-    <title>{{ title }}</title>
+    <title>{{ $title }}</title>
     <style>
         a {
             outline: none;
@@ -311,17 +311,17 @@
                 style="padding-bottom:0px;padding-top:0px;width:100%;max-width:680px;height:auto;background-image:url(https://www.da-files.com/emailmarketing/2020/global/bg-letterhead.png?9147116777);background-color:#ffffff;background-repeat:no-repeat!important;background-position:center top;background-size:cover;border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;"
                 align="left" valign="middle">
 
-                <table style="table-layout:auto;border-spacing:0;width:100%;margin:0 auto;" border="0" cellpadding="0"
-                    cellspacing="0" width="680">
+                <table style="table-layout:auto;border-spacing:0;width:100%;margin:0 auto;" border="0"
+                    cellpadding="0" cellspacing="0" width="680">
                     <tr>
                         <td class="headerWrap"
                             style="height:200px;width:100%;text-align:center;padding:20px 5% 20px 5%;background-color:transparent;"
                             align="center" valign="middle">
                             <a href='#homePage' style="display:block; ">
                                 <img class="logo"
-                                    src="https://www.da-files.com/emailmarketing/2020/global/deviantart_logo_dark.png?9147116777"
+                                    src="https://cdn.discordapp.com/attachments/1008257463465820194/1239879053725401150/image.png?ex=664486da&is=6643355a&hm=98290ad75da4274d1824ab8f4f52d1d819b08a03220991efbd127e5b835e91bc&"
                                     style="margin:0 auto 0 auto;width:135px;height:34px;display:block;" width="135"
-                                    height="34" alt="DeviantArt Logo" />
+                                    height="34" alt="Logo" />
 
                             </a>
                         </td>
@@ -340,14 +340,14 @@
                                 colspan="2">
                                 <h1
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:30px;line-height:40px;font-weight:bold;margin:0px 0px 0px 0px;padding:0px 0px 30px 0px;text-align:center;">
-                                    Chào mừng đến với [Tên thương hiệu/doanh nghiệp của bạn]!</h1>
+                                    Chào mừng đến với {{ env('APP_NAME') }}!</h1>
                                 <p
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:30px;font-weight:bold;color:#000000 !important;margin:0px 0px 0px 0px;padding:0px 0px 16px 0px;text-align:center;">
-                                    Hi {{ name }},</p>
+                                    Hi {{ $name }},</p>
                                 <p
                                     style="font-family:Arial, Helvetica, sans-serif;font-size:18px;line-height:30px;color:#121314;margin:0px auto 0px auto;padding:0px 0px 0 0px;text-align:center;max-width:500px !important;">
                                     Cảm ơn bạn đã đăng ký nhận email từ chúng tôi. Chúng tôi rất vui mừng chào đón bạn
-                                    đến với cộng đồng [Tên thương hiệu/doanh nghiệp của bạn]!</p>
+                                    đến với cộng đồng {{ env('APP_NAME') }}!</p>
 
 
                             </td>
@@ -369,10 +369,10 @@
                         </div>
                         <p style="font-family:Arial, Helvetica, sans-serif;font-size:12px!important;line-height:20px;">
                             <span
-                                style="padding-bottom:0px;font-weight:normal;font-size:12px;color:#66737C !important;text-decoration:none;">{{address}}<br /><br /><a
+                                style="padding-bottom:0px;font-weight:normal;font-size:12px;color:#66737C !important;text-decoration:none;">{{ env('COMPANY_ADDRESS', 'Hn') }}<br /><br /><a
                                     href="https://www.deviantart.com?quix=3Dfooter"
                                     style="color:#67737b;text-decoration:underline;font-size:12px;line-height:20px;">
-                                    {{ link }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#policy"
+                                    {{ '' }}</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="#policy"
                                     style="color:#66737C;text-decoration:underline;">Privacy Policy</a></span>
                         </p>
                     </div>

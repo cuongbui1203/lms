@@ -15,6 +15,7 @@ use Str;
 class OrderTestSeeder extends Seeder
 {
     private $count = 1;
+
     private function createWorkPlate($name, $addressId, $type, $cap)
     {
         $res = WorkPlate::create([
@@ -29,12 +30,12 @@ class OrderTestSeeder extends Seeder
             'role_id' => RoleEnum::EMPLOYEE,
             'wp_id' => $res,
         ]);
+
         return $res->id;
     }
 
     private function createRoute($senderAddressId, $receiverAddressId)
     {
-
         $cap = getAddressRank($senderAddressId);
         $start = $this->createWorkPlate(
             Str::random(10),

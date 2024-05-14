@@ -85,11 +85,11 @@ class Noti extends Model
             set: fn(array $address) => $address[0] . '|' . $address[1]
         );
     }
+
     protected function toAddressId(): Attribute
     {
         return Attribute::make(
             set: fn(array $address) => $address[0] . '|' . $address[1]
         );
     }
-
 }

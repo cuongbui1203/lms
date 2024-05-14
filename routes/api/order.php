@@ -17,7 +17,7 @@ Route::prefix('multi')
 
 Route::prefix('{order}')
     ->group(function () {
-        Route::get('', [OrderController::class, 'show']);
+        Route::get('', [OrderController::class, 'show'])->withoutMiddleware('auth:sanctum');
         Route::post('', [OrderController::class, 'addDetail']);
         Route::put('/shipped', [OrderController::class, 'shipped']);
         Route::put('/vehicles/{vehicle}', [OrderController::class, 'ganChoXe']);

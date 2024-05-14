@@ -164,6 +164,7 @@ if (!function_exists('getAddress')) {
         } catch (Exception $e) {
             throw $e;
         }
+
         if (!$res) {
             throw new Exception('loi truy van cho address co id: ' . $addressId, 1);
         }

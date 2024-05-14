@@ -32,12 +32,15 @@ class CreateOrderRequest extends FormRequest
             'receiver_address_id' => ['required', 'string', new CheckAddressValid()],
             'sender_address' => ['nullable', 'string'],
             'receiver_address' => ['nullable', 'string'],
-            'type_id' => ['required', Rule::in([
-                config('type.goods.fragile'),
-                config('type.goods.hazardous'),
-                config('type.goods.normal'),
-                config('type.goods.oversized'),
-            ])],
+            'type_id' => [
+                'required',
+                Rule::in([
+                    config('type.goods.fragile'),
+                    config('type.goods.hazardous'),
+                    config('type.goods.normal'),
+                    config('type.goods.oversized'),
+                ]),
+            ],
         ];
     }
 }

@@ -6,8 +6,6 @@ use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class GreetingMail extends Mailable implements ShouldQueue
@@ -15,41 +13,26 @@ class GreetingMail extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    private User $user;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(private User $user)
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Greeting Mail ' . $this->user->name,
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'mail.greetingMail',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
+     * Build the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @return $this
      */
-    public function attachments(): array
+    public function build()
     {
-        return [];
+        return $this->view('mail.greetingMail', [
+            'name' => $this->user->name,
+            'title' => 'Chào mừng',
+        ]);
     }
 }

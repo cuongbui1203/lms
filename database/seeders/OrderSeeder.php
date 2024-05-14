@@ -6,7 +6,6 @@ use App\Enums\StatusEnum;
 use App\Models\Noti;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\WorkPlate;
 use Cache;
 use DB;
 use Illuminate\Database\Seeder;
@@ -42,6 +41,7 @@ class OrderSeeder extends Seeder
             'receiver_phone' => fake()->phoneNumber(),
             'receiver_address_id' => $receiverAddress,
             'status_id' => StatusEnum::CREATE,
+            'created_id' => 1,
         ]);
         $order->save();
         $order->fresh();

@@ -17,6 +17,7 @@ class UserTest extends ModelTestCase
         parent::setUp();
         $this->seed(AddressTestSeeder::class);
     }
+
     public function test_user_configuration()
     {
         $this->runConfigurationAssertions(
@@ -48,30 +49,35 @@ class UserTest extends ModelTestCase
             ]
         );
     }
+
     public function test_user_be_long_to_role()
     {
         $user = new User();
         $role = $user->role();
         $this->assertBelongsToRelation($role, $user, new Role(), 'role_id', 'id');
     }
+
     public function test_user_be_long_to_img()
     {
         $user = new User();
         $img = $user->img();
         $this->assertBelongsToRelation($img, $user, new Image(), 'img_id', 'id');
     }
+
     public function test_user_be_long_to_work_plate()
     {
         $user = new User();
         $wp = $user->work_plate();
         $this->assertBelongsToRelation($wp, $user, new WorkPlate(), 'wp_id', 'id');
     }
+
     public function test_user_be_long_to_vehicle()
     {
         $user = new User();
         $vehicle = $user->vehicle();
         $this->assertBelongsToRelation($vehicle, $user, new Vehicle(), 'id', 'driver_id');
     }
+
     public function test_user_address_assessor()
     {
         $user = new User(
@@ -88,6 +94,7 @@ class UserTest extends ModelTestCase
         ];
         $this->assertEquals($user->address, $res);
     }
+
     public function test_user_address_id_mutator()
     {
         $user = new User(

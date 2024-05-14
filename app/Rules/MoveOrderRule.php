@@ -26,9 +26,9 @@ class MoveOrderRule implements Rule
             return collect(WorkPlate::all('id'));
         });
         $this->allWardIds = Cache::remember('ward_ids', now()->addMinutes(100), function () {
-            return DB::connection('sqlite_vn_map')
+            return collect(DB::connection('sqlite_vn_map')
                 ->table('wards')
-                ->get('*');
+                ->get('*'));
         });
     }
 

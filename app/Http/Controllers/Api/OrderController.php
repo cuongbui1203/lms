@@ -48,34 +48,36 @@ class OrderController extends Controller
                         ]) &&
                         $noti->to_id === $user->wp_id
                     );
-
                 });
+
                 break;
             case StatusEnum::LEAVE_TRANSACTION_POINT:
             case StatusEnum::LEAVE_TRANSPORT_POINT:
             case StatusEnum::CREATE:
-            case StatusEnum::RETURN :
+            case StatusEnum::RETURN:
             case StatusEnum::COMPLETE:
             case StatusEnum::FAIL:
                 $res = $res->filter(function ($order) use ($user) {
                     $noti = $order->notifications->last();
+
                     return (
                         in_array($noti->status_id, [
                             StatusEnum::LEAVE_TRANSACTION_POINT,
                             StatusEnum::LEAVE_TRANSPORT_POINT,
                             StatusEnum::CREATE,
-                            StatusEnum::RETURN ,
+                            StatusEnum::RETURN,
                             StatusEnum::COMPLETE,
                             StatusEnum::FAIL,
                         ]) &&
                         $noti->from_id === $user->wp_id
                     );
                 });
+
                 break;
         }
 
         $orders = $res->filter(function ($order) use ($request) {
-            return $order->status_id == $request->status;
+            return $order->status_id === $request->status;
         })->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders, 'success');
@@ -94,7 +96,7 @@ class OrderController extends Controller
         $order->receiver_address_id = [$request->receiver_address_id, $request->receiver_address];
         $order->status_id = StatusEnum::CREATE;
         $order->type_id = $request->type_id;
-
+        $order->created_id = $user->id;
         $order->save();
 
         $notification = new Noti();
@@ -112,13 +114,14 @@ class OrderController extends Controller
         $order->load(['notifications']);
         $order->append('sender_address', 'receiver_address');
 
-        return $this->sendSuccess($order, "Create order success", Response::HTTP_CREATED);
+        return $this->sendSuccess($order, 'Create order success', Response::HTTP_CREATED);
     }
 
     public function show(Order $order)
     {
         $order->load(['notifications', 'details'])
             ->append('sender_address', 'receiver_address');
+
         return $this->sendSuccess($order, 'get Order Detail success');
     }
 

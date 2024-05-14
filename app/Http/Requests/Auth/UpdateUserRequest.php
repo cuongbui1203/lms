@@ -46,6 +46,7 @@ class UpdateUserRequest extends FormRequest
             'role_id' => [
                 Rule::in(RoleEnum::getValues()),
             ],
+            'wp_id' => 'exists:work_plates,id',
         ];
     }
 }

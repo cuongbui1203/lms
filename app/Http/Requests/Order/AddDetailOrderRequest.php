@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Order;
 
 use App\Http\Requests\FormRequest;
+use App\Rules\AddMultiDetailOrderRule;
 
 class AddDetailOrderRequest extends FormRequest
 {
@@ -22,10 +23,11 @@ class AddDetailOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
-            'mass' => 'required|numeric|min:1',
-            'desc' => 'required',
-            'img' => 'image',
+            'data' => [
+                'required',
+                'json',
+                new AddMultiDetailOrderRule(),
+            ],
         ];
     }
 }
