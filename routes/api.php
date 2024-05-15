@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
  */
+Route::name('.image')
+    ->prefix('images')
+    ->group(function () {
+        Route::post('/', [ImageController::class, 'store']);
+        Route::get('/{image}', [ImageController::class, 'show'])->name('.show');
+    });
 
 Route::name('.users')
     ->prefix('users')
@@ -34,9 +40,5 @@ Route::prefix('vehicles')
 Route::prefix('orders')
     ->middleware(['auth:sanctum'])
     ->group(api_path('order.php'));
-
-Route::name('.image')
-    ->prefix('images')
-    ->get('/{image}', [ImageController::class, 'show'])->name('.show');
 
 Route::middleware(['auth:sanctum'])->get('types/{for}', [TypeController::class, 'index']);

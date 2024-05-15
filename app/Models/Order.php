@@ -16,7 +16,7 @@ class Order extends Model
         'id',
     ];
 
-    protected $appends = ['mass'];
+    protected $appends = ['mass', 'receiver_address', 'sender_address'];
 
     protected $with = ['type:id,name', 'createdBy:id,name'];
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\AddDetailOrderRequest;
@@ -46,7 +47,7 @@ class OrderController extends Controller
                             StatusEnum::TO_THE_TRANSACTION_POINT,
                             StatusEnum::TO_THE_TRANSPORT_POINT,
                         ]) &&
-                        $noti->to_id === $user->wp_id
+                        (($noti->to_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
                     );
                 });
 
@@ -54,22 +55,21 @@ class OrderController extends Controller
             case StatusEnum::LEAVE_TRANSACTION_POINT:
             case StatusEnum::LEAVE_TRANSPORT_POINT:
             case StatusEnum::CREATE:
-            case StatusEnum::RETURN:
+            case StatusEnum::RETURN :
             case StatusEnum::COMPLETE:
             case StatusEnum::FAIL:
                 $res = $res->filter(function ($order) use ($user) {
                     $noti = $order->notifications->last();
-
                     return (
                         in_array($noti->status_id, [
                             StatusEnum::LEAVE_TRANSACTION_POINT,
                             StatusEnum::LEAVE_TRANSPORT_POINT,
                             StatusEnum::CREATE,
-                            StatusEnum::RETURN,
+                            StatusEnum::RETURN ,
                             StatusEnum::COMPLETE,
                             StatusEnum::FAIL,
                         ]) &&
-                        $noti->from_id === $user->wp_id
+                        (($noti->from_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
                     );
                 });
 
@@ -139,20 +139,24 @@ class OrderController extends Controller
 
     public function addDetail(AddDetailOrderRequest $request, Order $order)
     {
-        $detail = new OrderDetail([
-            'order_id' => $order->id,
-            'desc' => $request->desc,
-            'mass' => $request->mass,
-            'name' => $request->name,
-        ]);
+        $details = collect($request->data);
+        $details->each(function ($e) use ($order) {
+            $e = (object) $e;
+            $detail = new OrderDetail([
+                'order_id' => $order->id,
+                'desc' => $e->desc,
+                'mass' => $e->mass,
+                'name' => $e->name,
+            ]);
 
-        if ($request->img) {
-            $detail->image_id = storeImage('order_detail', $request->file('img'));
-        }
+            if (isset($e->img)) {
+                $detail->image_link = $e->img;
+            }
+            $detail->save();
+        });
+        $order->fresh();
 
-        $detail->save();
-
-        return $this->sendSuccess($detail, 'add order detail success');
+        return $this->sendSuccess($order, 'add order detail success');
     }
 
     public function getNextPos(ListOrderIdRequest $request)

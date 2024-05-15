@@ -227,6 +227,7 @@ HTTP status code 500
 >`address`: string
 >`address_id`: string wardId
 >`image`: image
+>`wp_id`: exist:wp
 
 ### Response
 ```
@@ -936,13 +937,22 @@ http status 403
 
 ## Image
 ### GetImage
-`post`: `images/{id}`  
+`get`: `images/{id}`  
 ### Response
 #### Success
 > file Image
 #### Fail
 > http code `404`
 
+### Upload Image
+`post`: `images`
+>`image`: required, image
+#### Response
+```
+{
+    "link": "http://localhost:8000/api/images/2"
+}
+```
 ## Work Plate
 ### Create `AUTH` `ADMIN`
 `POST` `\work-plates`
@@ -2029,13 +2039,14 @@ HTTP status code 404
 ```
 
 ### Add detail order `AUTH`
-`POST`: `orders/{orderId}`
+`POST`: `orders/{orderId}/multi`
 
-> `type_id`: required|in(9,10,11,12)    
+> `data`: required|json|array  
+each element:  
 > `name`: required|string  
 > `mass`: required|numeric|min:1,  
 > `desc`: required  
-> `img`: image|file
+> `img`: link
 
 #### Response
 ```

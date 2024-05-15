@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Order;
+namespace App\Http\Requests\Image;
 
 use App\Http\Requests\FormRequest;
-use App\Rules\AddMultiDetailOrderRule;
 
-class AddDetailOrderRequest extends FormRequest
+class ImageUploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +22,7 @@ class AddDetailOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data' => [
-                'required',
-                'array',
-                new AddMultiDetailOrderRule(),
-            ],
+            'image' => 'required|image',
         ];
     }
 }

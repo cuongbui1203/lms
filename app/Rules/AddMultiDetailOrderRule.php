@@ -10,17 +10,11 @@ class AddMultiDetailOrderRule implements Rule
 
     public function passes($attribute, $value)
     {
-        $data = json_decode($value);
-
-        if (!is_array($data)) {
-            $this->errors[] = 'must be array';
-
-            return false;
-        }
-
+        // dd($value);
+        $data = collect($value);
         $data->map(function ($e, $i) {
             $attribute = 'detail-no-' . ($i + 1);
-            $errors = $this->check($e);
+            $errors = $this->check((object) $e);
             if (count($errors) !== 0) {
                 $this->errors[$attribute] = $errors;
             }
@@ -32,11 +26,11 @@ class AddMultiDetailOrderRule implements Rule
     public function check($e)
     {
         $errors = [];
-        if (!$e->name) {
+        if (!isset($e->name)) {
             $errors['name'] = 'The name field is required';
         }
 
-        if ($e->mass) {
+        if (isset($e->mass)) {
             if (!is_int($e->mass)) {
                 $errors['mass'] = 'The mass field must be int';
             }
@@ -44,8 +38,11 @@ class AddMultiDetailOrderRule implements Rule
             $errors['mass'] = 'The mass field is required';
         }
 
-        if (!$e->desc) {
+        if (!isset($e->desc)) {
             $errors['desc'] = 'The desc field is required';
+        }
+        if (isset($e->img) && !filter_var($e->img, FILTER_SANITIZE_URL)) {
+            $errors['img'] = 'The image link is invalid';
         }
 
         return $errors;
