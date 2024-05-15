@@ -31,7 +31,8 @@ class OrderController extends Controller
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
         $page = $request->page ?? 1;
         $relations = ['notifications', 'details'];
-        $res = Order::with($relations)->get()->append('sender_address', 'receiver_address');
+        $res = Order::with($relations)->get()->append('sender_address', 'receiver_address', 'current_status');
+        // dd($res);
         switch ($request->status) {
             case StatusEnum::AT_TRANSACTION_POINT:
             case StatusEnum::AT_TRANSPORT_POINT:
@@ -39,7 +40,6 @@ class OrderController extends Controller
             case StatusEnum::TO_THE_TRANSPORT_POINT:
                 $res = $res->filter(function ($order, $index) use ($user) {
                     $noti = $order->notifications->last();
-
                     return (
                         in_array($noti->status_id, [
                             StatusEnum::AT_TRANSACTION_POINT,
@@ -77,7 +77,8 @@ class OrderController extends Controller
         }
 
         $orders = $res->filter(function ($order) use ($request) {
-            return $order->status_id === $request->status;
+            // dd($order->current_status->id, $request->status);
+            return $order->current_status->id == $request->status;
         })->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders, 'success');

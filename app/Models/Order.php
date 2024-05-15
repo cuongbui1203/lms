@@ -106,4 +106,11 @@ class Order extends Model
             get: fn() => $this->details->sum('mass'),
         );
     }
+
+    protected function currentStatus(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->notifications->last()->status
+        );
+    }
 }

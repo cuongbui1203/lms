@@ -17,7 +17,6 @@ use App\Http\Requests\Auth\UpdateUserRequest;
 use App\Http\Requests\GetListRequest;
 use App\Jobs\SendGreetingEmail;
 use App\Models\User;
-use Cache;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -212,11 +211,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $user)
+    public function show(User $user)
     {
-        $user = Cache::remember('user_' . $user, now()->addMinutes(10), function () use ($user) {
-            return User::findOrFail($user)->load('role', 'work_plate', 'img', 'vehicle');
-        });
+        $user->load('role', 'work_plate', 'img', 'vehicle');
 
         return $this->sendSuccess($user, 'Send user');
     }
