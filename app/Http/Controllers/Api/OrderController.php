@@ -184,7 +184,7 @@ class OrderController extends Controller
             $res[$orderId] = $workPlate;
         }
 
-        return $this->sendSuccess($res, 'gui dia diem diem goi y tiep theo');
+        return $this->sendSuccess($res, 'send suggestion next position success');
     }
 
     public function MoveToNextPos(MoveOrderRequest $request)

@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Order;
 
 use App\Http\Requests\FormRequest;
-use App\Rules\OrderListRule;
+use App\Rules\OrderListIdRule;
 
 class ListOrderIdRequest extends FormRequest
 {
@@ -25,7 +25,8 @@ class ListOrderIdRequest extends FormRequest
         return [
             'orders' => [
                 'required',
-                new OrderListRule(),
+                'json',
+                new OrderListIdRule(),
             ],
         ];
     }
