@@ -25,6 +25,7 @@ class ArrivedPostRequest extends FormRequest
         return [
             'data' => [
                 'required',
+                'array',
                 new OrderListRule(),
             ],
         ];

@@ -98,6 +98,7 @@ class OrderController extends Controller
         $order->status_id = StatusEnum::CREATE;
         $order->type_id = $request->type_id;
         $order->created_id = $user->id;
+        $order->freight = $request->freight;
         $order->save();
 
         $notification = new Noti();
@@ -188,7 +189,7 @@ class OrderController extends Controller
 
     public function MoveToNextPos(MoveOrderRequest $request)
     {
-        $inputs = collect(json_decode($request->data));
+        $inputs = collect($request->data);
         $orderIds = $inputs->pluck('orderId');
         Order::whereIn('id', $orderIds)->update([
             'status_id' => StatusEnum::R_DELIVERY,
@@ -197,6 +198,7 @@ class OrderController extends Controller
         $inputs->map(function ($e) {
             /** @var User $user */
             $user = auth()->user();
+            $e = (object) $e;
             $notification = new Noti();
             $notification->from_id = $user->wp_id;
             $notification->to_id = $e->to_id ?? null;
@@ -219,15 +221,14 @@ class OrderController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $orders = collect(json_decode($request->data));
-        $orders->map(function ($orderId) use ($user) {
-            $order = Cache::remember(
-                'order_id_' . $orderId,
-                now()->addMinutes(10),
-                function () use ($orderId) {
-                    return Order::find($orderId);
-                }
-            );
+        $orders = collect($request->data);
+        $orders->map(function ($e) use ($user) {
+            $e = (object) $e;
+            $order = Order::find($e->id);
+            $total = $order->freight + (($e->distance ?? 0) * env('TRANSPOSITIONS_COST'));
+            Order::where('id', $e->id)->update([
+                'freight' => $total,
+            ]);
             $noti = $order->notifications->last();
             if (
                 (!is_null($noti->to_id) && $noti->to_id === $user->work_plate->id) ||

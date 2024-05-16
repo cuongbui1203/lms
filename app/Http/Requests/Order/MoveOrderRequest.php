@@ -25,6 +25,7 @@ class MoveOrderRequest extends FormRequest
         return [
             'data' => [
                 'required',
+                'array',
                 new MoveOrderRule(),
             ],
         ];

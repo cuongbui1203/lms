@@ -320,7 +320,7 @@ class UserController extends Controller
             return $this->sendSuccess([], 'reset password success');
         }
 
-        return $this->sendError('cant reset password', 'email invalid');
+        return $this->sendError('can\'t reset password', 'email invalid');
     }
 
     public function createEmployee(CreateEmployeeRequest $request)

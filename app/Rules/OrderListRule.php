@@ -3,16 +3,17 @@
 namespace App\Rules;
 
 use App\Models\Order;
-use Cache;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Collection;
 
 class OrderListRule implements Rule
 {
     protected $errors = [];
+    protected Collection $all;
 
     public function __construct()
     {
-        //
+        $this->all = Order::all(['id']);
     }
 
     /**
@@ -24,34 +25,30 @@ class OrderListRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!json_validate($value)) {
-            $this->errors[] = 'must be valid json string';
-
-            return false;
-        }
-
-        $orderIds = json_decode($value);
-        if (!is_array($orderIds)) {
-            $this->errors[] = 'must be array';
-
-            return false;
-        }
-
-        $all = Cache::remember('order_ids', now()->addMinutes(60), function () {
-            return Order::all(['id'])->pluck('id')->toArray();
-        });
-        $res = array_diff($orderIds, $all);
-        if (count($res) !== 0) {
-            foreach ($res as $id) {
-                array_push($this->errors, [
-                    $id => 'Order id invalid.',
-                ]);
+        collect($value)->map(function ($e, $i) {
+            $attribute = 'request-no-' . ($i + 1);
+            $err = $this->check((object) $e);
+            if (count($err) !== 0) {
+                $this->errors[$attribute] = $err;
             }
+        });
+        return count($this->errors) === 0;
+    }
 
-            return false;
+    protected function check($e)
+    {
+        $errors = [];
+        if (!$this->all->contains('id', $e->id)) {
+            $errors['id'] = 'Order id invalid.';
         }
-
-        return true;
+        if (!is_numeric($e->distance)) {
+            $errors['distance'] = 'Distance must be number';
+        } else {
+            if ($e->distance <= 0) {
+                $errors['distance'] = 'Distance must be greater than 0';
+            }
+        }
+        return $errors;
     }
 
     /**

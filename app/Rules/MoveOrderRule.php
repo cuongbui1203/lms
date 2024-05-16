@@ -27,8 +27,8 @@ class MoveOrderRule implements Rule
         });
         $this->allWardIds = Cache::remember('ward_ids', now()->addMinutes(100), function () {
             return collect(DB::connection('sqlite_vn_map')
-                ->table('wards')
-                ->get('*'));
+                    ->table('wards')
+                    ->get('*'));
         });
     }
 
@@ -41,23 +41,10 @@ class MoveOrderRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!json_validate($value)) {
-            $this->errors[] = 'must be valid json string';
-
-            return false;
-        }
-
-        $data = json_decode($value);
-        if (!is_array($data)) {
-            $this->errors[] = 'must be array';
-
-            return false;
-        }
-
-        $data = collect($data);
+        $data = collect($value);
         $data->map(function ($e, $i) {
             $attribute = 'request-no-' . ($i + 1);
-            $errors = $this->check($e);
+            $errors = $this->check((object) $e);
             if (count($errors) !== 0) {
                 $this->errors[$attribute] = $errors;
             }

@@ -2140,7 +2140,7 @@ HTTP status code 404
 ### Create request move to next position `AUTH`
 `POST`: `/multi/next`
 
-> `data`: là 1 chuỗi json. chứa mảng các item:  
+> `data`: array chứa mảng các item:  
 > Mỗi Item sẽ có:
 > - `to_id`: id wp tồn tại trong hệ thống.  
 > - `to_address_id`: id wards tồn tại.  
@@ -2175,7 +2175,11 @@ HTTP status code 404
 
 ### Confirm order arrived `AUTH`
 `PUT`: `multi/arrived`
-> `data`: json. array contain list id order
+> `data`: array contain list id order  
+each element  
+>`id`: required| orderId
+>`distance`: required|numric|min:0
+
 #### Response
 ```
 {
@@ -2187,16 +2191,16 @@ HTTP status code 404
 ```
 {
     "success": false,
-    "error": {
-        "orders": [
-            {
-                "12": "Order id invalid."
-            },
-            {
-                "22": "Order id invalid."
-            }
-        ]
-    },
+    "error": [
+        {
+            "request-no-1": [
+                {
+                    "field": "id",
+                    "message": "Order id invalid."
+                }
+            ]
+        }
+    ],
     "status_code": 422
 }
 ```
