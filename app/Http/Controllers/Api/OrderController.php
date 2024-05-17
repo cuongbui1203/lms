@@ -225,7 +225,7 @@ class OrderController extends Controller
         $orders->map(function ($e) use ($user) {
             $e = (object) $e;
             $order = Order::find($e->id);
-            $total = $order->freight + (($e->distance ?? 0) * env('TRANSPOSITIONS_COST'));
+            $total = $order->freight + ((isset($e->distance) ? $e->distance : 0) * env('TRANSPOSITIONS_COST'));
             Order::where('id', $e->id)->update([
                 'freight' => $total,
             ]);

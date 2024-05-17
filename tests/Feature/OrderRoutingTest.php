@@ -44,6 +44,7 @@ class OrderRoutingTest extends TestCase
             'receiver_name' => 'receiver',
             'receiver_phone' => '0123456789',
             'type_id' => config('type.goods.normal'),
+            'freight' => 15000,
         ];
         $response = $this
             ->actingAs($this->users->first())
@@ -74,13 +75,14 @@ class OrderRoutingTest extends TestCase
         $user = $this->users->where('email', 'user_1test@test.com')->first();
         $user2 = $this->users->where('email', 'user_2test@test.com')->first();
 
-        $data = json_encode([(object)
-        [
-            'orderId' => $this->order->id,
-            'from_id' => (string) $user->wp_id,
-            'to_id' => (string) $user2->wp_id,
-        ],
-        ]);
+        $data = [(object)
+            [
+                'orderId' => $this->order->id,
+                'from_id' => (string) $user->wp_id,
+                'to_id' => (string) $user2->wp_id,
+                'distance' => 15,
+            ],
+        ];
         $res = $this->actingAs($user)
             ->post('/api/orders/multi/next', [
                 'data' => $data,
@@ -93,13 +95,13 @@ class OrderRoutingTest extends TestCase
         $user = $this->users->where('email', 'user_1test@test.com')->first();
         $user2 = $this->users->where('email', 'user_2test@test.com')->first();
 
-        $data = json_encode([(object)
-        [
-            'order_id' => $this->order->id,
-            'from_id' => (string) $user->wp_id,
-            'to_id' => (string) $user2->wp_id,
-        ],
-        ]);
+        $data = [(object)
+            [
+                'order_id' => $this->order->id,
+                'from_id' => (string) $user->wp_id,
+                'to_id' => (string) $user2->wp_id,
+            ],
+        ];
         $res = $this->actingAs($user)
             ->post('/api/orders/multi/next', [
                 'data' => $data,
@@ -110,7 +112,10 @@ class OrderRoutingTest extends TestCase
     public function test_arrived_next_position()
     {
         $user = $this->users->where('email', 'user_2test@test.com')->first();
-        $data = json_encode([$this->order->id]);
+        $data = [(object) [
+            'id' => $this->order->id,
+            'distance' => 10,
+        ]];
         $res = $this->actingAs($user)
             ->put('/api/orders/multi/arrived', [
                 'data' => $data,
@@ -121,7 +126,10 @@ class OrderRoutingTest extends TestCase
     public function test_arrived_next_position_fail()
     {
         $user = $this->users->where('email', 'user_2test@test.com')->first();
-        $data = json_encode([$this->order->id + 13]);
+        $data = [(object) [
+            'id' => $this->order->id + 123,
+
+        ]];
         $res = $this->actingAs($user)
             ->put('/api/orders/multi/arrived', [
                 'data' => $data,
@@ -140,6 +148,7 @@ class OrderRoutingTest extends TestCase
             'receiver_name' => 'receiver',
             'receiver_phone' => '0123456789',
             'type_id' => config('type.goods.normal'),
+            'freight' => 15000,
         ];
         $res = $this->actingAs($user1)->post('/api/orders', $orderData);
         $res->assertStatus(201);
@@ -147,13 +156,14 @@ class OrderRoutingTest extends TestCase
         $order = Order::where('sender_name', 'senderTestRouting')->first();
 
         $user2 = $this->users->where('email', 'user_2test@test.com')->first();
-        $data = json_encode([(object)
-        [
-            'orderId' => $this->order->id,
-            'from_id' => (string) $user1->wp_id,
-            'to_id' => (string) $user2->wp_id,
-        ],
-        ]);
+        $data = [(object)
+            [
+                'orderId' => $this->order->id,
+                'from_id' => (string) $user1->wp_id,
+                'to_id' => (string) $user2->wp_id,
+                'distance' => 10,
+            ],
+        ];
         $res = $this->actingAs($user1)
             ->post('/api/orders/multi/next', [
                 'data' => $data,

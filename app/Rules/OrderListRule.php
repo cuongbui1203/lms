@@ -41,11 +41,13 @@ class OrderListRule implements Rule
         if (!$this->all->contains('id', $e->id)) {
             $errors['id'] = 'Order id invalid.';
         }
-        if (!is_numeric($e->distance)) {
-            $errors['distance'] = 'Distance must be number';
-        } else {
-            if ($e->distance <= 0) {
-                $errors['distance'] = 'Distance must be greater than 0';
+        if (isset($e->distance)) {
+            if (!is_numeric($e->distance)) {
+                $errors['distance'] = 'Distance must be number';
+            } else {
+                if ($e->distance <= 0) {
+                    $errors['distance'] = 'Distance must be greater than 0';
+                }
             }
         }
         return $errors;

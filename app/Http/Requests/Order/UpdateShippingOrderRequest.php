@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Order;
 
 use App\Enums\RoleEnum;
+use App\Http\Requests\FormRequest;
 
-class UpdateShippingOrderRequest extends ListOrderIdRequest
+class UpdateShippingOrderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,6 +28,14 @@ class UpdateShippingOrderRequest extends ListOrderIdRequest
      */
     public function rules(): array
     {
-        return parent::rules();
+        return [
+            'orders' => [
+                'required',
+                'array',
+            ],
+            'orders.*' => [
+                'exists:orders,id',
+            ],
+        ];
     }
 }
