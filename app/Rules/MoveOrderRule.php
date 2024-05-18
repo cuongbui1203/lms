@@ -19,10 +19,10 @@ class MoveOrderRule implements Rule
     public function __construct()
     {
         $this->errors = [];
-        $this->allOrderIds = Cache::remember('order_ids', now()->addMinutes(5), function () {
+        $this->allOrderIds = Cache::remember('order_ids', now()->addMinutes(1), function () {
             return collect(Order::all('id'));
         });
-        $this->allWpIds = Cache::remember('wp_ids', now()->addMinutes(5), function () {
+        $this->allWpIds = Cache::remember('wp_ids', now()->addMinutes(1), function () {
             return collect(WorkPlate::all('id'));
         });
         $this->allWardIds = Cache::remember('ward_ids', now()->addMinutes(100), function () {
@@ -67,13 +67,12 @@ class MoveOrderRule implements Rule
     {
         $errors = [];
 
-        $skipFromId = property_exists($order, 'from_id') ? $order->from_id === null : true;
         $skipFromAddressId = property_exists($order, 'from_address_id') ? $order->from_address_id === null : true;
 
         $skipToId = property_exists($order, 'to_id') ? $order->to_id === null : true;
         $skipToAddressId = property_exists($order, 'to_address_id') ? $order->to_address_id === null : true;
 
-        if (!$this->checkValid($order, $errors, $skipFromId, $skipFromAddressId, $skipToId, $skipToAddressId)) {
+        if (!$this->checkValid($order, $errors, $skipFromAddressId, $skipToId, $skipToAddressId)) {
             return $errors;
         }
 
@@ -81,19 +80,17 @@ class MoveOrderRule implements Rule
 
         $this->checkHasTo($errors, $skipToId, $skipToAddressId);
 
-        $this->checkHasFrom($errors, $skipFromId, $skipFromAddressId);
-
-        $this->checkFromValid($order, $errors, $skipFromId, $skipFromAddressId);
+        $this->checkFromValid($order, $errors, $skipFromAddressId);
 
         $this->checkToValid($order, $errors, $skipToId, $skipToAddressId);
 
         return $errors;
     }
 
-    private function checkValid($order, &$errors, $skipFromId, $skipFromAddressId, $skipToId, $skipToAddressId): bool
+    private function checkValid($order, &$errors, $skipFromAddressId, $skipToId, $skipToAddressId): bool
     {
         if (
-            ($skipToId && $skipToAddressId && $skipFromId && $skipFromAddressId) ||
+            ($skipToId && $skipToAddressId && $skipFromAddressId) ||
             !property_exists($order, 'orderId')
         ) {
             $errors['request'] = 'request invalid';
@@ -111,19 +108,8 @@ class MoveOrderRule implements Rule
         }
     }
 
-    private function checkHasFrom(&$errors, $skipFromId, $skipFromAddressId)
+    private function checkFromValid($order, &$errors, $skipFromAddressId)
     {
-        if ($skipFromId && $skipFromAddressId) {
-            $errors['from'] = 'must has one of from id or from address id';
-        }
-    }
-
-    private function checkFromValid($order, &$errors, $skipFromId, $skipFromAddressId)
-    {
-        if (!$skipFromId && $this->allWpIds->where('id', '=', $order->from_id)->count() === 0) {
-            $errors['from_id'] = 'from id invalid';
-        }
-
         if (!$skipFromAddressId) {
             if (!is_string($order->from_address_id)) {
                 $errors['from_address_id'] = 'must be string';
