@@ -44,6 +44,13 @@ class AddMultiDetailOrderRule implements Rule
         if (isset($e->img) && !filter_var($e->img, FILTER_SANITIZE_URL)) {
             $errors['img'] = 'The image link is invalid';
         }
+        if (!isset($e->freight)) {
+            $errors['freight'] = 'The freight field is required';
+        } else if (!is_numeric($e->freight)) {
+            $errors['freight'] = 'The freight field must be number';
+        } else if ($e->freight <= 0) {
+            $errors['freight'] = 'The freight field must greater than 0';
+        }
 
         return $errors;
     }

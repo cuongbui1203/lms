@@ -2047,6 +2047,7 @@ each element:
 > `mass`: required|numeric|min:1,  
 > `desc`: required  
 > `img`: link
+> `freight`: required|numeric|min:1
 
 #### Response
 ```

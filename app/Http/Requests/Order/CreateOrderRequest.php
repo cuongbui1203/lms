@@ -41,11 +41,6 @@ class CreateOrderRequest extends FormRequest
                     config('type.goods.oversized'),
                 ]),
             ],
-            'freight' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
         ];
     }
 }

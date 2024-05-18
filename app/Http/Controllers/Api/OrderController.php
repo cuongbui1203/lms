@@ -98,7 +98,7 @@ class OrderController extends Controller
         $order->status_id = StatusEnum::CREATE;
         $order->type_id = $request->type_id;
         $order->created_id = $user->id;
-        $order->freight = $request->freight;
+        $order->freight = 0;
         $order->save();
 
         $notification = new Noti();
@@ -150,12 +150,13 @@ class OrderController extends Controller
                 'mass' => $e->mass,
                 'name' => $e->name,
             ]);
-
+            $order->freight += $e->freight;
             if (isset($e->img)) {
                 $detail->image_link = $e->img;
             }
             $detail->save();
         });
+        $order->save();
         $order->fresh();
 
         return $this->sendSuccess($order, 'add order detail success');
