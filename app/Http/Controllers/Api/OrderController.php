@@ -18,7 +18,6 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Vehicle;
 use Auth;
-use Cache;
 use Exception;
 use Illuminate\Http\Response;
 
@@ -168,21 +167,14 @@ class OrderController extends Controller
         $res = [];
         foreach ($orderIds as $orderId) {
             /** @var Order $order */
-            $order = Cache::remember(
-                'order_id_' . $orderId,
-                now()->addMinutes(10),
-                function () use ($orderId) {
-                    return Order::find($orderId);
-                }
-            );
+            $order = Order::find($orderId);
             $workPlate = routingAnother($order);
             if ($workPlate) {
                 $workPlate->load('detail', 'type');
             } else {
                 $workPlate = 'shipping';
             }
-
-            $res[$orderId] = $workPlate;
+            $res[] = $workPlate;
         }
 
         return $this->sendSuccess($res, 'send suggestion next position success');
