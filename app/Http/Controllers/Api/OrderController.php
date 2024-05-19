@@ -9,6 +9,7 @@ use App\Http\Requests\Order\AddDetailOrderRequest;
 use App\Http\Requests\Order\ArrivedPostRequest;
 use App\Http\Requests\Order\CreateOrderRequest;
 use App\Http\Requests\Order\GetListOrderRequest;
+use App\Http\Requests\Order\LeaveRequest;
 use App\Http\Requests\Order\ListOrderIdRequest;
 use App\Http\Requests\Order\MoveOrderRequest;
 use App\Http\Requests\Order\UpdateShippedOrderRequest;
@@ -17,6 +18,7 @@ use App\Models\Noti;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Vehicle;
+use App\Models\WorkPlate;
 use Auth;
 use Exception;
 use Illuminate\Http\Response;
@@ -192,22 +194,43 @@ class OrderController extends Controller
             /** @var User $user */
             $user = auth()->user();
             $e = (object) $e;
+            if (isset($e->to_id)) {
+                $wp = WorkPlate::find($e->to_id);
+            }
+            if (isset($wp)) {
+                $statusId = $wp->type_id === config('type.workPlate.transactionPoint') ? StatusEnum::TO_THE_TRANSACTION_POINT : StatusEnum::TO_THE_TRANSPORT_POINT;
+            } else {
+                $statusId = StatusEnum::TO_THE_TRANSPORT_POINT;
+            }
             $notification = new Noti();
             $notification->from_id = $user->wp_id;
             $notification->to_id = $e->to_id ?? null;
             $notification->from_address_id = [
-                $e->from_address_id ?? $user->work_plate->address->wardCode,
-                $e->from_address ?? $user->work_plate->address->address,
+                isset($e->from_address_id) ? $e->from_address_id : $user->work_plate->address->wardCode,
+                isset($e->from_address) ? $e->from_address : $user->work_plate->address->address,
             ];
             $notification->to_address_id = [$e->to_address_id ?? null, $e->to_address ?? null];
             $notification->description = $e->description ?? null;
             $notification->order_id = $e->orderId;
             $notification->address_current_id = $user->work_plate->vung;
-            $notification->status_id = StatusEnum::TO_THE_TRANSACTION_POINT;
+            $notification->status_id = $statusId;
             $notification->save();
         });
 
         return $this->sendSuccess([], 'move to next post ok');
+    }
+
+    public function leave(LeaveRequest $request)
+    {
+        collect($request->data)->each(function ($id) {
+            /** @var Order $order */
+            $order = Order::find($id);
+            $noti = $order->notifications->last();
+            $noti->status_id = $noti->status_id === StatusEnum::TO_THE_TRANSACTION_POINT ? StatusEnum::LEAVE_TRANSACTION_POINT : StatusEnum::LEAVE_TRANSPORT_POINT;
+            $noti->save();
+            $order->save();
+        });
+        return $this->sendSuccess([], 'success');
     }
 
     public function ArrivedPos(ArrivedPostRequest $request)
@@ -283,21 +306,11 @@ class OrderController extends Controller
 
     public function shipped(UpdateShippedOrderRequest $request, Order $order)
     {
-        /** @var \App\Models\User $user */
-        $user = auth()->user();
         /** @var \App\Models\Noti $noti */
         $noti = $order->notifications->last();
         $noti->status_id = StatusEnum::DONE;
-
-        $notification = new Noti();
-        $notification->from_id = $user->work_plate->id;
-        $notification->to_id = $user->work_plate->id;
-        $notification->from_address_id = $user->work_plate->address_id;
-        $notification->to_address_id = $user->work_plate->address_id;
-        $notification->description = 'Shipping';
-        $notification->order_id = $order->id;
-        $notification->status_id = $request->status;
-        $notification->save();
+        $noti->description = 'shipped';
+        $noti->save();
 
         $order->status_id = $request->status;
 

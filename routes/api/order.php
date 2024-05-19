@@ -13,6 +13,7 @@ Route::prefix('multi')
         Route::get('next', [OrderController::class, 'getNextPos']);
         Route::post('next', [OrderController::class, 'moveToNextPos']);
         Route::put('arrived', [OrderController::class, 'arrivedPos']);
+        Route::put('leave', [OrderController::class, 'leave']);
     });
 
 Route::prefix('{order}')

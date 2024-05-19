@@ -2174,6 +2174,33 @@ HTTP status code 404
 }
 ```
 
+### Order leave
+`PUT`: `multi/leave`
+> `data`: array contain list id order  
+#### Response
+```
+{
+    "success": true,
+    "data": [],
+    "message": "success"
+}
+```
+```
+{
+    "success": false,
+    "error": [
+        {
+            "field": "data",
+            "message": [
+                "order id 12 is invalid",
+                "order id 1131 is invalid",
+                "order id 1333 is invalid"
+            ]
+        }
+    ],
+    "status_code": 422
+}
+```
 ### Confirm order arrived `AUTH`
 `PUT`: `multi/arrived`
 > `data`: array contain list id order  
