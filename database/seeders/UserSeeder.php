@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\RoleEnum;
 use App\Models\User;
-use DB;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -72,10 +71,10 @@ class UserSeeder extends Seeder
             ],
         ];
         User::insert($users);
-        $wardIds = DB::connection('sqlite_vn_map')->table('wards')->get('code')->pluck('code');
-        User::factory(10)->create(['role_id' => RoleEnum::USER])->each(function ($user) use ($wardIds) {
-            $user->address_id = [$wardIds->random(), ''];
-            $user->save();
-        });
+        // $wardIds = DB::connection('sqlite_vn_map')->table('wards')->get('code')->pluck('code');
+        // User::factory(10)->create(['role_id' => RoleEnum::USER])->each(function ($user) use ($wardIds) {
+        //     $user->address_id = [$wardIds->random(), ''];
+        //     $user->save();
+        // });
     }
 }

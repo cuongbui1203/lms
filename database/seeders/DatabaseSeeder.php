@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(
             [
                 AddressSeeder::class,
+                // AddressTestSeeder::class,
                 RoleSeeder::class,
                 TypeSeeder::class,
                 StatusSeeder::class,
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
                 UserSeeder::class,
                 OrderSeeder::class,
                 OrderTestSeeder::class,
+                CreateTTDataSeeder::class,
             ]
         );
     }
