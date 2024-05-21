@@ -2365,3 +2365,59 @@ each element
     "status_code": 422
 }
 ```
+## Statistical
+### Employee `AUTH` `ADMIN`
+`GET`: `statistical/employees`
+
+> `role`: in(3,4,5,6)  
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 190774
+    },
+    "message": "Get total employees successful"
+}
+```
+```
+http status 403
+```
+
+### order `AUTH` `ADMIN`
+`GET`: `statistical/orders`
+
+> `start_date`: date  
+> `end_date`: date after: start_date  
+> `status`: in(2,9,10,11,12)
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 11
+    },
+    "message": "success"
+}
+```
+```
+http status 403
+```
+### Revenue `AUTH` `ADMIN`
+`GET`: `statistical/revenue`
+
+> `start_date`: date  
+> `end_date`: date after: start_date  
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 0
+    },
+    "message": "Send total revenue success"
+}
+```
+```
+http status 403
+```

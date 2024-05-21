@@ -11,6 +11,7 @@ class CreateTTDataSeeder extends Seeder
 {
     protected $users = [];
     protected $wps = [];
+    protected $now;
     protected function createUsers(int $wp_id, string $name, string $code_name, int $num)
     {
 
@@ -18,8 +19,8 @@ class CreateTTDataSeeder extends Seeder
             'name' => $name . ' Manager No.' . $num,
             'email' => 'manager_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $this->now,
+            'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
             'dob' => fake()->dateTimeBetween(),
             'username' => 'manager_' . $code_name . '_' . $num,
@@ -31,8 +32,8 @@ class CreateTTDataSeeder extends Seeder
             'name' => $name . ' Employee',
             'email' => 'employee_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $this->now,
+            'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
             'dob' => fake()->dateTimeBetween(),
             'username' => 'employee_' . $code_name . '_' . $num,
@@ -44,8 +45,8 @@ class CreateTTDataSeeder extends Seeder
             'name' => $name . ' Shipper',
             'email' => 'shipper_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $this->now,
+            'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
             'dob' => fake()->dateTimeBetween(),
             'username' => 'shipper_' . $code_name . '_' . $num,
@@ -61,6 +62,7 @@ class CreateTTDataSeeder extends Seeder
     {
         $initId = 1000;
         $wp = [];
+        $this->now = now();
         DB::connection('sqlite_vn_map')->table(DB::raw('wards w'))
             ->join(DB::raw('districts d'), 'w.district_code', '=', 'd.code')
             ->join(DB::raw('provinces p'), 'd.province_code', '=', 'p.code')
