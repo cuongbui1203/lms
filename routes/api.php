@@ -41,4 +41,8 @@ Route::prefix('orders')
     ->middleware(['auth:sanctum'])
     ->group(api_path('order.php'));
 
+Route::prefix('statistical')
+    ->middleware(['auth:sanctum', 'admin'])
+    ->group(api_path('statistical.php'));
+
 Route::middleware(['auth:sanctum'])->get('types/{for}', [TypeController::class, 'index']);

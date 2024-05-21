@@ -313,6 +313,7 @@ class OrderController extends Controller
         $noti->save();
 
         $order->status_id = $request->status;
+        $order->save();
 
         return $this->sendSuccess([
             'success' => true,
