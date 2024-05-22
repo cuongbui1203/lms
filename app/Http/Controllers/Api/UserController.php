@@ -85,13 +85,21 @@ class UserController extends Controller
             $total = User::count();
 
             $query = User::where('role_id', '!=', RoleEnum::USER)
-                ->offset(($page - 1) * $pageSize)
                 ->limit($pageSize)
                 ->with($relations);
+            if ($page === -1) {
+                $query->orderBy('id', 'DESC');
+            } else {
+                $query->offset(($page - 1) * $pageSize);
+            }
             if ($role && in_array($role, RoleEnum::getValues())) {
                 $query->where('role_id', '=', $role);
             }
             $data = $query->get();
+
+            if ($page === -1) {
+                $data = $data->reverse()->values();
+            }
 
             $users = [];
             $users['total'] = $total;

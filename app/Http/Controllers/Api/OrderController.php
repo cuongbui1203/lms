@@ -30,59 +30,77 @@ class OrderController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
+        $page = (int) $request->page ?? 1;
         $relations = ['notifications', 'details'];
-        $res = Order::with($relations)->get()->append('sender_address', 'receiver_address', 'current_status');
-        // dd($res);
-        switch ($request->status) {
-            case StatusEnum::AT_TRANSACTION_POINT:
-            case StatusEnum::AT_TRANSPORT_POINT:
-            case StatusEnum::TO_THE_TRANSACTION_POINT:
-            case StatusEnum::TO_THE_TRANSPORT_POINT:
-                $res = $res->filter(function ($order, $index) use ($user) {
-                    $noti = $order->notifications->last();
-                    return (
-                        in_array($noti->status_id, [
-                            StatusEnum::AT_TRANSACTION_POINT,
-                            StatusEnum::AT_TRANSPORT_POINT,
-                            StatusEnum::TO_THE_TRANSACTION_POINT,
-                            StatusEnum::TO_THE_TRANSPORT_POINT,
-                        ]) &&
-                        (($noti->to_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
-                    );
-                });
-
-                break;
-            case StatusEnum::LEAVE_TRANSACTION_POINT:
-            case StatusEnum::LEAVE_TRANSPORT_POINT:
-            case StatusEnum::CREATE:
-            case StatusEnum::RETURN :
-            case StatusEnum::COMPLETE:
-            case StatusEnum::FAIL:
-                $res = $res->filter(function ($order) use ($user) {
-                    $noti = $order->notifications->last();
-                    return (
-                        in_array($noti->status_id, [
-                            StatusEnum::LEAVE_TRANSACTION_POINT,
-                            StatusEnum::LEAVE_TRANSPORT_POINT,
-                            StatusEnum::CREATE,
-                            StatusEnum::RETURN ,
-                            StatusEnum::COMPLETE,
-                            StatusEnum::FAIL,
-                        ]) &&
-                        (($noti->from_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
-                    );
-                });
-
-                break;
+        $statuses = json_decode($request->statuses);
+        $orders = Order::with($relations)
+            ->limit($pageSize);
+        if ($page === -1) {
+            $orders = $orders->orderBy('id', 'DESC')->get()->reverse()->values();
+        } else {
+            $orders = $orders->offset(($page - 1) * $pageSize)->get();
         }
 
-        $orders = $res->filter(function ($order) use ($request) {
-            // dd($order->current_status->id, $request->status);
-            return $order->current_status->id == $request->status;
-        })->paginate($pageSize, $page, $relations);
+        $temp = collect();
 
-        return $this->sendSuccess($orders, 'success');
+        foreach ($statuses as $status) {
+            switch ($status) {
+                case StatusEnum::AT_TRANSACTION_POINT:
+                case StatusEnum::AT_TRANSPORT_POINT:
+                case StatusEnum::TO_THE_TRANSACTION_POINT:
+                case StatusEnum::TO_THE_TRANSPORT_POINT:
+                    $orders->filter(function ($order) use ($user) {
+                        $noti = $order->notifications->last();
+                        return (
+                            in_array($noti->status_id, [
+                                StatusEnum::AT_TRANSACTION_POINT,
+                                StatusEnum::AT_TRANSPORT_POINT,
+                                StatusEnum::TO_THE_TRANSACTION_POINT,
+                                StatusEnum::TO_THE_TRANSPORT_POINT,
+                            ]) &&
+                            (($noti->to_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
+                        );
+                    })->each(function ($e) use (&$temp) {
+                        $temp->add($e);
+                    });
+                    break;
+                case StatusEnum::LEAVE_TRANSACTION_POINT:
+                case StatusEnum::LEAVE_TRANSPORT_POINT:
+                case StatusEnum::CREATE:
+                case StatusEnum::RETURN :
+                case StatusEnum::COMPLETE:
+                case StatusEnum::FAIL:
+                    $orders->filter(function ($order) use ($user) {
+                        $noti = $order->notifications->last();
+                        return (
+                            in_array($noti->status_id, [
+                                StatusEnum::LEAVE_TRANSACTION_POINT,
+                                StatusEnum::LEAVE_TRANSPORT_POINT,
+                                StatusEnum::CREATE,
+                                StatusEnum::RETURN ,
+                                StatusEnum::COMPLETE,
+                                StatusEnum::FAIL,
+                            ]) &&
+                            (($noti->from_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
+                        );
+                    })->each(function ($e) use (&$temp) {
+                        $temp->add($e);
+                    });
+                    break;
+            }
+        }
+        $temp = $temp->unique();
+        $orders = $temp->filter(function ($order) use ($statuses) {
+            return in_array($order->current_status->id, $statuses);
+        })->values();
+
+        $res = [];
+        $res['total'] = $orders->count();
+        $res['currentPage'] = $page;
+        $res['pageSize'] = $pageSize;
+        $res['data'] = $orders;
+
+        return $this->sendSuccess($res, 'success');
     }
 
     public function store(CreateOrderRequest $request)

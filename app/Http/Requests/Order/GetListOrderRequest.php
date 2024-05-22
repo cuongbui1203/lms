@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Order;
 
-use App\Enums\StatusEnum;
 use App\Http\Requests\GetListRequest;
+use App\Rules\StatusesArrayRule;
 use Illuminate\Validation\Rule;
 
 class GetListOrderRequest extends GetListRequest
@@ -23,10 +23,11 @@ class GetListOrderRequest extends GetListRequest
      */
     public function rules(): array
     {
+        // dd($this->all());
         return array_merge(
             parent::rules(),
             [
-                'status' => ['required', Rule::in(StatusEnum::getValues())],
+                'statuses' => ['required', 'json', new StatusesArrayRule()],
             ]
         );
     }
