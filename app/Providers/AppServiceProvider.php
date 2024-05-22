@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Validators\ValidationTestFactory;
-use App\Http\Validators\ValidatorTest;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +16,6 @@ class AppServiceProvider extends ServiceProvider
         if (app()->isLocal()) {
             app()->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
-        $this->app->singleton(ValidationTestFactory::class, ValidatorTest::class);
     }
 
     /**
@@ -68,5 +65,7 @@ class AppServiceProvider extends ServiceProvider
 
             return $res;
         });
+
+        // EloquentBuilder::ma
     }
 }

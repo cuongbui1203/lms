@@ -12,13 +12,14 @@ class CreateTTDataSeeder extends Seeder
     protected $users = [];
     protected $wps = [];
     protected $now;
-    protected function createUsers(int $wp_id, string $name, string $code_name, int $num)
+    protected function createUsers(int $wp_id, string $name, string $code_name, string $address_code, int $num)
     {
 
         $this->users[] = [
             'name' => $name . ' Manager No.' . $num,
             'email' => 'manager_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'address_id' => $address_code . '|so ' . ($num + rand(0, 50)),
             'created_at' => $this->now,
             'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
@@ -32,6 +33,7 @@ class CreateTTDataSeeder extends Seeder
             'name' => $name . ' Employee',
             'email' => 'employee_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'address_id' => $address_code . '|so ' . ($num + rand(0, 50)),
             'created_at' => $this->now,
             'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
@@ -45,12 +47,27 @@ class CreateTTDataSeeder extends Seeder
             'name' => $name . ' Shipper',
             'email' => 'shipper_' . $code_name . '_' . $num . '@magic_post.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'address_id' => $address_code . '|so ' . ($num + rand(0, 50)),
             'created_at' => $this->now,
             'updated_at' => $this->now,
             'phone' => fake()->phoneNumber(),
             'dob' => fake()->dateTimeBetween(),
             'username' => 'shipper_' . $code_name . '_' . $num,
             'role_id' => RoleEnum::SHIPPER,
+            'wp_id' => $wp_id,
+        ];
+
+        $this->users[] = [
+            'name' => $name . ' Driver',
+            'email' => 'driver_' . $code_name . '_' . $num . '@magic_post.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'address_id' => $address_code . '|so ' . ($num + rand(0, 50)),
+            'created_at' => $this->now,
+            'updated_at' => $this->now,
+            'phone' => fake()->phoneNumber(),
+            'dob' => fake()->dateTimeBetween(),
+            'username' => 'driver_' . $code_name . '_' . $num,
+            'role_id' => RoleEnum::DRIVER,
             'wp_id' => $wp_id,
         ];
     }
@@ -84,7 +101,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::WARD,
                 'vung' => $e->code,
             ];
-            $this->createUsers($initId, $e->name, $e->code_name, $initId);
+            $this->createUsers($initId, $e->name, $e->code_name, $e->code, $initId);
             $initId++;
 
             $num = fake()->numberBetween(1, 100);
@@ -96,7 +113,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::WARD,
                 'vung' => $e->code,
             ];
-            $this->createUsers($initId, $e->name, $e->code_name, $initId);
+            $this->createUsers($initId, $e->name, $e->code_name, $e->code, $initId);
             $initId++;
 
             $num = fake()->numberBetween(1, 100);
@@ -108,7 +125,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::DISTRICT,
                 'vung' => $e->district_code,
             ];
-            $this->createUsers($initId, $e->district_name, $e->district_code, $initId);
+            $this->createUsers($initId, $e->district_name, $e->district_code, $e->code, $initId);
             $initId++;
 
             $num = fake()->numberBetween(1, 100);
@@ -120,7 +137,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::DISTRICT,
                 'vung' => $e->district_code,
             ];
-            $this->createUsers($initId, $e->district_name, $e->district_code, $initId);
+            $this->createUsers($initId, $e->district_name, $e->district_code, $e->code, $initId);
             $initId++;
 
             $num = fake()->numberBetween(1, 100);
@@ -132,7 +149,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::PROVINCE,
                 'vung' => $e->province_code,
             ];
-            $this->createUsers($initId, $e->province_name, $e->province_code, $initId);
+            $this->createUsers($initId, $e->province_name, $e->province_code, $e->code, $initId);
             $initId++;
 
             $num = fake()->numberBetween(1, 100);
@@ -144,7 +161,7 @@ class CreateTTDataSeeder extends Seeder
                 'cap' => AddressTypeEnum::PROVINCE,
                 'vung' => $e->province_code,
             ];
-            $this->createUsers($initId, $e->province_name, $e->province_code, $initId);
+            $this->createUsers($initId, $e->province_name, $e->province_code, $e->code, $initId);
             $initId++;
         });
         // dd($wp);

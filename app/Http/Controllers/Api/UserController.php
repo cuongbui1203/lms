@@ -65,8 +65,8 @@ class UserController extends Controller
      */
     public function getListAccount(GetListAccountRequest $request)
     {
-        $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
+        $pageSize = (int) $request->pageSize ?? config('paginate.wp-list');
+        $page = (int) $request->page ?? 1;
         $relations = ['role', 'work_plate', 'vehicle', 'img'];
         /** @var User $handler */
         $handler = auth()->user();
@@ -82,12 +82,23 @@ class UserController extends Controller
             $users = $users->paginate($pageSize, $page, $relations);
         } else {
             $role = ((int) $request->role) ?? null;
-            $users = User::where('role_id', '!=', RoleEnum::USER);
-            if ($role && in_array($role, RoleEnum::getValues())) {
-                $users->where('role_id', '=', $role);
-            }
+            $total = User::count();
 
-            $users = $users->get()->paginate($pageSize, $page, $relations);
+            $query = User::where('role_id', '!=', RoleEnum::USER)
+                ->offset(($page - 1) * $pageSize)
+                ->limit($pageSize)
+                ->with($relations);
+            if ($role && in_array($role, RoleEnum::getValues())) {
+                $query->where('role_id', '=', $role);
+            }
+            $data = $query->get();
+
+            $users = [];
+            $users['total'] = $total;
+            $users['currentPage'] = $page === -1 ? (int) ($total / $pageSize) + ($total % $pageSize === 0 ? 0 : 1) : $page;
+            $users['pageSize'] = $pageSize;
+            $users['data'] = $data;
+
         }
 
         return $this->sendSuccess($users, 'success');
