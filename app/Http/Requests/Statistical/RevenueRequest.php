@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Statistical;
 
-use App\Http\Requests\FormRequest;
+use App\Http\Requests\SetTimeRequest;
 
-class RevenueRequest extends FormRequest
+class RevenueRequest extends SetTimeRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,18 +12,5 @@ class RevenueRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'start_date' => 'date',
-            'end_date' => 'date|after:start_date',
-        ];
     }
 }

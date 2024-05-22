@@ -6,9 +6,11 @@ use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Statistical\EmployeeRequest;
-use App\Http\Requests\Statistical\GetStatisticalRequest;
+use App\Http\Requests\Statistical\GetTotalOrderRequest;
+use App\Http\Requests\Statistical\GetTotalWPRequest;
 use App\Http\Requests\Statistical\RevenueRequest;
 use App\Models\User;
+use App\Models\WorkPlate;
 use Carbon\Carbon;
 use DB;
 
@@ -26,7 +28,7 @@ class StatisticalController extends Controller
         ], 'Get total employees successful');
     }
 
-    public function getOrder(GetStatisticalRequest $request)
+    public function getOrder(GetTotalOrderRequest $request)
     {
         $query = DB::table('orders');
         if (isset($request->status)) {
@@ -77,4 +79,14 @@ class StatisticalController extends Controller
             'total' => $total ?? 0,
         ], 'Send total revenue success');
     }
+
+    public function getTotalWP(GetTotalWPRequest $request)
+    {
+        $res = WorkPlate::where('type_id', $request->type)->count();
+
+        return $this->sendSuccess([
+            'total' => $res,
+        ]);
+    }
+
 }
