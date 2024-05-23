@@ -3,34 +3,37 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\AddressTypeEnum;
+use App\Enums\RoleEnum;
+use App\Enums\StatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\WorkPlate\CreateWPRequest;
+use App\Http\Requests\WorkPlate\GetListOrderRequest;
 use App\Http\Requests\WorkPlate\GetListWPRequest;
 use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
 use App\Http\Requests\WorkPlate\UpdateWPRequest;
+use App\Models\Noti;
+use App\Models\User;
 use App\Models\WorkPlate;
-use Cache;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Collection;
+use Response;
 
 class WorkPlateController extends Controller
 {
     public function index(GetListWPRequest $request)
     {
-        $wp = Cache::remember('wp_type_' . $request->type_id, now()->addMinutes(10), function () use ($request) {
-            $pageSize = $request->pageSize ?? config('paginate.wp-list');
-            $page = $request->page ?? 1;
-            $relationships = ['type', 'detail'];
-            $wp = WorkPlate::query();
-            if ($request->type_id) {
-                $wp->where('type_id', '=', $request->type_id);
-            }
 
-            $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id'])
-                ->paginate($pageSize, $page, $relationships);
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relationships = ['type', 'detail'];
+        $wp = WorkPlate::query();
+        if ($request->type_id) {
+            $wp->where('type_id', '=', $request->type_id);
+        }
 
-            return $wp;
-        });
+        $wp = $wp->get(['id', 'name', 'address_id', 'cap', 'created_at', 'updated_at', 'type_id'])
+            ->paginate($pageSize, $page, $relationships);
 
         return $this->sendSuccess($wp, 'Get list work plate success');
     }
@@ -144,9 +147,45 @@ class WorkPlateController extends Controller
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::DISTRICT));
         array_push($addressCode, getAddressCode($request->address_id, AddressTypeEnum::PROVINCE));
         $res->push(WorkPlate::whereIn('vung', $addressCode)
-            ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
-            ->load('type', 'detail'));
+                ->get(['id', 'name', 'address_id', 'created_at', 'updated_at', 'type_id'])
+                ->load('type', 'detail'));
 
         return $this->sendSuccess($res->first()->toArray(), 'get suggestion wp success');
+    }
+
+    public function getOrderSend(GetListOrderRequest $request, WorkPlate $wp)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        if (!($user->wp_id === $wp->id || $user->role_id === RoleEnum::ADMIN)) {
+            abort(HttpResponse::HTTP_FORBIDDEN);
+            return;
+        }
+        $pageSize = $request->pageSize ?? config('paginate.wp-list');
+        $page = $request->page ?? 1;
+        $relations = ['notifications', 'details'];
+        $orders = collect();
+        $query = Noti::with('order');
+        if ($request->sended) {
+            $query->where('from_id', '=', $wp)
+                ->whereIn('status_id', [
+                    StatusEnum::LEAVE_TRANSACTION_POINT,
+                    StatusEnum::LEAVE_TRANSPORT_POINT,
+                    StatusEnum::DONE,
+                ]);
+        } else {
+            $query->where('to_id', '=', $wp)
+                ->whereIn('status_id', [
+                    StatusEnum::AT_TRANSACTION_POINT,
+                    StatusEnum::AT_TRANSPORT_POINT,
+                    StatusEnum::DONE,
+                ]);
+        }
+        $query->get()->each(function ($e) use (&$orders) {
+            $orders->add($e->order);
+        });
+        $orders = $orders->paginate($pageSize, $page, $relations);
+
+        return $this->sendSuccess($orders);
     }
 }

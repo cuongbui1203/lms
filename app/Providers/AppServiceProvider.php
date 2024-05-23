@@ -52,9 +52,10 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 $data = $this->slice(($page - 1) * $pageSize, $pageSize)->values();
             }
-
-            foreach ($data as $e) {
-                $e->load($relations);
+            if (count($relations) > 0) {
+                foreach ($data as $e) {
+                    $e->load($relations);
+                }
             }
 
             $res = [];

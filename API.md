@@ -1353,6 +1353,218 @@ http status 403
 }
 ```
 
+### Get send or receive `AUTH`
+`GET`: `work_plates/{wp_id}/orders`
+
+> page: int  
+> pagesize: int  
+> sended: boolean
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "total": 2,
+        "currentPage": 1,
+        "pageSize": 12,
+        "data": [
+            {
+                "id": 4,
+                "sender_name": "Shane Dach",
+                "sender_phone": "(380) 644-5550",
+                "receiver_name": "Nikolas Weber",
+                "receiver_phone": "1-678-670-5345",
+                "created_at": 1716341024,
+                "updated_at": 1716341024,
+                "vehicle_id": null,
+                "type_id": 11,
+                "status_id": 10,
+                "created_id": 1,
+                "freight": 0,
+                "mass": 69227205,
+                "receiver_address": {
+                    "provinceCode": "04",
+                    "districtCode": "045",
+                    "wardCode": "01417",
+                    "province": "Tỉnh Cao Bằng",
+                    "district": "Huyện Hà Quảng",
+                    "ward": "Xã Sóc Hà",
+                    "address": "hn"
+                },
+                "sender_address": {
+                    "provinceCode": "04",
+                    "districtCode": "045",
+                    "wardCode": "01417",
+                    "province": "Tỉnh Cao Bằng",
+                    "district": "Huyện Hà Quảng",
+                    "ward": "Xã Sóc Hà",
+                    "address": "hn"
+                },
+                "type": {
+                    "id": 11,
+                    "name": "oversized"
+                },
+                "created_by": {
+                    "id": 1,
+                    "name": "Gabrielle Ortiz",
+                    "address": null,
+                    "role": null
+                },
+                "notifications": [
+                    {
+                        "id": 4,
+                        "order_id": 4,
+                        "from_id": 1,
+                        "to_id": 1,
+                        "status_id": 5,
+                        "description": "tét",
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "from_address": {
+                            "provinceCode": "04",
+                            "districtCode": "045",
+                            "wardCode": "01417",
+                            "province": "Tỉnh Cao Bằng",
+                            "district": "Huyện Hà Quảng",
+                            "ward": "Xã Sóc Hà",
+                            "address": "hn"
+                        },
+                        "to_address": {
+                            "provinceCode": "04",
+                            "districtCode": "045",
+                            "wardCode": "01417",
+                            "province": "Tỉnh Cao Bằng",
+                            "district": "Huyện Hà Quảng",
+                            "ward": "Xã Sóc Hà",
+                            "address": "hn"
+                        }
+                    }
+                ],
+                "details": [
+                    {
+                        "id": 41,
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "order_id": 4,
+                        "name": "Mrs. Ruby Hermiston PhD",
+                        "mass": 7617532,
+                        "desc": "Corporis temporibus sunt quia consequatur consequatur eos. Nisi vitae perferendis voluptatem aut molestiae expedita. Tempore sed fuga alias officia sed quaerat vel quasi.",
+                        "image_link": null
+                    },
+                ]
+            },
+            {
+                "id": 8,
+                "sender_name": "Prof. Quentin Jaskolski PhD",
+                "sender_phone": "1-903-490-3362",
+                "receiver_name": "Dylan Reinger",
+                "receiver_phone": "301-229-6037",
+                "created_at": 1716341024,
+                "updated_at": 1716341024,
+                "vehicle_id": null,
+                "type_id": 12,
+                "status_id": 10,
+                "created_id": 1,
+                "freight": 0,
+                "mass": 15347684,
+                "receiver_address": {
+                    "provinceCode": "26",
+                    "districtCode": "246",
+                    "wardCode": "08797",
+                    "province": "Tỉnh Vĩnh Phúc",
+                    "district": "Huyện Lập Thạch",
+                    "ward": "Xã Vân Trục",
+                    "address": "hn"
+                },
+                "sender_address": {
+                    "provinceCode": "26",
+                    "districtCode": "246",
+                    "wardCode": "08797",
+                    "province": "Tỉnh Vĩnh Phúc",
+                    "district": "Huyện Lập Thạch",
+                    "ward": "Xã Vân Trục",
+                    "address": "hn"
+                },
+                "type": {
+                    "id": 12,
+                    "name": "hazardous"
+                },
+                "created_by": {
+                    "id": 1,
+                    "name": "Gabrielle Ortiz",
+                    "address": null,
+                    "role": null
+                },
+                "notifications": [
+                    {
+                        "id": 8,
+                        "order_id": 8,
+                        "from_id": 1,
+                        "to_id": 1,
+                        "status_id": 13,
+                        "description": "tét",
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "from_address": {
+                            "provinceCode": "26",
+                            "districtCode": "246",
+                            "wardCode": "08797",
+                            "province": "Tỉnh Vĩnh Phúc",
+                            "district": "Huyện Lập Thạch",
+                            "ward": "Xã Vân Trục",
+                            "address": "hn"
+                        },
+                        "to_address": {
+                            "provinceCode": "26",
+                            "districtCode": "246",
+                            "wardCode": "08797",
+                            "province": "Tỉnh Vĩnh Phúc",
+                            "district": "Huyện Lập Thạch",
+                            "ward": "Xã Vân Trục",
+                            "address": "hn"
+                        }
+                    }
+                ],
+                "details": [
+                    {
+                        "id": 102,
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "order_id": 8,
+                        "name": "Urban Mayer",
+                        "mass": 6351336,
+                        "desc": "Minus eaque aliquam sed soluta ut. Voluptatem rem corrupti voluptatem eligendi. Non illo cumque voluptatibus aliquid modi.",
+                        "image_link": null
+                    },
+                    {
+                        "id": 103,
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "order_id": 8,
+                        "name": "Dax Durgan",
+                        "mass": 1027912,
+                        "desc": "Quos mollitia architecto doloremque id atque sunt aspernatur. Cum hic aut illo. Nihil aliquid ut nam dolorem.",
+                        "image_link": null
+                    },
+                    {
+                        "id": 104,
+                        "created_at": "2024-05-22T01:23:44.000000Z",
+                        "updated_at": "2024-05-22T01:23:44.000000Z",
+                        "order_id": 8,
+                        "name": "Mariano Barton",
+                        "mass": 7968436,
+                        "desc": "Necessitatibus beatae exercitationem vero et non quod. Saepe veniam at dolores eum saepe enim. Et sequi est possimus iusto.",
+                        "image_link": null
+                    }
+                ]
+            }
+        ]
+    },
+    "message": ""
+}
+```
+
 ## Type `AUTH`
 `GET` `types\{work-plates|vehicles}`
 
