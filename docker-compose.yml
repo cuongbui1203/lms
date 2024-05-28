@@ -4,7 +4,7 @@ services:
             context: ./docker/nextjs
             dockerfile: Dockerfile
         ports:
-            - '80:80'
+            - '80:3000'
         networks:
             - sail
         depends_on:
@@ -18,8 +18,8 @@ services:
         image: sail-8.3/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
-        ports:
-            - '${APP_PORT:-8000}:80'
+        # ports:
+        #     - '${APP_PORT:-8000}:80'
         environment:
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1

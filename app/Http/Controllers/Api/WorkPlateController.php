@@ -162,28 +162,41 @@ class WorkPlateController extends Controller
             return;
         }
         $pageSize = $request->pageSize ?? config('paginate.wp-list');
-        $page = $request->page ?? 1;
+        $page = (int) $request->page ?? 1;
         $relations = ['notifications', 'details'];
         $orders = collect();
         $query = Noti::with('order');
-        if ($request->sended) {
-            $query->where('from_id', '=', $wp)
-                ->whereIn('status_id', [
-                    StatusEnum::LEAVE_TRANSACTION_POINT,
-                    StatusEnum::LEAVE_TRANSPORT_POINT,
-                    StatusEnum::DONE,
-                ]);
-        } else {
-            $query->where('to_id', '=', $wp)
+        // dd($query->where('to_id', '=', $wp->id)->whereIn('status_id', [
+        //     StatusEnum::AT_TRANSACTION_POINT,
+        //     StatusEnum::AT_TRANSPORT_POINT,
+        //     StatusEnum::LEAVE_TRANSACTION_POINT,
+        //     StatusEnum::LEAVE_TRANSPORT_POINT,
+        // ])->get());
+        if (isset($request->sended) && (int) $request->sended === 1) {
+            $query->where('from_id', '=', $wp->id)
                 ->whereIn('status_id', [
                     StatusEnum::AT_TRANSACTION_POINT,
                     StatusEnum::AT_TRANSPORT_POINT,
-                    StatusEnum::DONE,
+                    StatusEnum::TO_THE_TRANSACTION_POINT,
+                    StatusEnum::TO_THE_TRANSPORT_POINT,
+                    // StatusEnum::DONE,
+                    StatusEnum::CREATE,
+                ]);
+        } else {
+            $query->where('to_id', '=', $wp->id)
+                ->whereIn('status_id', [
+                    StatusEnum::AT_TRANSACTION_POINT,
+                    StatusEnum::AT_TRANSPORT_POINT,
+                    StatusEnum::LEAVE_TRANSACTION_POINT,
+                    StatusEnum::LEAVE_TRANSPORT_POINT,
                 ]);
         }
+
+        // dd($query->toSql());
         $query->get()->each(function ($e) use (&$orders) {
             $orders->add($e->order);
         });
+        // dd($orders);
         $orders = $orders->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders);

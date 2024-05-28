@@ -287,7 +287,7 @@ if (!function_exists('routingAnother')) {
      * @param Order $order order can xu ly
      * @return WorkPlate|null
      */
-    function routingAnother(Order $order)
+    function routingAnother(Order $order, bool $ship = false)
     {
         $noti = $order->notifications->last();
         $idAddressHT = $noti->address_current_id; // address id hiện tại
@@ -305,7 +305,7 @@ if (!function_exists('routingAnother')) {
             }
         }
 
-        if ($res) {
+        if ($res || $ship) {
             return $res;
         }
 

@@ -40,7 +40,6 @@ class OrderController extends Controller
         } else {
             $orders = $orders->offset(($page - 1) * $pageSize)->get();
         }
-
         $temp = collect();
 
         foreach ($statuses as $status) {
@@ -68,9 +67,10 @@ class OrderController extends Controller
                 case StatusEnum::LEAVE_TRANSPORT_POINT:
                 case StatusEnum::CREATE:
                 case StatusEnum::RETURN :
-                case StatusEnum::COMPLETE:
+                case StatusEnum::DONE:
                 case StatusEnum::FAIL:
-                    $orders->filter(function ($order) use ($user) {
+                case StatusEnum::COMPLETE:
+                    $r = $orders->filter(function ($order) use ($user) {
                         $noti = $order->notifications->last();
                         return (
                             in_array($noti->status_id, [
@@ -78,8 +78,9 @@ class OrderController extends Controller
                                 StatusEnum::LEAVE_TRANSPORT_POINT,
                                 StatusEnum::CREATE,
                                 StatusEnum::RETURN ,
-                                StatusEnum::COMPLETE,
+                                StatusEnum::DONE,
                                 StatusEnum::FAIL,
+                                StatusEnum::COMPLETE,
                             ]) &&
                             (($noti->from_id === $user->wp_id && $user->role_id != RoleEnum::ADMIN) || $user->role_id === RoleEnum::ADMIN)
                         );
