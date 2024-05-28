@@ -4,6 +4,7 @@ use App\Enums\AddressTypeEnum;
 use App\Models\Image;
 use App\Models\Order;
 use App\Models\WorkPlate;
+use Faker\Provider\ar_EG\Address;
 use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('getLastSegmentRegex')) {
@@ -108,34 +109,28 @@ if (!function_exists('getAddressCode')) {
     function getAddressCode(string $id, int $type)
     {
         $res = '';
-        // dd($type);
-        switch ($type) {
-            case AddressTypeEnum::PROVINCE:
-                $res = DB::connection('sqlite_vn_map')
-                    ->table(DB::raw('wards w'))
-                    ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
-                    ->join(DB::raw('provinces p'), 'p.code', '=', 'd.province_code')
-                    ->where(DB::raw('w.code'), '=', $id)
-                    ->select(DB::raw('p.code'))
-                    ->first();
-
-                break;
-            case AddressTypeEnum::DISTRICT:
-                $res = DB::connection('sqlite_vn_map')
-                    ->table(DB::raw('wards w'))
-                    ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
-                    ->where(DB::raw('w.code'), '=', $id)
-                    ->select(DB::raw('d.code'))
-                    ->first();
-
-                break;
-            case AddressTypeEnum::WARD:
-                return $id;
-            default:
-                throw new Exception('unknown type');
+        if ($type === AddressTypeEnum::PROVINCE) {
+            return DB::connection('sqlite_vn_map')
+                ->table(DB::raw('wards w'))
+                ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+                ->join(DB::raw('provinces p'), 'p.code', '=', 'd.province_code')
+                ->where(DB::raw('w.code'), '=', $id)
+                ->select(DB::raw('p.code'))
+                ->first()->code;
         }
-
-        return $res->code;
+        if ($type === AddressTypeEnum::DISTRICT) {
+            return DB::connection('sqlite_vn_map')
+                ->table(DB::raw('wards w'))
+                ->join(DB::raw('districts d'), 'd.code', '=', 'w.district_code')
+                ->where(DB::raw('w.code'), '=', $id)
+                ->select(DB::raw('d.code'))
+                ->first()->code;
+        }
+        if ($type === AddressTypeEnum::WARD) {
+            return $id;
+        }
+        // throw new Ex ception('unknown type');
+        return null;
     }
 }
 
@@ -187,7 +182,7 @@ if (!function_exists('getAddressRank')) {
      * get rank of address over addressID
      *
      * @param string $addressId
-     * @return int|string
+     * @return int
      */
     function getAddressRank(string $addressId)
     {
@@ -280,18 +275,38 @@ if (!function_exists('routing')) {
 }
 
 if (!function_exists('addressNext')) {
-    function addressNext(string $address, bool $reverse = false)
+    /**
+     * lay thong tin cua vung tiep theo
+     *
+     * @param string $addressG addressId ng gui
+     * @param string $addressHT addressId hien tai
+     * @param string $addressN addressId ng nhan
+     * @return string|null address id tiep theo | null
+     */
+    function addressNext(string $addressG, string $addressHT, string $addressN)
     {
-        $leng = Str::length($address);
-        if ($leng === 2) {
-            return $reverse ? DB::connection('sqlite_vn_map')->table('districts')->where('province_code', '=', $address)->first('code')->code : null;
+        $capHt = getAddressRank($addressHT);
+        $secondHalf = false;
+        if (getAddressCode($addressG, $capHt) === $addressHT) {
+            $capHt++;
+            $secondHalf = false;
         }
-        if ($leng === 3) {
-            return $reverse ?
-            DB::connection('sqlite_vn_map')->table('wards')->where('district_code', '=', $address)->first('code')->code
-            : DB::connection('sqlite_vn_map')->table('districts')->where('code', '=', $address)->first('province_code')->province_code;
+
+        if (getAddressCode($addressN, $capHt) === $addressHT) {
+            $capHt--;
+            $secondHalf = true;
         }
-        return $reverse ? null : DB::connection('sqlite_vn_map')->table('wards')->where('code', '=', $address)->first('district_code')->district_code;
+
+        if ($capHt < AddressTypeEnum::WARD) {
+            return null;
+        }
+
+        if ($capHt > AddressTypeEnum::PROVINCE) {
+            $capHt = AddressTypeEnum::PROVINCE;
+            $secondHalf = true;
+        }
+
+        return getAddressCode($secondHalf ? $addressN : $addressG, $capHt);
     }
 }
 
@@ -302,20 +317,18 @@ if (!function_exists('routingAnother')) {
      * @param Order $order order can xu ly
      * @return WorkPlate|null
      */
-    function routingAnother(Order $order, bool $return = false)
+    function routingAnother(Order $order)
     {
         $noti = $order->notifications->last();
+
         $idAddressHT = $noti->address_current_id; // address id hiện tại
         // $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address->wardCode; // address id ng nhan
+        $idAddressG = $order->sender_address->wardCode; // address id ng gui
 
-        if ($idAddressHT === $idAddressN) {
-            return null;
-        }
+        $vung = addressNext($idAddressG, $idAddressHT, $idAddressN);
 
         $res = null;
-        $vung = addressNext($idAddressHT, $return);
-        // dd($vung);
         if ($vung) {
             $wp = WorkPlate::where('vung', $vung)->where('id', '!=', $noti->from_id)->get();
             if ($wp) {
