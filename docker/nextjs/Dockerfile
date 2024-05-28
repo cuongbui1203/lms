@@ -1,12 +1,13 @@
-FROM node:22-alpine AS base
-
-FROM base AS source
+FROM node:22-alpine
 
 RUN apk add --no-cache git
 RUN apk add --no-cache libc6-compat
+
 RUN git clone https://github.com/cuongbui1203/lms_fe /app
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
 WORKDIR /app
 RUN cp .env.docker .env
 RUN \
@@ -19,89 +20,7 @@ RUN \
 # USER nextjs
 
 EXPOSE 3000
-RUN mkdir .next/
+
 ENV PORT 3000
-CMD npm run build;HOSTNAME="0.0.0.0" node ./.next/standalone/server.js
 
-# # Install dependencies only when needed
-# FROM base AS deps
-# # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-# RUN apk add --no-cache libc6-compat
-# WORKDIR /app
-
-# # Install dependencies based on the preferred package manager
-# COPY --from=source /app/package.json /app/yarn.lock* /app/package-lock.json* /app/pnpm-lock.yaml* ./
-# COPY --from=source /app/.env.docker ./.env
-# RUN \
-#     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-#     elif [ -f package-lock.json ]; then npm ci; \
-#     elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-#     else echo "Lockfile not found." && exit 1; \
-#     fi
-
-# # Production image, copy all the files and run next
-# FROM base AS runner
-# WORKDIR /app
-
-# ENV NODE_ENV production
-# # Uncomment the following line in case you want to disable telemetry during runtime.
-# # ENV NEXT_TELEMETRY_DISABLED 1
-
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 nextjs
-
-# COPY --from=source /app/public ./public
-# COPY --from=source /app/src ./src
-
-# # Set the correct permission for prerender cache
-# RUN mkdir .next
-# RUN chown nextjs:nodejs .next
-
-# # Automatically leverage output traces to reduce image size
-# # https://nextjs.org/docs/advanced-features/output-file-tracing
-# # COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-# # COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-# COPY --from=deps /app/node_modules ./node_modules
-# COPY --from=deps /app/package.json /app/yarn.lock* /app/package-lock.json* /app/pnpm-lock.yaml* ./
-# COPY --from=deps /app/.env .env
-
-
-# USER nextjs
-
-# EXPOSE 3000
-
-# ENV PORT 3000
-
-# # server.js is created by next build from the standalone output
-# # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-# CMD npm run build;HOSTNAME="0.0.0.0" node ./.next/standalone/server.js
-# FROM node:22-alpine
-
-# RUN apk add --no-cache git
-# RUN apk add --no-cache libc6-compat
-# RUN git clone https://github.com/cuongbui1203/logistics-management-system-FE /app
-# WORKDIR /app
-# RUN cp .env.docker .env
-# RUN \
-#     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-#     elif [ -f package-lock.json ]; then npm ci; \
-#     elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-#     else echo "Lockfile not found." && exit 1; \
-#     fi
-
-# RUN \
-#     if [ -f yarn.lock ]; then yarn run build; \
-#     elif [ -f package-lock.json ]; then npm run build; \
-#     elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-#     else echo "Lockfile not found." && exit 1; \
-#     fi
-
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 nextjs
-# USER nextjs
-
-# ENV PORT 3000
-
-# # server.js is created by next build from the standalone output
-# # https://nextjs.org/docs/pages/api-reference/next-config-js/output
-# CMD HOSTNAME="0.0.0.0" node ./.next/standalone/server.js
+CMD npm run build;npm run start

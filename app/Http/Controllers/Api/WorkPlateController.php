@@ -166,33 +166,42 @@ class WorkPlateController extends Controller
         $relations = ['notifications', 'details'];
         $orders = collect();
         $query = Noti::with('order');
-        // dd($query->where('to_id', '=', $wp->id)->whereIn('status_id', [
-        //     StatusEnum::AT_TRANSACTION_POINT,
-        //     StatusEnum::AT_TRANSPORT_POINT,
-        //     StatusEnum::LEAVE_TRANSACTION_POINT,
-        //     StatusEnum::LEAVE_TRANSPORT_POINT,
-        // ])->get());
-        if (isset($request->sended) && (int) $request->sended === 1) {
+        $sended = (int) $request->sended ?? 0;
+        $done = (int) $request->done ?? 0;
+        if ($sended === 1) {
             $query->where('from_id', '=', $wp->id)
-                ->whereIn('status_id', [
-                    StatusEnum::AT_TRANSACTION_POINT,
-                    StatusEnum::AT_TRANSPORT_POINT,
-                    StatusEnum::TO_THE_TRANSACTION_POINT,
-                    StatusEnum::TO_THE_TRANSPORT_POINT,
-                    // StatusEnum::DONE,
-                    StatusEnum::CREATE,
-                ]);
+                ->where(function ($query) use ($done) {
+                    if ($done === 0) {
+                        return $query->whereIn('status_id', [
+                            StatusEnum::AT_TRANSACTION_POINT,
+                            StatusEnum::AT_TRANSPORT_POINT,
+                        ]);
+                    } else {
+                        return $query
+                            ->whereIn('status_id', [
+                                StatusEnum::TO_THE_TRANSACTION_POINT,
+                                StatusEnum::TO_THE_TRANSPORT_POINT,
+                            ]);
+                    }
+                });
         } else {
             $query->where('to_id', '=', $wp->id)
-                ->whereIn('status_id', [
-                    StatusEnum::AT_TRANSACTION_POINT,
-                    StatusEnum::AT_TRANSPORT_POINT,
-                    StatusEnum::LEAVE_TRANSACTION_POINT,
-                    StatusEnum::LEAVE_TRANSPORT_POINT,
-                ]);
+                ->where(function ($query) use ($done) {
+                    if ($done === 0) {
+                        return $query->whereIn('status_id', [
+                            StatusEnum::LEAVE_TRANSACTION_POINT,
+                            StatusEnum::LEAVE_TRANSPORT_POINT,
+                        ]);
+                    } else {
+                        return $query
+                            ->whereIn('status_id', [
+                                StatusEnum::AT_TRANSACTION_POINT,
+                                StatusEnum::AT_TRANSPORT_POINT,
+                            ]);
+                    }
+                });
         }
 
-        // dd($query->toSql());
         $query->get()->each(function ($e) use (&$orders) {
             $orders->add($e->order);
         });

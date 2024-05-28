@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace App\Enums;
 
@@ -8,9 +8,9 @@ use BenSampo\Enum\Enum;
 
 final class StatusEnum extends Enum
 {
-    public const WAIT_F_DELIVERY = 1;
+    public const WAIT_F_DELIVERY = 1; // cho ship
     public const R_DELIVERY = 2;
-    public const DONE = 3;
+    public const DONE = 3; // hoan thanh 1 chang
 
     public const LEAVE_TRANSPORT_POINT = 4;
     public const LEAVE_TRANSACTION_POINT = 14;

@@ -132,6 +132,18 @@ class OrderController extends Controller
         $notification->description = 'create new order';
 
         $notification->save();
+        //
+        $notification = new Noti();
+        $notification->order_id = $order->id;
+        $notification->from_id = $user->wp_id;
+        $notification->to_id = $user->wp_id;
+        $notification->from_address_id = [$request->sender_address_id, $request->sender_address];
+        $notification->to_address_id = [$request->sender_address_id, $request->sender_address];
+        $notification->address_current_id = $user->work_plate->vung;
+        $notification->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ? StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
+        // $notification->description = '';
+
+        $notification->save();
 
         $order->load(['notifications']);
         $order->append('sender_address', 'receiver_address');
@@ -189,15 +201,19 @@ class OrderController extends Controller
         foreach ($orderIds as $orderId) {
             /** @var Order $order */
             $order = Order::find($orderId);
-            $workPlate = routingAnother($order);
-            if ($workPlate) {
-                $workPlate->load('detail', 'type');
+            $workPlates = routingAnother($order, $order->status_id === StatusEnum::RETURN );
+            if ($workPlates) {
+                $workPlates->load('detail', 'type');
             } else {
-                $workPlate = 'shipping';
+                $workPlates = 'shipping';
             }
-            $res[] = $workPlate;
+            if (is_array($workPlates)) {
+                array_merge($res, $workPlates);
+            } else {
+                $res[] = $workPlates;
+            }
         }
-
+        $res = collect($res)->unique();
         return $this->sendSuccess($res, 'send suggestion next position success');
     }
 
@@ -221,7 +237,8 @@ class OrderController extends Controller
             } else {
                 $statusId = StatusEnum::TO_THE_TRANSPORT_POINT;
             }
-            $notification = new Noti();
+            $notification = Order::find($e->orderId)->notifications->last();
+
             $notification->from_id = $user->wp_id;
             $notification->to_id = $e->to_id ?? null;
             $notification->from_address_id = [
@@ -241,6 +258,7 @@ class OrderController extends Controller
 
     public function leave(LeaveRequest $request)
     {
+        // dd($request->data);
         collect($request->data)->each(function ($id) {
             /** @var Order $order */
             $order = Order::find($id);
@@ -260,26 +278,31 @@ class OrderController extends Controller
         $orders->map(function ($e) use ($user) {
             $e = (object) $e;
             $order = Order::find($e->id);
-            $total = $order->freight + ((isset($e->distance) ? $e->distance : 0) * env('TRANSPOSITIONS_COST'));
-            Order::where('id', $e->id)->update([
-                'freight' => $total,
-            ]);
+            $order->freight += ((isset($e->distance) ? $e->distance : 0) * env('TRANSPOSITIONS_COST'));
+            $order->save();
             $noti = $order->notifications->last();
             if (
                 (!is_null($noti->to_id) && $noti->to_id === $user->work_plate->id) ||
                 ((!is_null($noti->to_address)) && $noti->to_address->wardCode === $user->work_plate->address->wardCode)
             ) {
-                $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-                StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
+                $noti->status_id = StatusEnum::DONE;
             } else {
                 $noti->to_id = $user->work_plate->id;
                 $noti->to_address_id = [$user->work_plate->address->wardCode, $user->work_plate->address->address];
                 $noti->address_current_id = $user->work_plate->vung;
-                $noti->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ?
-                StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
+                $noti->status_id = StatusEnum::DONE;
             }
-
             $noti->save();
+            $notification = new Noti();
+            $notification->order_id = $order->id;
+            $notification->from_id = $user->wp_id;
+            $notification->to_id = $user->wp_id;
+            $notification->from_address_id = [$user->work_plate->address->wardCode, $user->work_plate->address->address];
+            $notification->to_address_id = [$user->work_plate->address->wardCode, $user->work_plate->address->address];
+            $notification->address_current_id = $user->work_plate->vung;
+            $notification->status_id = $user->work_plate->type_id === config('type.workPlate.transactionPoint') ? StatusEnum::AT_TRANSACTION_POINT : StatusEnum::AT_TRANSPORT_POINT;
+            // $notification->description = 'create new order';
+            $notification->save();
         });
 
         return $this->sendSuccess([], 'success');
@@ -308,7 +331,7 @@ class OrderController extends Controller
             'status_id' => StatusEnum::SHIPPING,
         ]);
         foreach ($orderIds as $orderId) {
-            $notification = new Noti();
+            $notification = Order::find($orderId)->notifications->last();
             $notification->from_id = $user->work_plate->id;
             $notification->to_id = $user->work_plate->id;
             $notification->description = 'Shipping';

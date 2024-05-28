@@ -225,7 +225,6 @@ if (!function_exists('routing')) {
         $vungHt = $order->notifications->last()->to->vung;
         $capHt = $order->notifications->last()->to->cap;
         $idAddressN = $order->receiver_address->wardCode;
-
         if ($idAddressHT === $idAddressN && $capHt === AddressTypeEnum::WARD) {
             return null;
         }
@@ -280,6 +279,22 @@ if (!function_exists('routing')) {
     }
 }
 
+if (!function_exists('addressNext')) {
+    function addressNext(string $address, bool $reverse = false)
+    {
+        $leng = Str::length($address);
+        if ($leng === 2) {
+            return $reverse ? DB::connection('sqlite_vn_map')->table('districts')->where('province_code', '=', $address)->first('code')->code : null;
+        }
+        if ($leng === 3) {
+            return $reverse ?
+            DB::connection('sqlite_vn_map')->table('wards')->where('district_code', '=', $address)->first('code')->code
+            : DB::connection('sqlite_vn_map')->table('districts')->where('code', '=', $address)->first('province_code')->province_code;
+        }
+        return $reverse ? null : DB::connection('sqlite_vn_map')->table('wards')->where('code', '=', $address)->first('district_code')->district_code;
+    }
+}
+
 if (!function_exists('routingAnother')) {
     /**
      * lay vi tri goi y tiep theo
@@ -287,43 +302,26 @@ if (!function_exists('routingAnother')) {
      * @param Order $order order can xu ly
      * @return WorkPlate|null
      */
-    function routingAnother(Order $order, bool $ship = false)
+    function routingAnother(Order $order, bool $return = false)
     {
         $noti = $order->notifications->last();
         $idAddressHT = $noti->address_current_id; // address id hiện tại
-        $capHt = getAddressRank($idAddressHT); // cap hien tai
+        // $capHt = getAddressRank($idAddressHT); // cap hien tai
         $idAddressN = $order->receiver_address->wardCode; // address id ng nhan
+
+        if ($idAddressHT === $idAddressN) {
+            return null;
+        }
+
         $res = null;
-
-        while ($capHt < AddressTypeEnum::PROVINCE) {
-            $capHt++;
-            $wp = WorkPlate::where('vung', getAddressCode($idAddressHT, $capHt))->first();
+        $vung = addressNext($idAddressHT, $return);
+        // dd($vung);
+        if ($vung) {
+            $wp = WorkPlate::where('vung', $vung)->where('id', '!=', $noti->from_id)->get();
             if ($wp) {
                 $res = $wp;
-
-                break;
             }
         }
-
-        if ($res || $ship) {
-            return $res;
-        }
-
-        while ($capHt >= AddressTypeEnum::WARD) {
-            $wp = WorkPlate::where('vung', getAddressCode($idAddressN, $capHt))->first();
-            if ($wp) {
-                $res = $wp;
-
-                break;
-            }
-
-            $capHt--;
-        }
-
-        if ($res) {
-            return $res;
-        }
-
-        return null;
+        return $res;
     }
 }

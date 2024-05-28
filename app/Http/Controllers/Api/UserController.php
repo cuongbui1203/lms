@@ -78,6 +78,7 @@ class UserController extends Controller
                 return $query;
             })
                 ->where('wp_id', $handler->wp_id)
+                ->orderBy('wp_id')
                 ->get();
             $users = $users->paginate($pageSize, $page, $relations);
         } else {
@@ -95,7 +96,7 @@ class UserController extends Controller
             if ($role && in_array($role, RoleEnum::getValues())) {
                 $query->where('role_id', '=', $role);
             }
-            $data = $query->get();
+            $data = $query->orderBy('wp_id')->get();
 
             if ($page === -1) {
                 $data = $data->reverse()->values();

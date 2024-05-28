@@ -23,6 +23,7 @@ class GetListOrderRequest extends GetListRequest
     {
         return array_merge(parent::rules(), [
             'sended' => 'boolean',
+            'done' => 'boolean',
         ]);
     }
 }
