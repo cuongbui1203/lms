@@ -13,6 +13,7 @@ use App\Http\Requests\WorkPlate\GetSuggestionWPRequest;
 use App\Http\Requests\WorkPlate\UpdateWarehouseDetailRequest;
 use App\Http\Requests\WorkPlate\UpdateWPRequest;
 use App\Models\Noti;
+use App\Models\Order;
 use App\Models\User;
 use App\Models\WorkPlate;
 use Illuminate\Http\Response as HttpResponse;
@@ -168,6 +169,20 @@ class WorkPlateController extends Controller
         $query = Noti::with('order');
         $sended = (int) $request->sended ?? 0;
         $done = (int) $request->done ?? 0;
+
+        if ($sended === 0 && $done === 0 && $user->role_id != RoleEnum::ADMIN) {
+            $query->clone()->join('orders', 'order_id', '=', 'orders.id')
+                ->join('users', 'created_id', '=', 'users.id')
+                ->where('to_id', '=', $user->wp_id)
+                ->where('wp_id', '=', $user->wp_id)
+                ->where('notifications.status_id', '=', StatusEnum::CREATE)
+                ->get()->each(function ($e) use (&$orders) {
+                // dd(Order::find($e->order_id));
+                $orders->add(Order::find($e->order_id));
+            });
+
+        }
+
         if ($sended === 1) {
             $query->where('from_id', '=', $wp->id)
                 ->where(function ($query) use ($done) {
@@ -205,7 +220,7 @@ class WorkPlateController extends Controller
         $query->get()->each(function ($e) use (&$orders) {
             $orders->add($e->order);
         });
-        // dd($orders);
+
         $orders = $orders->paginate($pageSize, $page, $relations);
 
         return $this->sendSuccess($orders);
