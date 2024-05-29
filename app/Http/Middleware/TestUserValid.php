@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Enums\RoleEnum;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
@@ -20,8 +21,13 @@ class TestUserValid
         $user = auth()->user();
         $id = getLastSegmentRegex(request()->getPathInfo());
 
-        if ($user && ($user->id === $id || $user->role_id === RoleEnum::ADMIN)) {
-            return $next($request);
+        if ($user) {
+            if ($user->id === $id || $user->role_id === RoleEnum::ADMIN) {
+                return $next($request);
+            }
+            if ($user->role_id === RoleEnum::MANAGER && User::where('id', $id)->where('wp_id', '=', $user->wp_id)->exists()) {
+                return $next($request);
+            }
         }
 
         return abort(HttpResponse::HTTP_FORBIDDEN);
