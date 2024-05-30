@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return env('PASSWORD_RESET_LINK') . '?token=' . $token;
+            return 'http://localhost:8080/reset-password' . '?token=' . $token;
         });
     }
 }

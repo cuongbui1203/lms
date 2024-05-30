@@ -40,6 +40,6 @@ class CreateAddressDB extends Command
 
         $addressSeed = new AddressSeeder();
         $addressSeed->run();
-        echo "ok";
+        $this->info('OK');
     }
 }
